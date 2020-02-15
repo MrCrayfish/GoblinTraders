@@ -24,7 +24,7 @@ public class ModEntities
 {
     private static final List<EntityType<?>> ENTITY_TYPES = new ArrayList<>();
 
-    public static final EntityType<GoblinTraderEntity> GOBLIN_TRADER = build(new ResourceLocation(Reference.MOD_ID, "goblin_trader"), GoblinTraderEntity::new, 1.0F, 2.0F);
+    public static final EntityType<GoblinTraderEntity> GOBLIN_TRADER = build(new ResourceLocation(Reference.MOD_ID, "goblin_trader"), GoblinTraderEntity::new, 0.75F, 1.0F);
 
     private static <T extends Entity> EntityType<T> build(ResourceLocation id, Function<World, T> function, float width, float height)
     {

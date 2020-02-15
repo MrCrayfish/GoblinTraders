@@ -11,18 +11,16 @@ import net.minecraft.util.ResourceLocation;
 /**
  * Author: MrCrayfish
  */
-public class GoblinTraderRenderer extends MobRenderer<AbstractGoblinEntity, BipedModel<AbstractGoblinEntity>>
+public class GoblinTraderRenderer extends MobRenderer<AbstractGoblinEntity, GoblinTraderModel>
 {
-    private static final ResourceLocation GOBLIN_TEXTURES = new ResourceLocation("textures/entity/bat.png");
-
     public GoblinTraderRenderer(EntityRendererManager renderManagerIn)
     {
-        super(renderManagerIn, new BipedModel<>(RenderType::entityCutoutNoCull, 0.5F, 0.0F, 64, 64), 0.5F);
+        super(renderManagerIn, new GoblinTraderModel(), 0.5F);
     }
 
     @Override
     public ResourceLocation getEntityTexture(AbstractGoblinEntity entity)
     {
-        return new ResourceLocation("textures/entity/steve.png");
+        return entity.getTexture();
     }
 }
