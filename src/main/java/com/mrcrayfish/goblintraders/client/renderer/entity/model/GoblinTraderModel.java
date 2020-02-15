@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
 
 /**
@@ -96,10 +97,33 @@ public class GoblinTraderModel extends SegmentedModel<AbstractGoblinEntity>
         }
         this.rightArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F / rotateFactor;
         this.leftArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F / rotateFactor;
+        this.rightArm.rotateAngleY = 0.0F;
+        this.rightArm.rotateAngleZ = 0.0F;
+        this.leftArm.rotateAngleY = 0.0F;
+        this.leftArm.rotateAngleZ = 0.0F;
         this.rightLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount / rotateFactor;
         this.leftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount / rotateFactor;
         this.head.rotateAngleY = headYaw * ((float) Math.PI / 180F);
         this.head.rotateAngleX = headPitch * ((float) Math.PI / 180F);
         this.hood.copyModelAngles(this.head);
+
+        if(this.swingProgress > 0.0F)
+        {
+            ModelRenderer arm = this.rightArm;
+            float progress = this.swingProgress;
+            this.body.rotateAngleY = MathHelper.sin(MathHelper.sqrt(progress) * ((float)Math.PI * 2F)) * 0.2F;
+            this.rightArm.rotateAngleY += this.body.rotateAngleY;
+            this.leftArm.rotateAngleY += this.body.rotateAngleY;
+            this.leftArm.rotateAngleX += this.body.rotateAngleY;
+            progress = 1.0F - this.swingProgress;
+            progress = progress * progress;
+            progress = progress * progress;
+            progress = 1.0F - progress;
+            float f2 = MathHelper.sin(progress * (float)Math.PI);
+            float f3 = MathHelper.sin(this.swingProgress * (float)Math.PI) * -(this.head.rotateAngleX - 0.7F) * 0.75F;
+            arm.rotateAngleX = (float)((double)arm.rotateAngleX - ((double)f2 * 1.2D + (double)f3));
+            arm.rotateAngleY += this.body.rotateAngleY * 2.0F;
+            arm.rotateAngleZ += MathHelper.sin(this.swingProgress * (float)Math.PI) * -0.4F;
+        }
     }
 }

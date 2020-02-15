@@ -1,11 +1,15 @@
 package com.mrcrayfish.goblintraders.entity;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import com.mrcrayfish.goblintraders.entity.ai.goal.FollowPotentialCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.LookAtCustomerGoal;
+import com.mrcrayfish.goblintraders.entity.ai.goal.TradeWithPlayerGoal;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.INPC;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.merchant.IMerchant;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
@@ -14,33 +18,33 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.MerchantOffer;
 import net.minecraft.item.MerchantOffers;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
  * Author: MrCrayfish
  */
-public abstract class AbstractGoblinEntity extends MobEntity implements INPC, IMerchant
+public abstract class AbstractGoblinEntity extends CreatureEntity implements INPC, IMerchant
 {
     protected static final int BASE_TRADES = 0;
     protected static final int RARE_TRADES = 1;
 
+    private static final ImmutableList<MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.INTERACTION_TARGET);
+
     @Nullable
     private PlayerEntity customer;
+
+    private Set<UUID> tradedCustomers = new HashSet<>();
+
     @Nullable
     private MerchantOffers offers;
 
-    protected AbstractGoblinEntity(EntityType<? extends MobEntity> type, World worldIn)
+    protected AbstractGoblinEntity(EntityType<? extends CreatureEntity> type, World worldIn)
     {
         super(type, worldIn);
     }
@@ -49,18 +53,34 @@ public abstract class AbstractGoblinEntity extends MobEntity implements INPC, IM
     protected void registerGoals()
     {
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        //this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
-        this.goalSelector.addGoal(1, new LookAtCustomerGoal(this));
-        this.goalSelector.addGoal(2, new FollowPotentialCustomerGoal(this));
-        this.goalSelector.addGoal(9, new LookAtWithoutMovingGoal(this, PlayerEntity.class, 4.0F, 1.0F));
-        this.goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, 8.0F));
+        this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
+        this.goalSelector.addGoal(2, new LookAtCustomerGoal(this));
+        this.goalSelector.addGoal(3, new FollowPotentialCustomerGoal(this));
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomWalkingGoal(this, 0.4D));
+        this.goalSelector.addGoal(5, new LookAtWithoutMovingGoal(this, PlayerEntity.class, 4.0F, 1.0F));
+        this.goalSelector.addGoal(6, new LookAtGoal(this, MobEntity.class, 8.0F));
     }
 
     public abstract ResourceLocation getTexture();
 
     @Override
+    public void livingTick()
+    {
+        super.livingTick();
+        this.updateArmSwingProgress();
+    }
+
+    @Override
     public void setCustomer(@Nullable PlayerEntity player)
     {
+        if(player == null && this.customer != null && !this.isPreviousCustomer(this.customer))
+        {
+            if(this.rand.nextInt(5) == 0)
+            {
+                this.customer.attackEntityFrom(DamageSource.causeMobDamage(this), 0.5F);
+                this.swingArm(Hand.MAIN_HAND);
+            }
+        }
         this.customer = player;
     }
 
@@ -85,11 +105,6 @@ public abstract class AbstractGoblinEntity extends MobEntity implements INPC, IM
             this.populateTradeData();
         }
         return this.offers;
-    }
-
-    protected void addOffer(MerchantOffer offer)
-    {
-
     }
 
     protected abstract void populateTradeData();
@@ -122,6 +137,10 @@ public abstract class AbstractGoblinEntity extends MobEntity implements INPC, IM
     public void onTrade(MerchantOffer offer)
     {
         offer.increaseUses();
+        if(this.customer != null)
+        {
+            this.tradedCustomers.add(this.customer.getUniqueID());
+        }
     }
 
     @Override
@@ -161,6 +180,12 @@ public abstract class AbstractGoblinEntity extends MobEntity implements INPC, IM
     }
 
     @Override
+    public boolean canDespawn(double distanceToClosestPlayer)
+    {
+        return false;
+    }
+
+    @Override
     protected boolean processInteract(PlayerEntity player, Hand hand)
     {
         ItemStack heldItem = player.getHeldItem(hand);
@@ -183,5 +208,10 @@ public abstract class AbstractGoblinEntity extends MobEntity implements INPC, IM
             return true;
         }
         return super.processInteract(player, hand);
+    }
+
+    public boolean isPreviousCustomer(PlayerEntity player)
+    {
+        return this.tradedCustomers.contains(player.getUniqueID());
     }
 }

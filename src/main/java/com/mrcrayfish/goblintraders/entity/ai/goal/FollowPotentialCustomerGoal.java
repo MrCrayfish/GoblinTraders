@@ -1,10 +1,10 @@
 package com.mrcrayfish.goblintraders.entity.ai.goal;
 
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
-import com.mrcrayfish.goblintraders.entity.GoblinTraderEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 
 import javax.annotation.Nullable;
 import java.util.Comparator;
@@ -18,6 +18,7 @@ public class FollowPotentialCustomerGoal extends Goal
 {
     private PlayerEntity potentialCustomer;
     private AbstractGoblinEntity entity;
+    private int hitTimer = 200;
     private boolean hitOnce = false;
     private int coolDown = 0;
     private int timeout = 600;
@@ -41,7 +42,7 @@ public class FollowPotentialCustomerGoal extends Goal
             return false;
         }
         this.findCustomer();
-        return this.potentialCustomer != null && this.potentialCustomer.isAlive();
+        return this.potentialCustomer != null && this.potentialCustomer.isAlive() && !this.entity.isPreviousCustomer(this.potentialCustomer);
     }
 
     @Override
@@ -54,9 +55,13 @@ public class FollowPotentialCustomerGoal extends Goal
         }
         else if(!this.hitOnce)
         {
-            this.potentialCustomer.attackEntityFrom(DamageSource.causeMobDamage(this.entity), 0.5F);
-            this.hitOnce = true;
-            //TODO play a sound
+            if(this.hitTimer-- == 0)
+            {
+                this.potentialCustomer.attackEntityFrom(DamageSource.causeMobDamage(this.entity), 0.5F);
+                this.entity.swingArm(Hand.MAIN_HAND);
+                this.hitOnce = true;
+                //TODO play a sound
+            }
         }
         this.timeout--;
     }
@@ -64,22 +69,24 @@ public class FollowPotentialCustomerGoal extends Goal
     @Override
     public boolean shouldContinueExecuting()
     {
-        return this.potentialCustomer != null && this.potentialCustomer.isAlive() && this.entity.getCustomer() == null && this.timeout > 0;
+        return this.potentialCustomer != null && this.potentialCustomer.isAlive() && this.entity.getCustomer() == null && !this.entity.isPreviousCustomer(this.potentialCustomer) && this.entity.getDistance(this.potentialCustomer) <= 10.0D && this.timeout > 0;
     }
 
     @Override
     public void resetTask()
     {
+        this.entity.getNavigator().clearPath();
         this.potentialCustomer = null;
         this.hitOnce = false;
         this.timeout = 600;
         this.coolDown = 300;
+        this.hitTimer = 200;
     }
 
     @Nullable
     private void findCustomer()
     {
-        List<PlayerEntity> players = this.entity.world.getEntitiesWithinAABB(PlayerEntity.class, this.entity.getBoundingBox().grow(10));
+        List<PlayerEntity> players = this.entity.world.getEntitiesWithinAABB(PlayerEntity.class, this.entity.getBoundingBox().grow(10), playerEntity -> !playerEntity.isCreative() && !playerEntity.isSpectator());
         if(players.size() > 0)
         {
             this.potentialCustomer = players.stream().min(Comparator.comparing(this.entity::getDistance)).get();
