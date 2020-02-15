@@ -1,9 +1,9 @@
 package com.mrcrayfish.goblintraders.entity;
 
 import com.google.common.collect.ImmutableList;
-import com.mrcrayfish.goblintraders.entity.ai.goal.*;
 import com.mrcrayfish.goblintraders.entity.ai.goal.LookAtCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.TradeWithPlayerGoal;
+import com.mrcrayfish.goblintraders.entity.ai.goal.*;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.INPC;
@@ -17,8 +17,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.MerchantOffer;
 import net.minecraft.item.MerchantOffers;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -42,6 +44,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     private MerchantOffers offers;
 
     private int stunDelay;
+    private int despawnDelay;
 
     protected AbstractGoblinEntity(EntityType<? extends CreatureEntity> type, World worldIn)
     {
@@ -56,8 +59,9 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         this.goalSelector.addGoal(2, new LookAtCustomerGoal(this));
         this.goalSelector.addGoal(3, new AttackRevengeTargetGoal(this));
         this.goalSelector.addGoal(4, new FollowPotentialCustomerGoal(this));
-        this.goalSelector.addGoal(5, new EatAppleGoal(this));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 0.4D));
+        this.goalSelector.addGoal(6, new EatAppleGoal(this));
+        this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 0.4D));
+        this.goalSelector.addGoal(7, new MoveTowardsRestrictionGoal(this, 0.4D));
         this.goalSelector.addGoal(7, new LookAtWithoutMovingGoal(this, PlayerEntity.class, 4.0F, 1.0F));
         this.goalSelector.addGoal(8, new LookAtGoal(this, MobEntity.class, 8.0F));
     }
@@ -82,6 +86,10 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         if(this.stunDelay > 0)
         {
             this.stunDelay--;
+        }
+        if(!this.world.isRemote)
+        {
+            this.handleDespawn();
         }
     }
 
@@ -245,5 +253,49 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     public int getStunDelay()
     {
         return stunDelay;
+    }
+
+    public void setDespawnDelay(int despawnDelay)
+    {
+        this.despawnDelay = despawnDelay;
+    }
+
+    public int getDespawnDelay()
+    {
+        return despawnDelay;
+    }
+
+    @Override
+    public void readAdditional(CompoundNBT compound)
+    {
+        super.readAdditional(compound);
+        if(compound.contains("Offers", 10))
+        {
+            this.offers = new MerchantOffers(compound.getCompound("Offers"));
+        }
+        if(compound.contains("DespawnDelay", Constants.NBT.TAG_INT))
+        {
+            this.despawnDelay = compound.getInt("DespawnDelay");
+        }
+    }
+
+    @Override
+    public void writeAdditional(CompoundNBT compound)
+    {
+        super.writeAdditional(compound);
+        MerchantOffers merchantoffers = this.getOffers();
+        if(!merchantoffers.isEmpty())
+        {
+            compound.put("Offers", merchantoffers.write());
+        }
+        compound.putInt("DespawnDelay", this.despawnDelay);
+    }
+
+    private void handleDespawn()
+    {
+        if(this.despawnDelay > 0 && !this.hasCustomer() && --this.despawnDelay == 0)
+        {
+            this.remove();
+        }
     }
 }
