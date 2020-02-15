@@ -98,5 +98,8 @@ public class GoblinTraderModel extends SegmentedModel<AbstractGoblinEntity>
         this.leftArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F / rotateFactor;
         this.rightLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount / rotateFactor;
         this.leftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount / rotateFactor;
+        this.head.rotateAngleY = headYaw * ((float) Math.PI / 180F);
+        this.head.rotateAngleX = headPitch * ((float) Math.PI / 180F);
+        this.hood.copyModelAngles(this.head);
     }
 }
