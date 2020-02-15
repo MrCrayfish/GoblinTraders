@@ -1,9 +1,12 @@
 package com.mrcrayfish.goblintraders.entity;
 
 import com.google.common.collect.Sets;
+import com.mrcrayfish.goblintraders.entity.ai.goal.FollowPotentialCustomerGoal;
+import com.mrcrayfish.goblintraders.entity.ai.goal.LookAtCustomerGoal;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.INPC;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.merchant.IMerchant;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.player.PlayerEntity;
@@ -40,6 +43,17 @@ public abstract class AbstractGoblinEntity extends MobEntity implements INPC, IM
     protected AbstractGoblinEntity(EntityType<? extends MobEntity> type, World worldIn)
     {
         super(type, worldIn);
+    }
+
+    @Override
+    protected void registerGoals()
+    {
+        this.goalSelector.addGoal(0, new SwimGoal(this));
+        //this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
+        this.goalSelector.addGoal(1, new LookAtCustomerGoal(this));
+        this.goalSelector.addGoal(2, new FollowPotentialCustomerGoal(this));
+        this.goalSelector.addGoal(9, new LookAtWithoutMovingGoal(this, PlayerEntity.class, 4.0F, 1.0F));
+        this.goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, 8.0F));
     }
 
     public abstract ResourceLocation getTexture();
