@@ -1,16 +1,20 @@
 package com.mrcrayfish.goblintraders.client.renderer.entity.model;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
+import net.minecraft.client.renderer.entity.model.IHasArm;
+import net.minecraft.client.renderer.entity.model.IHasHead;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
 
 /**
  * Author: MrCrayfish
  */
-public class GoblinTraderModel extends SegmentedModel<AbstractGoblinEntity>
+public class GoblinTraderModel extends SegmentedModel<AbstractGoblinEntity> implements IHasArm, IHasHead
 {
     public ModelRenderer head;
     public ModelRenderer hood;
@@ -125,5 +129,25 @@ public class GoblinTraderModel extends SegmentedModel<AbstractGoblinEntity>
             arm.rotateAngleY += this.body.rotateAngleY * 2.0F;
             arm.rotateAngleZ += MathHelper.sin(this.swingProgress * (float)Math.PI) * -0.4F;
         }
+
+        if(entity.isHandActive())
+        {
+            this.rightArm.rotateAngleX = (float) Math.toRadians(-90F + 5F * Math.sin(ageInTicks));
+            this.leftArm.rotateAngleX = (float) Math.toRadians(-90F + 5F * Math.sin(ageInTicks));
+        }
+    }
+
+    @Override
+    public void func_225599_a_(HandSide handSide, MatrixStack matrixStack)
+    {
+        this.rightArm.setAnglesAndRotation(matrixStack);
+        matrixStack.translate(0.25, -0.15, 0.25);
+        matrixStack.scale(0.75F, 0.75F, 0.75F);
+    }
+
+    @Override
+    public ModelRenderer getModelHead()
+    {
+        return this.head;
     }
 }

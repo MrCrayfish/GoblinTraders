@@ -1,9 +1,7 @@
 package com.mrcrayfish.goblintraders.entity;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Sets;
-import com.mrcrayfish.goblintraders.entity.ai.goal.AttackRevengeTargetGoal;
-import com.mrcrayfish.goblintraders.entity.ai.goal.FollowPotentialCustomerGoal;
+import com.mrcrayfish.goblintraders.entity.ai.goal.*;
 import com.mrcrayfish.goblintraders.entity.ai.goal.LookAtCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.TradeWithPlayerGoal;
 import net.minecraft.entity.CreatureEntity;
@@ -58,12 +56,37 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         this.goalSelector.addGoal(2, new LookAtCustomerGoal(this));
         this.goalSelector.addGoal(3, new AttackRevengeTargetGoal(this));
         this.goalSelector.addGoal(4, new FollowPotentialCustomerGoal(this));
+        this.goalSelector.addGoal(5, new EatAppleGoal(this));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 0.4D));
         this.goalSelector.addGoal(7, new LookAtWithoutMovingGoal(this, PlayerEntity.class, 4.0F, 1.0F));
         this.goalSelector.addGoal(8, new LookAtGoal(this, MobEntity.class, 8.0F));
     }
 
     public abstract ResourceLocation getTexture();
+
+    @Override
+    protected void onItemUseFinish()
+    {
+        if(!this.activeItemStack.equals(this.getHeldItem(this.getActiveHand())))
+        {
+            this.stopActiveHand();
+        }
+        else
+        {
+            if(!this.activeItemStack.isEmpty() && this.isHandActive())
+            {
+                this.func_226293_b_(this.activeItemStack, 16);
+                ItemStack copy = this.activeItemStack.copy();
+                if(copy.getItem() == Items.APPLE && copy.getItem().getFood() != null)
+                {
+                    this.setHealth(this.getHealth() + copy.getItem().getFood().getHealing());
+                }
+                ItemStack stack = net.minecraftforge.event.ForgeEventFactory.onItemUseFinish(this, copy, getItemInUseCount(), this.activeItemStack.onItemUseFinish(this.world, this));
+                this.setHeldItem(this.getActiveHand(), stack);
+                this.resetActiveHand();
+            }
+        }
+    }
 
     @Override
     public void livingTick()
