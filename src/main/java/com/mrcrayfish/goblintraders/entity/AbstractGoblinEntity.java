@@ -65,27 +65,13 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     public abstract ResourceLocation getTexture();
 
     @Override
-    protected void onItemUseFinish()
+    public ItemStack onFoodEaten(World world, ItemStack stack)
     {
-        if(!this.activeItemStack.equals(this.getHeldItem(this.getActiveHand())))
+        if(stack.getItem() == Items.APPLE && stack.getItem().getFood() != null)
         {
-            this.stopActiveHand();
+            this.setHealth(this.getHealth() + stack.getItem().getFood().getHealing());
         }
-        else
-        {
-            if(!this.activeItemStack.isEmpty() && this.isHandActive())
-            {
-                this.func_226293_b_(this.activeItemStack, 16);
-                ItemStack copy = this.activeItemStack.copy();
-                if(copy.getItem() == Items.APPLE && copy.getItem().getFood() != null)
-                {
-                    this.setHealth(this.getHealth() + copy.getItem().getFood().getHealing());
-                }
-                ItemStack stack = net.minecraftforge.event.ForgeEventFactory.onItemUseFinish(this, copy, getItemInUseCount(), this.activeItemStack.onItemUseFinish(this.world, this));
-                this.setHeldItem(this.getActiveHand(), stack);
-                this.resetActiveHand();
-            }
-        }
+        return super.onFoodEaten(world, stack);
     }
 
     @Override
