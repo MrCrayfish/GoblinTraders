@@ -2,6 +2,7 @@ package com.mrcrayfish.goblintraders.entity;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
+import com.mrcrayfish.goblintraders.entity.ai.goal.AttackRevengeTargetGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.FollowPotentialCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.LookAtCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.TradeWithPlayerGoal;
@@ -38,11 +39,11 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
 
     @Nullable
     private PlayerEntity customer;
-
     private Set<UUID> tradedCustomers = new HashSet<>();
-
     @Nullable
     private MerchantOffers offers;
+
+    private int stunDelay;
 
     protected AbstractGoblinEntity(EntityType<? extends CreatureEntity> type, World worldIn)
     {
@@ -55,10 +56,11 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
         this.goalSelector.addGoal(2, new LookAtCustomerGoal(this));
-        this.goalSelector.addGoal(3, new FollowPotentialCustomerGoal(this));
-        this.goalSelector.addGoal(4, new WaterAvoidingRandomWalkingGoal(this, 0.4D));
-        this.goalSelector.addGoal(5, new LookAtWithoutMovingGoal(this, PlayerEntity.class, 4.0F, 1.0F));
-        this.goalSelector.addGoal(6, new LookAtGoal(this, MobEntity.class, 8.0F));
+        this.goalSelector.addGoal(3, new AttackRevengeTargetGoal(this));
+        this.goalSelector.addGoal(4, new FollowPotentialCustomerGoal(this));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 0.4D));
+        this.goalSelector.addGoal(7, new LookAtWithoutMovingGoal(this, PlayerEntity.class, 4.0F, 1.0F));
+        this.goalSelector.addGoal(8, new LookAtGoal(this, MobEntity.class, 8.0F));
     }
 
     public abstract ResourceLocation getTexture();
@@ -68,6 +70,10 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     {
         super.livingTick();
         this.updateArmSwingProgress();
+        if(this.stunDelay > 0)
+        {
+            this.stunDelay--;
+        }
     }
 
     @Override
@@ -200,7 +206,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
             {
                 return super.processInteract(player, hand);
             }
-            else if(!this.world.isRemote)
+            else if(!this.world.isRemote && (this.getRevengeTarget() == null || this.getRevengeTarget() != player))
             {
                 this.setCustomer(player);
                 this.openMerchantContainer(player, this.getDisplayName(), 1);
@@ -213,5 +219,22 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     public boolean isPreviousCustomer(PlayerEntity player)
     {
         return this.tradedCustomers.contains(player.getUniqueID());
+    }
+
+    @Override
+    public boolean attackEntityFrom(DamageSource source, float amount)
+    {
+        boolean attacked = super.attackEntityFrom(source, amount);
+        if(attacked)
+        {
+            this.goalSelector.getRunningGoals().forEach(PrioritizedGoal::resetTask);
+            this.stunDelay = 20;
+        }
+        return attacked;
+    }
+
+    public int getStunDelay()
+    {
+        return stunDelay;
     }
 }

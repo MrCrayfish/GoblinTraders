@@ -1,0 +1,59 @@
+package com.mrcrayfish.goblintraders.entity.ai.goal;
+
+import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.util.DamageSource;
+
+import java.util.EnumSet;
+
+/**
+ * Author: MrCrayfish
+ */
+public class AttackRevengeTargetGoal extends Goal
+{
+    private AbstractGoblinEntity entity;
+
+    public AttackRevengeTargetGoal(AbstractGoblinEntity entity)
+    {
+        this.entity = entity;
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+    }
+
+    @Override
+    public boolean shouldExecute()
+    {
+        return this.entity.getRevengeTarget() != null && this.entity.getRevengeTarget().isAlive() && this.entity.getDistance(this.entity.getRevengeTarget()) <= 10.0F;
+    }
+
+    @Override
+    public void tick()
+    {
+        LivingEntity revengeTarget = this.entity.getRevengeTarget();
+        if(revengeTarget != null && this.entity.getCustomer() == null && this.entity.getStunDelay() == 0)
+        {
+            this.entity.getLookController().setLookPositionWithEntity(revengeTarget, 10.0F, (float) this.entity.getVerticalFaceSpeed());
+            if(this.entity.getDistance(revengeTarget) >= 1.5D)
+            {
+                this.entity.getNavigator().tryMoveToEntityLiving(revengeTarget, 0.5F);
+            }
+            else
+            {
+                revengeTarget.attackEntityFrom(DamageSource.causeMobDamage(this.entity), 1.0F);
+                this.entity.setRevengeTarget(null);
+            }
+        }
+    }
+
+    @Override
+    public boolean shouldContinueExecuting()
+    {
+        return this.entity.getRevengeTarget() != null && this.entity.getRevengeTarget().isAlive() && this.entity.getDistance(this.entity.getRevengeTarget()) <= 10.0F && this.entity.getCustomer() == null;
+    }
+
+    @Override
+    public void resetTask()
+    {
+        this.entity.setRevengeTarget(null);
+    }
+}
