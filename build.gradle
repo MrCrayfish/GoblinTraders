@@ -13,7 +13,7 @@ apply plugin: 'eclipse'
 
 version = '1.0.0-1.15.2'
 group = 'com.mrcrayfish'
-archivesBaseName = 'glasscutter'
+archivesBaseName = 'goblintraders'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
@@ -25,7 +25,7 @@ minecraft {
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
             mods {
-                examplemod {
+                goblintraders {
                     source sourceSets.main
                 }
             }
@@ -36,7 +36,7 @@ minecraft {
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
             mods {
-                examplemod {
+                goblintraders {
                     source sourceSets.main
                 }
             }
@@ -48,7 +48,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/')
             mods {
-                examplemod {
+                goblintraders {
                     source sourceSets.main
                 }
             }
@@ -63,7 +63,7 @@ dependencies {
 jar {
     manifest {
         attributes([
-            "Specification-Title": "Glasscutter",
+            "Specification-Title": "Goblin Traders",
             "Specification-Vendor": "MrCrayfish",
             "Specification-Version": "1", // We are version 1 of ourselves
             "Implementation-Title": project.name,

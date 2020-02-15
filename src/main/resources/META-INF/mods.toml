@@ -4,23 +4,23 @@ loaderVersion="[31,)"
 issueTrackerURL="https://github.com/MrCrayfish/GlassCutter/issues"
 
 [[mods]]
-modId="glasscutter"
+modId="goblintraders"
 version="1.0.0"
-displayName="Glasscutter"
-updateJSONURL="https://raw.githubusercontent.com/MrCrayfish/ModUpdates/master/glasscutter/update.json"
-displayURL="https://mrcrayfish.com/mods?id=glasscutter"
+displayName="Goblin Traders"
+updateJSONURL="https://raw.githubusercontent.com/MrCrayfish/ModUpdates/master/goblintraders/update.json"
+displayURL="https://mrcrayfish.com/mods?id=goblintraders"
 logoFile=""
-credits="@DarkestArgentum on Twitter for ideas"
+credits="@ItsNahteTV on Twitter for idea"
 authors="MrCrayfish"
-description='Adds a glasscutter to cut different shapes with glass'
+description='Adds goblins that trade speical items with the player!'
 
-[[dependencies.improvedwolves]]
+[[dependencies.goblintraders]]
     modId="forge"
     mandatory=true
     versionRange="[31,)"
     ordering="NONE"
     side="BOTH"
-[[dependencies.improvedwolves]]
+[[dependencies.goblintraders]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.15.2,1.16)"
