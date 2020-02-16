@@ -13,7 +13,6 @@ import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.merchant.IMerchant;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
-import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -40,6 +39,8 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     protected static final int BASE_TRADES = 0;
     protected static final int RARE_TRADES = 1;
 
+    public static final DataParameter<Boolean> STUNNED = EntityDataManager.createKey(AbstractGoblinEntity.class, DataSerializers.BOOLEAN);
+
     private static final ImmutableList<MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.INTERACTION_TARGET);
 
     @Nullable
@@ -50,6 +51,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
 
     private int stunDelay;
     private int despawnDelay;
+    private int fallCounter;
 
     protected AbstractGoblinEntity(EntityType<? extends CreatureEntity> type, World worldIn)
     {
@@ -63,7 +65,6 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
         this.goalSelector.addGoal(2, new LookAtCustomerGoal(this));
         this.goalSelector.addGoal(3, new AttackRevengeTargetGoal(this));
-        //this.goalSelector.addGoal(6, new JumpForAppleGoal(this));
         this.goalSelector.addGoal(5, new FollowPotentialCustomerGoal(this));
         this.goalSelector.addGoal(6, new FindAppleGoal(this));
         this.goalSelector.addGoal(7, new EatAppleGoal(this));
@@ -73,7 +74,19 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         this.goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, 8.0F));
     }
 
+    @Override
+    protected void registerData()
+    {
+        super.registerData();
+        this.dataManager.register(STUNNED, false);
+    }
+
     public abstract ResourceLocation getTexture();
+
+    public int getFallCounter()
+    {
+        return fallCounter;
+    }
 
     @Override
     public ItemStack onFoodEaten(World world, ItemStack stack)
@@ -95,12 +108,24 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
             this.stunDelay--;
             if(this.stunDelay == 0)
             {
+                this.dataManager.set(STUNNED, false);
                 this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT, SoundCategory.NEUTRAL, 1.0F, 0.9F + this.getRNG().nextFloat() * 0.2F);
             }
         }
         if(!this.world.isRemote)
         {
             this.handleDespawn();
+        }
+        else if(this.dataManager.get(STUNNED))
+        {
+            if(this.fallCounter < 10)
+            {
+                this.fallCounter++;
+            }
+        }
+        else
+        {
+            this.fallCounter = 0;
         }
     }
 
@@ -256,6 +281,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         boolean attacked = super.attackEntityFrom(source, amount);
         if(attacked)
         {
+            this.dataManager.set(STUNNED, true);
             this.goalSelector.getRunningGoals().forEach(PrioritizedGoal::resetTask);
             this.stunDelay = 20;
         }
