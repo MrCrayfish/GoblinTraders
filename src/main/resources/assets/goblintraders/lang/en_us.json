@@ -1,3 +1,5 @@
 {
-    "entity.goblintraders.goblin_trader": "Goblin Trader"
+    "entity.goblintraders.goblin_trader": "Goblin Trader",
+    "subtitle.goblintraders.goblin_trader.annoyed_grunt": "Annoyed Grunt",
+    "subtitle.goblintraders.goblin_trader.idle_grunt": "Idle Grunt"
 }
