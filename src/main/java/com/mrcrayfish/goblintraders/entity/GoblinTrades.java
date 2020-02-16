@@ -5,14 +5,12 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.MerchantOffer;
+import net.minecraft.item.*;
 import net.minecraft.util.Util;
 
 import javax.annotation.Nullable;
@@ -23,12 +21,34 @@ import java.util.Random;
  */
 public class GoblinTrades
 {
+    //TODO for vein goblin trader
+    //dragon head
+    //NETHER_STAR
+
     public static final Int2ObjectMap<VillagerTrades.ITrade[]> GOBLIN_TRADER = Util.make(() -> {
         VillagerTrades.ITrade[] baseOffers = new VillagerTrades.ITrade[] {
-            new ItemsForEmeraldsTrade(Items.GOLDEN_SWORD, 2, 1, 5, 1),
+            new ItemsForEmeraldsTrade(Items.APPLE, 1, 10, 10, 1),
+            new ItemsForEmeraldsTrade(Items.COOKIE, 1, 8, 10, 1),
+            new ItemsForEmeraldsTrade(Items.COOKED_BEEF, 1, 4, 10, 1),
+            new ItemsForEmeraldsTrade(Items.COOKED_CHICKEN, 1, 5, 10, 1),
+            new ItemsForEmeraldsTrade(Items.COOKED_MUTTON, 1, 4, 10, 1),
+            new ItemsForEmeraldsTrade(Items.COOKED_RABBIT, 1, 4, 10, 1),
+            new ItemsForEmeraldsTrade(Items.ZOMBIE_VILLAGER_SPAWN_EGG, 8, 1, 2, 5),
+            new ItemsForEmeraldsTrade(Items.EXPERIENCE_BOTTLE, 10, 16, 20, 2),
+            new ItemsForEmeraldsTrade(Items.TNT, 4, 8, 10, 2),
+            new ItemsForEmeraldsTrade(Items.DIAMOND_HELMET, 24, 1, 1, 10),
+            new ItemsForEmeraldsTrade(Items.DIAMOND_CHESTPLATE, 32, 1, 1, 10),
+            new ItemsForEmeraldsTrade(Items.DIAMOND_LEGGINGS, 28, 1, 1, 10),
+            new ItemsForEmeraldsTrade(Items.DIAMOND_BOOTS, 20, 1, 1, 10)
         };
         VillagerTrades.ITrade[] rareOffers = new VillagerTrades.ITrade[] {
-            new TradeWithEnchantment(Items.EMERALD, 64, Items.DIAMOND_PICKAXE, 1, 100, 0.5F, Enchantments.EFFICIENCY, 6)
+            new TradeWithEnchantment(new ItemStack(Items.EMERALD, 32), new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.DIAMOND_PICKAXE), 1, 100, 0.5F, Enchantments.EFFICIENCY, 6),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 40), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.MENDING, 1),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.LOOTING, 5),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 36), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.SHARPNESS, 6),
+            new TradeWithEnchantment(new ItemStack(Items.EMERALD, 16), new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.FORTUNE, 5),
+            new TradeWithEnchantment(new ItemStack(Items.EMERALD, 8), new ItemStack(Items.GOLD_INGOT, 48), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.FEATHER_FALLING, 6),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 64), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.UNBREAKING, 5)
         };
         return getAsIntMap(ImmutableMap.of(0, baseOffers, 1, rareOffers));
     });
@@ -41,6 +61,7 @@ public class GoblinTrades
     static class TradeWithEnchantment implements VillagerTrades.ITrade
     {
         private final ItemStack buyingStack;
+        private ItemStack secondBuyingStack = ItemStack.EMPTY;
         private final ItemStack sellingStack;
         private final int maxUses;
         private final int experience;
@@ -66,11 +87,21 @@ public class GoblinTrades
             this.sellingStack.addEnchantment(enchantment, level);
         }
 
+        public TradeWithEnchantment(ItemStack buyingStack, ItemStack secondBuyingStack, ItemStack sellingStack, int maxUses, int experience, float priceMultiplier, Enchantment enchantment, int level)
+        {
+            this.buyingStack = buyingStack;
+            this.sellingStack = sellingStack;
+            this.maxUses = maxUses;
+            this.experience = experience;
+            this.priceMultiplier = priceMultiplier;
+            this.sellingStack.addEnchantment(enchantment, level);
+        }
+
         @Nullable
         @Override
         public MerchantOffer getOffer(Entity trader, Random rand)
         {
-            return new MerchantOffer(this.buyingStack, this.sellingStack, this.maxUses, this.experience, this.priceMultiplier);
+            return new MerchantOffer(this.buyingStack, this.secondBuyingStack, this.sellingStack, this.maxUses, this.experience, this.priceMultiplier);
         }
     }
 

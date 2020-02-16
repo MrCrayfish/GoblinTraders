@@ -26,7 +26,7 @@ public class GoblinTraderEntity extends AbstractGoblinEntity
     protected void populateTradeData()
     {
         MerchantOffers offers = this.getOffers();
-        this.addTrades(offers, GoblinTrades.GOBLIN_TRADER.get(BASE_TRADES), Math.max(4, this.rand.nextInt(8) + 1));
-        this.addTrades(offers, GoblinTrades.GOBLIN_TRADER.get(RARE_TRADES), Math.max(1, this.rand.nextInt(4) + 1));
+        this.addTrades(offers, GoblinTrades.GOBLIN_TRADER.get(BASE_TRADES), Math.max(4, this.rand.nextInt(6) + 1));
+        this.addTrades(offers, GoblinTrades.GOBLIN_TRADER.get(RARE_TRADES), Math.max(1, this.rand.nextInt(2) + 1));
     }
 }
