@@ -4,6 +4,7 @@ import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 
 import java.util.EnumSet;
 
@@ -40,6 +41,7 @@ public class AttackRevengeTargetGoal extends Goal
             else
             {
                 revengeTarget.attackEntityFrom(DamageSource.causeMobDamage(this.entity), 1.0F);
+                this.entity.swingArm(Hand.MAIN_HAND);
                 this.entity.setRevengeTarget(null);
             }
         }

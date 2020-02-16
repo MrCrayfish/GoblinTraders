@@ -1,0 +1,17 @@
+{
+    "entity.goblin_trader.annoyed_grunt": {
+        "subtitle": "subtitle.goblintraders.goblin_trader.annoyed_grunt",
+        "sounds": [
+            "goblintraders:entity/goblin_trader/annoyed_grunt1",
+            "goblintraders:entity/goblin_trader/annoyed_grunt2"
+        ]
+    },
+    "entity.goblin_trader.idle_grunt": {
+        "subtitle": "subtitle.goblintraders.goblin_trader.idle_grunt",
+        "sounds": [
+            "goblintraders:entity/goblin_trader/idle_grunt1",
+            "goblintraders:entity/goblin_trader/idle_grunt2",
+            "goblintraders:entity/goblin_trader/idle_grunt3"
+        ]
+    }
+}

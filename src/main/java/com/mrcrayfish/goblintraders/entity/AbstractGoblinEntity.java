@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mrcrayfish.goblintraders.entity.ai.goal.LookAtCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.TradeWithPlayerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.*;
+import com.mrcrayfish.goblintraders.init.ModSounds;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.INPC;
@@ -12,12 +13,16 @@ import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.merchant.IMerchant;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
+import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.MerchantOffer;
 import net.minecraft.item.MerchantOffers;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -88,6 +93,10 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         if(this.stunDelay > 0)
         {
             this.stunDelay--;
+            if(this.stunDelay == 0)
+            {
+                this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT, SoundCategory.NEUTRAL, 1.0F, 0.9F + this.getRNG().nextFloat() * 0.2F);
+            }
         }
         if(!this.world.isRemote)
         {
@@ -102,6 +111,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         {
             if(this.rand.nextInt(5) == 0)
             {
+                this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT, SoundCategory.NEUTRAL, 1.0F, 0.9F + this.getRNG().nextFloat() * 0.2F);
                 this.customer.attackEntityFrom(DamageSource.causeMobDamage(this), 0.5F);
                 this.swingArm(Hand.MAIN_HAND);
             }
@@ -299,5 +309,19 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         {
             this.remove();
         }
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound()
+    {
+        return ModSounds.ENTITY_GOBLIN_TRADER_IDLE_GRUNT;
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
+    {
+        return ModSounds.ENTITY_GOBLIN_TRADER_IDLE_GRUNT;
     }
 }
