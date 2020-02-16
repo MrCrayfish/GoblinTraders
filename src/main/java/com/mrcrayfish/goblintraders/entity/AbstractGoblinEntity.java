@@ -58,12 +58,14 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
         this.goalSelector.addGoal(2, new LookAtCustomerGoal(this));
         this.goalSelector.addGoal(3, new AttackRevengeTargetGoal(this));
-        this.goalSelector.addGoal(4, new FollowPotentialCustomerGoal(this));
-        this.goalSelector.addGoal(6, new EatAppleGoal(this));
-        this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 0.4D));
-        this.goalSelector.addGoal(7, new MoveTowardsRestrictionGoal(this, 0.4D));
-        this.goalSelector.addGoal(7, new LookAtWithoutMovingGoal(this, PlayerEntity.class, 4.0F, 1.0F));
-        this.goalSelector.addGoal(8, new LookAtGoal(this, MobEntity.class, 8.0F));
+        //this.goalSelector.addGoal(6, new JumpForAppleGoal(this));
+        this.goalSelector.addGoal(5, new FollowPotentialCustomerGoal(this));
+        this.goalSelector.addGoal(6, new FindAppleGoal(this));
+        this.goalSelector.addGoal(7, new EatAppleGoal(this));
+        this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 0.4D));
+        this.goalSelector.addGoal(8, new MoveTowardsRestrictionGoal(this, 0.4D));
+        this.goalSelector.addGoal(9, new LookAtWithoutMovingGoal(this, PlayerEntity.class, 4.0F, 1.0F));
+        this.goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, 8.0F));
     }
 
     public abstract ResourceLocation getTexture();
