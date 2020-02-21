@@ -22,6 +22,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.IParticleData;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -85,7 +86,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
 
     public int getFallCounter()
     {
-        return fallCounter;
+        return this.fallCounter;
     }
 
     @Override
@@ -290,7 +291,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
 
     public int getStunDelay()
     {
-        return stunDelay;
+        return this.stunDelay;
     }
 
     public void setDespawnDelay(int despawnDelay)
@@ -300,7 +301,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
 
     public int getDespawnDelay()
     {
-        return despawnDelay;
+        return this.despawnDelay;
     }
 
     @Override
@@ -335,6 +336,16 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         {
             this.remove();
         }
+    }
+
+    protected void spawnParticles(IParticleData particleData) {
+        for(int i = 0; i < 5; ++i) {
+            double d0 = this.rand.nextGaussian() * 0.02D;
+            double d1 = this.rand.nextGaussian() * 0.02D;
+            double d2 = this.rand.nextGaussian() * 0.02D;
+            this.world.addParticle(particleData, this.func_226282_d_(1.0D), this.func_226279_cv_() + 1.0D, this.func_226287_g_(1.0D), d0, d1, d2);
+        }
+
     }
 
     @Nullable
