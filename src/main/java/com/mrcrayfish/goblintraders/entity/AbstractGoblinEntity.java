@@ -338,16 +338,6 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         }
     }
 
-    protected void spawnParticles(IParticleData particleData) {
-        for(int i = 0; i < 5; ++i) {
-            double d0 = this.rand.nextGaussian() * 0.02D;
-            double d1 = this.rand.nextGaussian() * 0.02D;
-            double d2 = this.rand.nextGaussian() * 0.02D;
-            this.world.addParticle(particleData, this.func_226282_d_(1.0D), this.func_226279_cv_() + 1.0D, this.func_226287_g_(1.0D), d0, d1, d2);
-        }
-
-    }
-
     @Nullable
     @Override
     protected SoundEvent getAmbientSound()
