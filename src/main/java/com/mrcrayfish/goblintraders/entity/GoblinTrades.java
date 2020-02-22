@@ -91,6 +91,7 @@ public class GoblinTrades
         public TradeWithEnchantment(ItemStack buyingStack, ItemStack secondBuyingStack, ItemStack sellingStack, int maxUses, int experience, float priceMultiplier, Enchantment enchantment, int level)
         {
             this.buyingStack = buyingStack;
+            this.secondBuyingStack = secondBuyingStack;
             this.sellingStack = sellingStack;
             this.maxUses = maxUses;
             this.experience = experience;
