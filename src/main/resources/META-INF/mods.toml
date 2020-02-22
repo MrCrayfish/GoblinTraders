@@ -1,7 +1,7 @@
 modLoader="javafml"
 loaderVersion="[31,)"
 
-issueTrackerURL="https://github.com/MrCrayfish/GlassCutter/issues"
+issueTrackerURL="https://github.com/MrCrayfish/GoblinTraders/issues"
 
 [[mods]]
 modId="goblintraders"
@@ -9,8 +9,8 @@ version="1.0.0"
 displayName="Goblin Traders"
 updateJSONURL="https://raw.githubusercontent.com/MrCrayfish/ModUpdates/master/goblintraders/update.json"
 displayURL="https://mrcrayfish.com/mods?id=goblintraders"
-logoFile=""
-credits="@ItsNahteTV on Twitter for idea"
+logoFile="goblintraders.png"
+credits="@ItsNahteTV on Twitter for idea. Thank you to @MCVinnyq for creating goblin model"
 authors="MrCrayfish"
 description='Adds goblins that trade speical items with the player!'
 
