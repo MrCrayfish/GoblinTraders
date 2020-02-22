@@ -179,19 +179,19 @@ public class GoblinTraderSpawner
         return true;
     }
 
-    public static GoblinTraderSpawner spawner;
+    public static GoblinTraderSpawner overworldSpawner;
 
     @SubscribeEvent
     public static void onServerStart(FMLServerStartedEvent event)
     {
         MinecraftServer server = event.getServer();
-        spawner = new GoblinTraderSpawner(server.getWorld(DimensionType.OVERWORLD), GoblinTraderData.get(server));
+        overworldSpawner = new GoblinTraderSpawner(server.getWorld(DimensionType.OVERWORLD), GoblinTraderData.get(server));
     }
 
     @SubscribeEvent
     public static void onServerStart(FMLServerStoppedEvent event)
     {
-        spawner = null;
+        overworldSpawner = null;
     }
 
     @SubscribeEvent
@@ -206,6 +206,6 @@ public class GoblinTraderSpawner
         if(!event.world.getDimension().isSurfaceWorld())
             return;
 
-        spawner.tick();
+        overworldSpawner.tick();
     }
 }
