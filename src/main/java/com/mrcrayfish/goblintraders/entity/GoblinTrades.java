@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
@@ -13,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.MerchantOffer;
 import net.minecraft.util.Util;
+import net.minecraft.util.math.MathHelper;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -37,19 +39,54 @@ public class GoblinTrades
             new ItemsForEmeraldsTrade(Items.ZOMBIE_VILLAGER_SPAWN_EGG, 8, 1, 2, 5),
             new ItemsForEmeraldsTrade(Items.EXPERIENCE_BOTTLE, 10, 16, 20, 2),
             new ItemsForEmeraldsTrade(Items.TNT, 4, 8, 10, 2),
-            new ItemsForEmeraldsTrade(Items.DIAMOND_HELMET, 24, 1, 1, 10),
-            new ItemsForEmeraldsTrade(Items.DIAMOND_CHESTPLATE, 32, 1, 1, 10),
-            new ItemsForEmeraldsTrade(Items.DIAMOND_LEGGINGS, 28, 1, 1, 10),
-            new ItemsForEmeraldsTrade(Items.DIAMOND_BOOTS, 20, 1, 1, 10)
+            new ItemsForEmeraldsTrade(Items.DIAMOND_HELMET, 28, 1, 1, 10),
+            new ItemsForEmeraldsTrade(Items.DIAMOND_CHESTPLATE, 326, 1, 1, 10),
+            new ItemsForEmeraldsTrade(Items.DIAMOND_LEGGINGS, 32, 1, 1, 10),
+            new ItemsForEmeraldsTrade(Items.DIAMOND_BOOTS, 24, 1, 1, 10),
+            new ItemsForEmeraldsTrade(Items.DIAMOND_PICKAXE, 24, 1, 1, 10),
+            new ItemsForEmeraldsTrade(Items.DIAMOND_SHOVEL, 18, 1, 1, 10),
+            new ItemsForEmeraldsTrade(Items.DIAMOND_SWORD, 20, 1, 1, 10),
+            new ItemsForEmeraldsTrade(Items.DIAMOND_HOE, 10, 1, 1, 10),
+            new ItemsForEmeraldsTrade(Items.CHAINMAIL_HELMET, 24, 1, 1, 10),
+            new ItemsForEmeraldsTrade(Items.CHAINMAIL_CHESTPLATE, 32, 1, 1, 10),
+            new ItemsForEmeraldsTrade(Items.CHAINMAIL_LEGGINGS, 28, 1, 1, 10),
+            new ItemsForEmeraldsTrade(Items.CHAINMAIL_BOOTS, 20, 1, 1, 10),
         };
         VillagerTrades.ITrade[] rareOffers = new VillagerTrades.ITrade[] {
-            new TradeWithEnchantment(new ItemStack(Items.EMERALD, 32), new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.DIAMOND_PICKAXE), 1, 100, 0.5F, Enchantments.EFFICIENCY, 6),
-            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 40), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.MENDING, 1),
-            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.LOOTING, 5),
-            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 36), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.SHARPNESS, 6),
-            new TradeWithEnchantment(new ItemStack(Items.EMERALD, 16), new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.FORTUNE, 5),
-            new TradeWithEnchantment(new ItemStack(Items.EMERALD, 8), new ItemStack(Items.GOLD_INGOT, 48), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.FEATHER_FALLING, 6),
-            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 64), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.UNBREAKING, 5)
+            new TradeWithEnchantment(new ItemStack(Items.EMERALD, 32), new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.DIAMOND_PICKAXE), 1, 100, 0.5F, Enchantments.EFFICIENCY, 5),
+            new TradeWithEnchantment(new ItemStack(Items.EMERALD, 64), new ItemStack(Items.GOLD_INGOT, 64), new ItemStack(Items.DIAMOND_PICKAXE), 1, 100, 0.5F, new EnchantmentData(Enchantments.EFFICIENCY, 5), new EnchantmentData(Enchantments.UNBREAKING, 4)),
+            new TradeWithEnchantment(new ItemStack(Items.EMERALD, 64), new ItemStack(Items.GOLD_INGOT, 64), new ItemStack(Items.DIAMOND_PICKAXE), 1, 100, 0.5F, new EnchantmentData(Enchantments.FORTUNE, 5), new EnchantmentData(Enchantments.UNBREAKING, 4)),
+            new TradeWithEnchantment(new ItemStack(Items.EMERALD, 64), new ItemStack(Items.GOLD_INGOT, 64), new ItemStack(Items.DIAMOND_PICKAXE), 1, 100, 0.5F, new EnchantmentData(Enchantments.SWEEPING, 5), new EnchantmentData(Enchantments.UNBREAKING, 4)),
+            new TradeWithEnchantment(new ItemStack(Items.IRON_INGOT, 64), new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.IRON_SWORD), 1, 100, 0.5F, new EnchantmentData(Enchantments.KNOCKBACK, 8)),
+            new TradeWithEnchantment(new ItemStack(Items.IRON_INGOT, 64), new ItemStack(Items.WOODEN_SWORD), 1, 100, 0.5F, new EnchantmentData(Enchantments.UNBREAKING, 10), new EnchantmentData(Enchantments.SHARPNESS, 8)),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.PROTECTION, 5),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.FIRE_PROTECTION, 5),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.FEATHER_FALLING, 5),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.BLAST_PROTECTION, 5),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.PROJECTILE_PROTECTION, 5),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.RESPIRATION, 4),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.THORNS, 4),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.DEPTH_STRIDER, 4),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.FROST_WALKER, 3),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.SHARPNESS, 6),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.SMITE, 6),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.BANE_OF_ARTHROPODS, 6),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.KNOCKBACK, 3),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.FIRE_ASPECT, 3),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.LOOTING, 4),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.SWEEPING, 4),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.EFFICIENCY, 6),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.UNBREAKING, 4),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.FORTUNE, 4),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.POWER, 6),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.PUNCH, 3),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.LUCK_OF_THE_SEA, 4),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.LURE, 4),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.LOYALTY, 4),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.IMPALING, 6),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.RIPTIDE, 4),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.QUICK_CHARGE, 4),
+            new TradeWithEnchantment(new ItemStack(Items.GOLD_INGOT, 32), new ItemStack(Items.EMERALD, 20), new ItemStack(Items.ENCHANTED_BOOK), 1, 100, 0.5F, Enchantments.PIERCING, 5)
         };
         return getAsIntMap(ImmutableMap.of(0, baseOffers, 1, rareOffers));
     });
@@ -99,10 +136,42 @@ public class GoblinTrades
             this.sellingStack.addEnchantment(enchantment, level);
         }
 
+        public TradeWithEnchantment(ItemStack buyingStack, ItemStack sellingStack, int maxUses, int experience, float priceMultiplier, EnchantmentData ... enchantments)
+        {
+            this.buyingStack = buyingStack;
+            this.sellingStack = sellingStack;
+            this.maxUses = maxUses;
+            this.experience = experience;
+            this.priceMultiplier = priceMultiplier;
+            for(EnchantmentData data : enchantments)
+            {
+                this.sellingStack.addEnchantment(data.enchantment, data.enchantmentLevel);
+            }
+        }
+
+        public TradeWithEnchantment(ItemStack buyingStack, ItemStack secondBuyingStack, ItemStack sellingStack, int maxUses, int experience, float priceMultiplier, EnchantmentData ... enchantments)
+        {
+            this.buyingStack = buyingStack;
+            this.secondBuyingStack = secondBuyingStack;
+            this.sellingStack = sellingStack;
+            this.maxUses = maxUses;
+            this.experience = experience;
+            this.priceMultiplier = priceMultiplier;
+            for(EnchantmentData data : enchantments)
+            {
+                this.sellingStack.addEnchantment(data.enchantment, data.enchantmentLevel);
+            }
+        }
+
         @Nullable
         @Override
         public MerchantOffer getOffer(Entity trader, Random rand)
         {
+            this.buyingStack.setCount(MathHelper.clamp(Math.max(this.buyingStack.getCount() - 8, 1) + rand.nextInt(16) + 1, 1, 64));
+            if(!this.secondBuyingStack.isEmpty())
+            {
+                this.secondBuyingStack.setCount(MathHelper.clamp(Math.max(this.secondBuyingStack.getCount() - 8, 1) + rand.nextInt(16) + 1, 1, 64));
+            }
             return new MerchantOffer(this.buyingStack, this.secondBuyingStack, this.sellingStack, this.maxUses, this.experience, this.priceMultiplier);
         }
     }
