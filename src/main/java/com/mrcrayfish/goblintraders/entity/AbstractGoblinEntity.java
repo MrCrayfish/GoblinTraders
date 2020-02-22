@@ -1,6 +1,5 @@
 package com.mrcrayfish.goblintraders.entity;
 
-import com.google.common.collect.ImmutableList;
 import com.mrcrayfish.goblintraders.entity.ai.goal.LookAtCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.TradeWithPlayerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.*;
@@ -9,7 +8,6 @@ import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.INPC;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.merchant.IMerchant;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
@@ -22,7 +20,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.IParticleData;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -41,8 +38,6 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     protected static final int RARE_TRADES = 1;
 
     public static final DataParameter<Boolean> STUNNED = EntityDataManager.createKey(AbstractGoblinEntity.class, DataSerializers.BOOLEAN);
-
-    private static final ImmutableList<MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.INTERACTION_TARGET);
 
     @Nullable
     private PlayerEntity customer;
