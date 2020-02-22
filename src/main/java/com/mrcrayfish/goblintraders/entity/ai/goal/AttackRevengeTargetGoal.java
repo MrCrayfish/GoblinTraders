@@ -3,6 +3,7 @@ package com.mrcrayfish.goblintraders.entity.ai.goal;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 
@@ -24,7 +25,7 @@ public class AttackRevengeTargetGoal extends Goal
     @Override
     public boolean shouldExecute()
     {
-        return this.entity.getRevengeTarget() != null && this.entity.getRevengeTarget().isAlive() && this.entity.getDistance(this.entity.getRevengeTarget()) <= 10.0F;
+        return this.entity.getRevengeTarget() != null && this.entity.getRevengeTarget().isAlive() && this.entity.getDistance(this.entity.getRevengeTarget()) <= 10.0F && (!(this.entity.getRevengeTarget() instanceof PlayerEntity) || !((PlayerEntity)this.entity.getRevengeTarget()).isCreative());
     }
 
     @Override

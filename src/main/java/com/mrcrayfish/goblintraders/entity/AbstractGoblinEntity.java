@@ -22,6 +22,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.IParticleData;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -85,7 +86,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
 
     public int getFallCounter()
     {
-        return fallCounter;
+        return this.fallCounter;
     }
 
     @Override
@@ -290,7 +291,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
 
     public int getStunDelay()
     {
-        return stunDelay;
+        return this.stunDelay;
     }
 
     public void setDespawnDelay(int despawnDelay)
@@ -300,7 +301,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
 
     public int getDespawnDelay()
     {
-        return despawnDelay;
+        return this.despawnDelay;
     }
 
     @Override
