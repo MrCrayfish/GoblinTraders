@@ -22,6 +22,7 @@ public class ModItems
     private static final List<Item> ITEMS = new ArrayList<>();
 
     public static final Item GOBLIN_TRADER_SPAWN_EGG = build(new ResourceLocation(Reference.MOD_ID, "goblin_trader_spawn_egg"), new SpawnEggItem(ModEntities.GOBLIN_TRADER, 0x4da744, 0x316f5d, new Item.Properties().group(ItemGroup.MISC)));
+    public static final Item VEIN_GOBLIN_TRADER_SPAWN_EGG = build(new ResourceLocation(Reference.MOD_ID, "vein_goblin_trader_spawn_egg"), new SpawnEggItem(ModEntities.VEIN_GOBLIN_TRADER, 0xf3982e, 0xf45b1f, new Item.Properties().group(ItemGroup.MISC)));
 
     private static Item build(ResourceLocation id, Item item)
     {

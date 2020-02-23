@@ -3,7 +3,6 @@ package com.mrcrayfish.goblintraders.entity.ai.goal;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.Items;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 
@@ -15,12 +14,12 @@ import java.util.List;
 /**
  * Author: MrCrayfish
  */
-public class FindAppleGoal extends Goal
+public class FindFavouriteFoodGoal extends Goal
 {
     private ItemEntity itemEntity;
     private AbstractGoblinEntity entity;
 
-    public FindAppleGoal(AbstractGoblinEntity entity)
+    public FindFavouriteFoodGoal(AbstractGoblinEntity entity)
     {
         this.entity = entity;
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Flag.LOOK));
@@ -29,7 +28,7 @@ public class FindAppleGoal extends Goal
     @Override
     public boolean shouldExecute()
     {
-        this.findApple();
+        this.findFavouriteFood();
         return this.itemEntity != null && this.itemEntity.isAlive() && this.entity.getNavigator().getPathToEntity(this.itemEntity, 0) != null;
     }
 
@@ -53,9 +52,9 @@ public class FindAppleGoal extends Goal
     }
 
     @Nullable
-    private void findApple()
+    private void findFavouriteFood()
     {
-        List<ItemEntity> players = this.entity.world.getEntitiesWithinAABB(ItemEntity.class, this.entity.getBoundingBox().grow(10), itemEntity -> itemEntity.getItem().getItem() == Items.APPLE);
+        List<ItemEntity> players = this.entity.world.getEntitiesWithinAABB(ItemEntity.class, this.entity.getBoundingBox().grow(10), itemEntity -> itemEntity.getItem().getItem() == this.entity.getFavouriteFood().getItem());
         if(players.size() > 0)
         {
             this.itemEntity = players.stream().min(Comparator.comparing(this.entity::getDistance)).get();

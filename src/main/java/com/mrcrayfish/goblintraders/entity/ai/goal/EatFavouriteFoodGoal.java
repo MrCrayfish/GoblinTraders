@@ -12,11 +12,11 @@ import java.util.EnumSet;
 /**
  * Author: MrCrayfish
  */
-public class EatAppleGoal extends UseItemGoal<AbstractGoblinEntity>
+public class EatFavouriteFoodGoal extends UseItemGoal<AbstractGoblinEntity>
 {
-    public EatAppleGoal(AbstractGoblinEntity entity)
+    public EatFavouriteFoodGoal(AbstractGoblinEntity entity)
     {
-        super(entity, new ItemStack(Items.APPLE), SoundEvents.ENTITY_PLAYER_BURP, entity1 -> entity1.getHealth() < entity1.getMaxHealth() && entity1.getRNG().nextInt(100) == 0); //TODO change sound to a burp
+        super(entity, entity.getFavouriteFood().copy(), SoundEvents.ENTITY_PLAYER_BURP, entity1 -> entity1.getHealth() < entity1.getMaxHealth() && entity1.getRNG().nextInt(100) == 0); //TODO change sound to a burp
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 }

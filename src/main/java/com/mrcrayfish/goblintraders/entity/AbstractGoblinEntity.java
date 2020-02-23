@@ -62,8 +62,8 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         this.goalSelector.addGoal(2, new LookAtCustomerGoal(this));
         this.goalSelector.addGoal(3, new AttackRevengeTargetGoal(this));
         this.goalSelector.addGoal(5, new FollowPotentialCustomerGoal(this));
-        this.goalSelector.addGoal(6, new FindAppleGoal(this));
-        this.goalSelector.addGoal(7, new EatAppleGoal(this));
+        this.goalSelector.addGoal(6, new FindFavouriteFoodGoal(this));
+        this.goalSelector.addGoal(7, new EatFavouriteFoodGoal(this));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 0.4D));
         this.goalSelector.addGoal(8, new MoveTowardsRestrictionGoal(this, 0.4D));
         this.goalSelector.addGoal(9, new LookAtWithoutMovingGoal(this, PlayerEntity.class, 4.0F, 1.0F));
@@ -87,7 +87,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     @Override
     public ItemStack onFoodEaten(World world, ItemStack stack)
     {
-        if(stack.getItem() == Items.APPLE && stack.getItem().getFood() != null)
+        if(stack.getItem() == this.getFavouriteFood().getItem() && stack.getItem().getFood() != null)
         {
             this.setHealth(this.getHealth() + stack.getItem().getFood().getHealing());
         }
@@ -346,4 +346,6 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     {
         return ModSounds.ENTITY_GOBLIN_TRADER_IDLE_GRUNT;
     }
+
+    public abstract ItemStack getFavouriteFood();
 }

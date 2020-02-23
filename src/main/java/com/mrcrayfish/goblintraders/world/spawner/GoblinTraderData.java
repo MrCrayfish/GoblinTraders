@@ -2,13 +2,14 @@ package com.mrcrayfish.goblintraders.world.spawner;
 
 import com.mrcrayfish.goblintraders.Reference;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Author: MrCrayfish
@@ -17,9 +18,7 @@ public class GoblinTraderData extends WorldSavedData
 {
     private static final String DATA_NAME = Reference.MOD_ID + "_goblin_trader";
 
-    private int goblinTraderSpawnDelay;
-    private int goblinTraderSpawnChance;
-    private UUID goblinTraderId;
+    private Map<String, GoblinData> data = new HashMap<>();
 
     public GoblinTraderData()
     {
@@ -31,37 +30,9 @@ public class GoblinTraderData extends WorldSavedData
         super(name);
     }
 
-    public void setGoblinTraderSpawnDelay(int goblinTraderSpawnDelay)
+    public GoblinData getGoblinData(String key)
     {
-        this.goblinTraderSpawnDelay = goblinTraderSpawnDelay;
-        this.setDirty(true);
-    }
-
-    public void setGoblinTraderSpawnChance(int goblinTraderSpawnChance)
-    {
-        this.goblinTraderSpawnChance = goblinTraderSpawnChance;
-        this.setDirty(true);
-    }
-
-    public void setGoblinTraderId(UUID goblinTraderId)
-    {
-        this.goblinTraderId = goblinTraderId;
-        this.setDirty(true);
-    }
-
-    public int getGoblinTraderSpawnDelay()
-    {
-        return goblinTraderSpawnDelay;
-    }
-
-    public int getGoblinTraderSpawnChance()
-    {
-        return goblinTraderSpawnChance;
-    }
-
-    public UUID getGoblinTraderId()
-    {
-        return goblinTraderId;
+        return this.data.computeIfAbsent(key, s -> new GoblinData(this));
     }
 
     @Override
@@ -69,27 +40,41 @@ public class GoblinTraderData extends WorldSavedData
     {
         if(compound.contains("GoblinTraderSpawnDelay", Constants.NBT.TAG_INT))
         {
-            this.goblinTraderSpawnDelay = compound.getInt("GoblinTraderSpawnDelay");
+            this.getGoblinData("GoblinTrader").setGoblinTraderSpawnDelay(compound.getInt("GoblinTraderSpawnDelay"));
         }
         if(compound.contains("GoblinTraderSpawnChance", Constants.NBT.TAG_INT))
         {
-            this.goblinTraderSpawnChance = compound.getInt("GoblinTraderSpawnChance");
+            this.getGoblinData("GoblinTrader").setGoblinTraderSpawnChance(compound.getInt("GoblinTraderSpawnChance"));
         }
         if(compound.hasUniqueId("GoblinTraderId"))
         {
-            this.goblinTraderId = compound.getUniqueId("GoblinTraderId");
+            this.getGoblinData("GoblinTrader").setGoblinTraderId(compound.getUniqueId("GoblinTraderId"));
+        }
+        if(compound.contains("Data", Constants.NBT.TAG_LIST))
+        {
+            this.data.clear();
+            ListNBT list = compound.getList("Data", Constants.NBT.TAG_COMPOUND);
+            list.forEach(nbt -> {
+                CompoundNBT goblinTag = (CompoundNBT) nbt;
+                String key = goblinTag.getString("Key");
+                GoblinData data = new GoblinData(this);
+                data.read(goblinTag);
+                this.data.put(key, data);
+            });
         }
     }
 
     @Override
     public CompoundNBT write(CompoundNBT compound)
     {
-        compound.putInt("GoblinTraderSpawnDelay", this.goblinTraderSpawnDelay);
-        compound.putInt("GoblinTraderSpawnChance", this.goblinTraderSpawnChance);
-        if(this.goblinTraderId != null)
-        {
-            compound.putUniqueId("GoblinTraderId", this.goblinTraderId);
-        }
+        ListNBT list = new ListNBT();
+        this.data.forEach((s, goblinData) -> {
+            CompoundNBT goblinTag = new CompoundNBT();
+            goblinData.write(goblinTag);
+            goblinTag.putString("Key", s);
+            list.add(goblinTag);
+        });
+        compound.put("Data", list);
         return compound;
     }
 

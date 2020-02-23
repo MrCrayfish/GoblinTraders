@@ -1,9 +1,12 @@
 package com.mrcrayfish.goblintraders.world.spawner;
 
 import com.mrcrayfish.goblintraders.Reference;
+import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import com.mrcrayfish.goblintraders.entity.GoblinTraderEntity;
 import com.mrcrayfish.goblintraders.init.ModEntities;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
@@ -22,6 +25,8 @@ import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -32,18 +37,24 @@ public class GoblinTraderSpawner
 {
     private final Random random = new Random();
     private final ServerWorld world;
-    private final GoblinTraderData data;
+    private final GoblinData data;
     private int delayBeforeSpawnLogic;
     private int traderSpawnDelay;
     private int traderSpawnChance;
+    private EntityType<? extends AbstractGoblinEntity> entityType;
+    private int minLevel;
+    private int maxLevel;
 
-    public GoblinTraderSpawner(ServerWorld world, GoblinTraderData data)
+    public GoblinTraderSpawner(ServerWorld world, GoblinData data, EntityType<? extends AbstractGoblinEntity> entityType, int minLevel, int maxLevel)
     {
         this.world = world;
         this.data = data;
         this.delayBeforeSpawnLogic = 600;
         this.traderSpawnDelay = data.getGoblinTraderSpawnDelay();
         this.traderSpawnChance = data.getGoblinTraderSpawnChance();
+        this.entityType = entityType;
+        this.minLevel = Math.min(minLevel, maxLevel);
+        this.maxLevel = Math.max(minLevel, maxLevel);
         if(this.traderSpawnDelay == 0 && this.traderSpawnChance == 0)
         {
             this.traderSpawnDelay = 24000;
@@ -100,11 +111,11 @@ public class GoblinTraderSpawner
             BlockPos safestPos = this.getSafePositionAroundPlayer(blockpos, 10);
             if(safestPos != null && this.isEmptyCollision(safestPos))
             {
-                if(safestPos.getY() >= 64)
+                if(safestPos.getY() >= this.minLevel && safestPos.getY() < this.maxLevel)
                 {
                     return false;
                 }
-                GoblinTraderEntity goblin = ModEntities.GOBLIN_TRADER.spawn(this.world, null, null, null, safestPos, SpawnReason.EVENT, false, false);
+                AbstractGoblinEntity goblin = this.entityType.spawn(this.world, null, null, null, safestPos, SpawnReason.EVENT, false, false);
                 if(goblin != null)
                 {
                     this.data.setGoblinTraderId(goblin.getUniqueID());
@@ -179,19 +190,21 @@ public class GoblinTraderSpawner
         return true;
     }
 
-    public static GoblinTraderSpawner overworldSpawner;
+    private static List<GoblinTraderSpawner> spawners = new ArrayList<>();
 
     @SubscribeEvent
     public static void onServerStart(FMLServerStartedEvent event)
     {
         MinecraftServer server = event.getServer();
-        overworldSpawner = new GoblinTraderSpawner(server.getWorld(DimensionType.OVERWORLD), GoblinTraderData.get(server));
+        GoblinTraderData traderData = GoblinTraderData.get(server);
+        spawners.add(new GoblinTraderSpawner(server.getWorld(DimensionType.OVERWORLD), traderData.getGoblinData("GoblinTrader"), ModEntities.GOBLIN_TRADER, 0, 64));
+        spawners.add(new GoblinTraderSpawner(server.getWorld(DimensionType.THE_NETHER), traderData.getGoblinData("VeinGoblinTrader"), ModEntities.VEIN_GOBLIN_TRADER, 0, 128));
     }
 
     @SubscribeEvent
     public static void onServerStart(FMLServerStoppedEvent event)
     {
-        overworldSpawner = null;
+        spawners.clear();
     }
 
     @SubscribeEvent
@@ -206,6 +219,6 @@ public class GoblinTraderSpawner
         if(!event.world.getDimension().isSurfaceWorld())
             return;
 
-        overworldSpawner.tick();
+        spawners.forEach(GoblinTraderSpawner::tick);
     }
 }
