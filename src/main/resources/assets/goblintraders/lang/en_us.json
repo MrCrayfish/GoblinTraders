@@ -1,5 +1,6 @@
 {
     "entity.goblintraders.goblin_trader": "Goblin Trader",
     "subtitle.goblintraders.goblin_trader.annoyed_grunt": "Annoyed Grunt",
-    "subtitle.goblintraders.goblin_trader.idle_grunt": "Idle Grunt"
+    "subtitle.goblintraders.goblin_trader.idle_grunt": "Idle Grunt",
+    "item.goblintraders.goblin_traders_spawn_egg": "Goblin Trader Spawn Egg"
 }
