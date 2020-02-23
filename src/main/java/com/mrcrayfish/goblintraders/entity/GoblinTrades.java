@@ -6,6 +6,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
@@ -18,6 +19,8 @@ import net.minecraft.util.math.MathHelper;
 
 import javax.annotation.Nullable;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Author: MrCrayfish
@@ -112,7 +115,14 @@ public class GoblinTrades
             this.maxUses = maxUses;
             this.experience = experience;
             this.priceMultiplier = priceMultiplier;
-            this.sellingStack.addEnchantment(enchantment, level);
+            if(this.sellingStack.getItem() == Items.ENCHANTED_BOOK)
+            {
+                EnchantmentHelper.setEnchantments(ImmutableMap.of(enchantment, level), this.sellingStack);
+            }
+            else
+            {
+                this.sellingStack.addEnchantment(enchantment, level);
+            }
         }
 
         public TradeWithEnchantment(ItemStack buyingStack, ItemStack sellingStack, int maxUses, int experience, float priceMultiplier, Enchantment enchantment, int level)
@@ -122,7 +132,14 @@ public class GoblinTrades
             this.maxUses = maxUses;
             this.experience = experience;
             this.priceMultiplier = priceMultiplier;
-            this.sellingStack.addEnchantment(enchantment, level);
+            if(this.sellingStack.getItem() == Items.ENCHANTED_BOOK)
+            {
+                EnchantmentHelper.setEnchantments(ImmutableMap.of(enchantment, level), this.sellingStack);
+            }
+            else
+            {
+                this.sellingStack.addEnchantment(enchantment, level);
+            }
         }
 
         public TradeWithEnchantment(ItemStack buyingStack, ItemStack secondBuyingStack, ItemStack sellingStack, int maxUses, int experience, float priceMultiplier, Enchantment enchantment, int level)
@@ -133,7 +150,14 @@ public class GoblinTrades
             this.maxUses = maxUses;
             this.experience = experience;
             this.priceMultiplier = priceMultiplier;
-            this.sellingStack.addEnchantment(enchantment, level);
+            if(this.sellingStack.getItem() == Items.ENCHANTED_BOOK)
+            {
+                EnchantmentHelper.setEnchantments(ImmutableMap.of(enchantment, level), this.sellingStack);
+            }
+            else
+            {
+                this.sellingStack.addEnchantment(enchantment, level);
+            }
         }
 
         public TradeWithEnchantment(ItemStack buyingStack, ItemStack sellingStack, int maxUses, int experience, float priceMultiplier, EnchantmentData ... enchantments)
@@ -143,9 +167,16 @@ public class GoblinTrades
             this.maxUses = maxUses;
             this.experience = experience;
             this.priceMultiplier = priceMultiplier;
-            for(EnchantmentData data : enchantments)
+            if(this.sellingStack.getItem() == Items.ENCHANTED_BOOK)
             {
-                this.sellingStack.addEnchantment(data.enchantment, data.enchantmentLevel);
+                EnchantmentHelper.setEnchantments(Stream.of(enchantments).collect(Collectors.toMap(o -> o.enchantment, e -> e.enchantmentLevel)), this.sellingStack);
+            }
+            else
+            {
+                for(EnchantmentData data : enchantments)
+                {
+                    this.sellingStack.addEnchantment(data.enchantment, data.enchantmentLevel);
+                }
             }
         }
 

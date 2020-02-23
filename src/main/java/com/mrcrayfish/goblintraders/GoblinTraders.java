@@ -1,10 +1,19 @@
 package com.mrcrayfish.goblintraders;
 
 import com.mrcrayfish.goblintraders.client.ClientHandler;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.item.EnchantedBookItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+
+import java.util.Map;
 
 /**
  * Author: MrCrayfish
@@ -14,13 +23,7 @@ public class GoblinTraders
 {
     public GoblinTraders()
     {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onCommonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onClientSetup);
-    }
-
-    private void onCommonSetup(FMLCommonSetupEvent event)
-    {
-
     }
 
     private void onClientSetup(FMLClientSetupEvent event)
