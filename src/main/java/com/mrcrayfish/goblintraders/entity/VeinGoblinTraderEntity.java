@@ -29,8 +29,8 @@ public class VeinGoblinTraderEntity extends AbstractGoblinEntity
     protected void populateTradeData()
     {
         MerchantOffers offers = this.getOffers();
-        this.addTrades(offers, GoblinTrades.GOBLIN_TRADER.get(BASE_TRADES), Math.max(4, this.rand.nextInt(6) + 1));
-        this.addTrades(offers, GoblinTrades.GOBLIN_TRADER.get(RARE_TRADES), Math.max(2, this.rand.nextInt(3) + 1));
+        this.addTrades(offers, GoblinTrades.VEIN_GOBLIN_TRADER.get(BASE_TRADES), Math.max(4, this.rand.nextInt(6) + 1));
+        this.addTrades(offers, GoblinTrades.VEIN_GOBLIN_TRADER.get(RARE_TRADES), Math.max(2, this.rand.nextInt(3) + 1));
     }
 
     @Override

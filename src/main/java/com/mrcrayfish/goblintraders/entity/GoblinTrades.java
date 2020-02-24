@@ -1,5 +1,6 @@
 package com.mrcrayfish.goblintraders.entity;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -14,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.MerchantOffer;
+import net.minecraft.potion.*;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 
@@ -94,6 +96,57 @@ public class GoblinTrades
         return getAsIntMap(ImmutableMap.of(0, baseOffers, 1, rareOffers));
     });
 
+    public static final Int2ObjectMap<VillagerTrades.ITrade[]> VEIN_GOBLIN_TRADER = Util.make(() -> {
+        VillagerTrades.ITrade[] baseOffers = new VillagerTrades.ITrade[] {
+                new ItemsForEmeraldsTrade(Items.CARROT, 1, 10, 10, 1),
+                new ItemsForEmeraldsTrade(Items.GLOWSTONE_DUST, 1, 16, 10, 1),
+                new ItemsForEmeraldsTrade(Items.NETHER_BRICKS, 1, 8, 20, 1),
+                new ItemsForEmeraldsTrade(Items.RED_NETHER_BRICKS, 1, 4, 20, 1),
+                new ItemsForEmeraldsTrade(Items.BREWING_STAND, 16, 1, 2, 2),
+                new ItemsForEmeraldsTrade(Items.CAULDRON, 16, 1, 2, 2),
+                new ItemsForEmeraldsTrade(Items.BLAZE_POWDER, 1, 4, 10, 1),
+                new ItemsForEmeraldsTrade(Items.GLASS_BOTTLE, 1, 8, 10, 1),
+                new ItemsForEmeraldsTrade(Items.NETHER_WART, 1, 8, 10, 1),
+                new ItemsForEmeraldsTrade(Items.REDSTONE, 1, 16, 10, 1),
+                new ItemsForEmeraldsTrade(Items.GLOWSTONE_DUST, 1, 16, 10, 1),
+                new ItemsForEmeraldsTrade(Items.FERMENTED_SPIDER_EYE, 1, 2, 10, 1),
+                new ItemsForEmeraldsTrade(Items.GUNPOWDER, 1, 8, 10, 1),
+                new ItemsForEmeraldsTrade(Items.DRAGON_BREATH, 12, 1, 10, 1),
+                new ItemsForEmeraldsTrade(Items.SUGAR, 1, 16, 10, 1),
+                new ItemsForEmeraldsTrade(Items.RABBIT_FOOT, 1, 2, 10, 1),
+                new ItemsForEmeraldsTrade(Items.GLISTERING_MELON_SLICE, 1, 4, 10, 1),
+                new ItemsForEmeraldsTrade(Items.SPIDER_EYE, 1, 8, 10, 1),
+                new ItemsForEmeraldsTrade(Items.PUFFERFISH, 1, 8, 10, 1),
+                new ItemsForEmeraldsTrade(Items.MAGMA_CREAM, 1, 8, 10, 1),
+                new ItemsForEmeraldsTrade(Items.GOLDEN_CARROT, 1, 2, 10, 1),
+                new ItemsForEmeraldsTrade(Items.GHAST_TEAR, 1, 1, 10, 1),
+                new ItemsForEmeraldsTrade(Items.TURTLE_HELMET, 1, 1, 10, 1),
+                new ItemsForEmeraldsTrade(Items.PHANTOM_MEMBRANE, 1, 4, 10, 1),
+        };
+        VillagerTrades.ITrade[] rareOffers = new VillagerTrades.ITrade[] {
+                new Trade(new ItemStack(Items.DIAMOND, 20), new ItemStack(Items.DRAGON_HEAD), 1, 100, 0.5F),
+                new Trade(new ItemStack(Items.DIAMOND, 32), new ItemStack(Items.NETHER_STAR), 1, 100, 0.5F),
+                new Trade(new ItemStack(Items.EMERALD, 16), PotionUtils.appendEffects(new ItemStack(Items.POTION, 1), ImmutableList.of(new EffectInstance(Effects.STRENGTH, 2400, 3))), 5, 100, 0.5F),
+                new Trade(new ItemStack(Items.EMERALD, 16), PotionUtils.appendEffects(new ItemStack(Items.POTION, 1), ImmutableList.of(new EffectInstance(Effects.SPEED, 2400, 3))), 5, 100, 0.5F),
+                new Trade(new ItemStack(Items.EMERALD, 16), PotionUtils.appendEffects(new ItemStack(Items.POTION, 1), ImmutableList.of(new EffectInstance(Effects.INSTANT_HEALTH, 0, 3))), 5, 100, 0.5F),
+                new Trade(new ItemStack(Items.EMERALD, 16), PotionUtils.appendEffects(new ItemStack(Items.POTION, 1), ImmutableList.of(new EffectInstance(Effects.JUMP_BOOST, 2400, 3))), 5, 100, 0.5F),
+                new Trade(new ItemStack(Items.EMERALD, 16), PotionUtils.appendEffects(new ItemStack(Items.POTION, 1), ImmutableList.of(new EffectInstance(Effects.NAUSEA, 600))), 5, 100, 0.5F),
+                new Trade(new ItemStack(Items.EMERALD, 16), PotionUtils.appendEffects(new ItemStack(Items.POTION, 1), ImmutableList.of(new EffectInstance(Effects.REGENERATION, 2400, 3))), 5, 100, 0.5F),
+                new Trade(new ItemStack(Items.EMERALD, 16), PotionUtils.appendEffects(new ItemStack(Items.POTION, 1), ImmutableList.of(new EffectInstance(Effects.RESISTANCE, 2400))), 5, 100, 0.5F),
+                new Trade(new ItemStack(Items.EMERALD, 16), PotionUtils.appendEffects(new ItemStack(Items.POTION, 1), ImmutableList.of(new EffectInstance(Effects.FIRE_RESISTANCE, 24000))), 5, 100, 0.5F),
+                new Trade(new ItemStack(Items.EMERALD, 16), PotionUtils.appendEffects(new ItemStack(Items.POTION, 1), ImmutableList.of(new EffectInstance(Effects.WATER_BREATHING, 24000))), 5, 100, 0.5F),
+                new Trade(new ItemStack(Items.EMERALD, 16), PotionUtils.appendEffects(new ItemStack(Items.POTION, 1), ImmutableList.of(new EffectInstance(Effects.INVISIBILITY, 24000))), 5, 100, 0.5F),
+                new Trade(new ItemStack(Items.EMERALD, 16), PotionUtils.appendEffects(new ItemStack(Items.POTION, 1), ImmutableList.of(new EffectInstance(Effects.NIGHT_VISION, 24000))), 5, 100, 0.5F),
+                new Trade(new ItemStack(Items.EMERALD, 16), PotionUtils.appendEffects(new ItemStack(Items.POTION, 1), ImmutableList.of(new EffectInstance(Effects.HEALTH_BOOST, 24000, 3))), 5, 100, 0.5F),
+                new Trade(new ItemStack(Items.EMERALD, 16), PotionUtils.appendEffects(new ItemStack(Items.POTION, 1), ImmutableList.of(new EffectInstance(Effects.ABSORPTION, 2400))), 5, 100, 0.5F),
+                new Trade(new ItemStack(Items.EMERALD, 16), PotionUtils.appendEffects(new ItemStack(Items.POTION, 1), ImmutableList.of(new EffectInstance(Effects.SATURATION, 2400))), 5, 100, 0.5F),
+                new Trade(new ItemStack(Items.EMERALD, 16), PotionUtils.appendEffects(new ItemStack(Items.POTION, 1), ImmutableList.of(new EffectInstance(Effects.GLOWING, 2400))), 5, 100, 0.5F),
+                new Trade(new ItemStack(Items.EMERALD, 16), PotionUtils.appendEffects(new ItemStack(Items.POTION, 1), ImmutableList.of(new EffectInstance(Effects.LEVITATION, 200))), 5, 100, 0.5F),
+                new Trade(new ItemStack(Items.EMERALD, 16), PotionUtils.appendEffects(new ItemStack(Items.POTION, 1), ImmutableList.of(new EffectInstance(Effects.SLOW_FALLING, 9600))), 5, 100, 0.5F),
+                new Trade(new ItemStack(Items.EMERALD, 16), PotionUtils.appendEffects(new ItemStack(Items.POTION, 1), ImmutableList.of(new EffectInstance(Effects.DOLPHINS_GRACE, 2400))), 5, 100, 0.5F)
+        };
+        return getAsIntMap(ImmutableMap.of(0, baseOffers, 1, rareOffers));
+    });
     private static Int2ObjectMap<VillagerTrades.ITrade[]> getAsIntMap(ImmutableMap<Integer, VillagerTrades.ITrade[]> map)
     {
         return new Int2ObjectOpenHashMap<>(map);
@@ -246,9 +299,51 @@ public class GoblinTrades
             this.priceMultiplier = priceMultiplier;
         }
 
+        @Override
         public MerchantOffer getOffer(Entity trader, Random rand)
         {
             return new MerchantOffer(new ItemStack(Items.EMERALD, this.price), new ItemStack(this.offerStack.getItem(), this.offerStackCount), this.maxUses, this.experience, this.priceMultiplier);
+        }
+    }
+
+    static class Trade implements VillagerTrades.ITrade
+    {
+        private final ItemStack firstBuyStack;
+        private final ItemStack secondBuyStack;
+        private final ItemStack sellingStack;
+        private final int maxUses;
+        private final int experience;
+        private final float priceMultiplier;
+
+        public Trade(ItemStack firstBuyStack, ItemStack sellingStack, int maxUses, int experience, float priceMultiplier)
+        {
+            this.firstBuyStack = firstBuyStack;
+            this.secondBuyStack = ItemStack.EMPTY;
+            this.sellingStack = sellingStack;
+            this.maxUses = maxUses;
+            this.experience = experience;
+            this.priceMultiplier = priceMultiplier;
+        }
+
+        public Trade(ItemStack firstBuyStack, ItemStack secondBuyStack, ItemStack sellingStack, int maxUses, int experience, float priceMultiplier)
+        {
+            this.firstBuyStack = firstBuyStack;
+            this.secondBuyStack = secondBuyStack;
+            this.sellingStack = sellingStack;
+            this.maxUses = maxUses;
+            this.experience = experience;
+            this.priceMultiplier = priceMultiplier;
+        }
+
+        @Override
+        public MerchantOffer getOffer(Entity trader, Random rand)
+        {
+            this.firstBuyStack.setCount(MathHelper.clamp(Math.max(this.firstBuyStack.getCount() - 4, 1) + rand.nextInt(8) + 1, 1, 64));
+            if(!this.secondBuyStack.isEmpty())
+            {
+                this.secondBuyStack.setCount(MathHelper.clamp(Math.max(this.secondBuyStack.getCount() - 4, 1) + rand.nextInt(8) + 1, 1, 64));
+            }
+            return new MerchantOffer(this.firstBuyStack, this.secondBuyStack, this.sellingStack, this.maxUses, this.experience, this.priceMultiplier);
         }
     }
 }
