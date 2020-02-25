@@ -28,6 +28,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * Author: MrCrayfish
@@ -96,7 +97,14 @@ public class GoblinTraderSpawner
 
     private boolean spawnTrader()
     {
-        PlayerEntity randomPlayer = this.world.getRandomPlayer();
+        //List<PlayerEntity> players = this.world.getServer().getPlayerList().getPlayers().stream().filter(player -> player.dimension == this.world.getDimension().getType() && player.isAlive()).collect(Collectors.toList());
+        List<PlayerEntity> players = new ArrayList<>(this.world.getServer().getPlayerList().getPlayers());
+        players = players.stream().filter(player -> player.dimension == this.world.getDimension().getType()).collect(Collectors.toList());
+        if(players.isEmpty())
+        {
+            return false;
+        }
+        PlayerEntity randomPlayer = players.get(this.world.rand.nextInt(players.size()));
         if(randomPlayer == null)
         {
             return true;
@@ -108,14 +116,14 @@ public class GoblinTraderSpawner
         else
         {
             BlockPos blockpos = randomPlayer.getPosition();
-            BlockPos safestPos = this.getSafePositionAroundPlayer(blockpos, 10);
-            if(safestPos != null && this.isEmptyCollision(safestPos))
+            BlockPos safestPos = this.getSafePositionAroundPlayer(randomPlayer.world, blockpos, 10);
+            if(safestPos != null && this.isEmptyCollision(randomPlayer.world, safestPos))
             {
-                if(safestPos.getY() >= this.minLevel && safestPos.getY() < this.maxLevel)
+                if(safestPos.getY() < this.minLevel || safestPos.getY() >= this.maxLevel)
                 {
                     return false;
                 }
-                AbstractGoblinEntity goblin = this.entityType.spawn(this.world, null, null, null, safestPos, SpawnReason.EVENT, false, false);
+                AbstractGoblinEntity goblin = this.entityType.spawn(randomPlayer.world, null, null, null, safestPos, SpawnReason.EVENT, false, false);
                 if(goblin != null)
                 {
                     this.data.setGoblinTraderId(goblin.getUniqueID());
@@ -129,7 +137,7 @@ public class GoblinTraderSpawner
     }
 
     @Nullable
-    private BlockPos getSafePositionAroundPlayer(BlockPos pos, int range)
+    private BlockPos getSafePositionAroundPlayer(World world, BlockPos pos, int range)
     {
         if(range == 0)
         {
@@ -141,27 +149,28 @@ public class GoblinTraderSpawner
             int posX = pos.getX() + this.random.nextInt(range * 2) - range;
             int posY = pos.getY() + this.random.nextInt(range) - range / 2;
             int posZ = pos.getZ() + this.random.nextInt(range * 2) - range;
-            BlockPos testPos = this.findGround(new BlockPos(posX, posY, posZ), range);
-            if(testPos != null && WorldEntitySpawner.canCreatureTypeSpawnAtLocation(EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, this.world, testPos, ModEntities.GOBLIN_TRADER))
+            BlockPos testPos = this.findGround(world, new BlockPos(posX, posY, posZ), range);
+            if(testPos != null && WorldEntitySpawner.canCreatureTypeSpawnAtLocation(EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, world, testPos, ModEntities.GOBLIN_TRADER))
             {
                 safestPos = testPos;
                 break;
             }
         }
-        return safestPos != null ? safestPos : this.getSafePositionAroundPlayer(pos, range / 2);
+        return safestPos != null ? safestPos : this.getSafePositionAroundPlayer(world, pos, range / 2);
     }
 
     @Nullable
-    private BlockPos findGround(BlockPos pos, int maxDistance)
+    private BlockPos findGround(World world, BlockPos pos, int maxDistance)
     {
-        if(this.world.isAirBlock(pos))
+        System.out.println(world.getBlockState(pos).getBlock().getRegistryName());
+        if(world.isAirBlock(pos))
         {
             BlockPos downPos = pos;
-            while(World.isValid(downPos.down()) && this.world.isAirBlock(downPos.down()) && downPos.down().withinDistance(pos, maxDistance))
+            while(World.isValid(downPos.down()) && world.isAirBlock(downPos.down()) && downPos.down().withinDistance(pos, maxDistance))
             {
                 downPos = downPos.down();
             }
-            if(!this.world.isAirBlock(downPos.down()))
+            if(!world.isAirBlock(downPos.down()))
             {
                 return downPos;
             }
@@ -169,11 +178,11 @@ public class GoblinTraderSpawner
         else
         {
             BlockPos upPos = pos;
-            while(World.isValid(upPos.up()) && !this.world.isAirBlock(upPos.up()) && upPos.up().withinDistance(pos, maxDistance))
+            while(World.isValid(upPos.up()) && !world.isAirBlock(upPos.up()) && upPos.up().withinDistance(pos, maxDistance))
             {
                 upPos = upPos.up();
             }
-            if(!this.world.isAirBlock(upPos.down()))
+            if(!world.isAirBlock(upPos.down()))
             {
                 return upPos;
             }
@@ -181,9 +190,9 @@ public class GoblinTraderSpawner
         return null;
     }
 
-    private boolean isEmptyCollision(BlockPos pos)
+    private boolean isEmptyCollision(World world, BlockPos pos)
     {
-        if(!this.world.getBlockState(pos).getCollisionShape(this.world, pos).isEmpty())
+        if(!world.getBlockState(pos).getCollisionShape(world, pos).isEmpty())
         {
             return false;
         }
