@@ -20,6 +20,7 @@ var ASMAPI = Java.type('net.minecraftforge.coremod.api.ASMAPI');
 var Opcodes = Java.type('org.objectweb.asm.Opcodes');
 
 function patch_RepairContainer_updateRepairOutput(method) {
+    var foundNode = null;
     var instructions = method.instructions.toArray();
     for (var i = 0; i < instructions.length; i++) {
         var node = instructions[i];
