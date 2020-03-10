@@ -1,0 +1,8 @@
+{
+    "entity.goblintraders.goblin_trader": "Гоблин-торговец",
+    "entity.goblintraders.vein_goblin_trader": "Жилистый гоблин-торговец",
+    "subtitle.goblintraders.goblin_trader.annoyed_grunt": "Раздражённое ворчание",
+    "subtitle.goblintraders.goblin_trader.idle_grunt": "Ворчание",
+    "item.goblintraders.goblin_trader_spawn_egg": "Яйцо призыва гоблина-торговца",
+    "item.goblintraders.vein_goblin_trader_spawn_egg": "Яйцо призыва жилистого гоблина-торговца"
+}
