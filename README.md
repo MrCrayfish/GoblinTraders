@@ -4,7 +4,7 @@
 
 # Goblin Traders
 
-Goblin Traders is a simple mod that adds goblins you can trade with. Unliked Wandering Traders, goblins are found underground in caves and sell rare and special items you normally wouldn't be able to obtain. By trading with a goblin, you can get a highler level enchanted book than the enchant normally allows. Goblins appear similar to Wandering Traders and will spawn near a random player in the overworld.
+Goblin Traders is a simple mod that adds goblins you can trade with. Unlike Wandering Traders, goblins are found underground in caves and sell rare and special items you normally wouldn't be able to obtain. By trading with a goblin, you can get a highler level enchanted book than the enchant normally allows. Goblins appear similar to Wandering Traders and will spawn near a random player in the overworld.
 
 ### Screenshots:
 ![Screenshot #1](https://i.imgur.com/XLaQqNj.png)
