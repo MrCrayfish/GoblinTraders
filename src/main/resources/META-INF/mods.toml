@@ -1,11 +1,11 @@
 modLoader="javafml"
-loaderVersion="[31,)"
+loaderVersion="[32,)"
 
 issueTrackerURL="https://github.com/MrCrayfish/GoblinTraders/issues"
 
 [[mods]]
 modId="goblintraders"
-version="1.2.0"
+version="1.2.1"
 displayName="Goblin Traders"
 updateJSONURL="https://raw.githubusercontent.com/MrCrayfish/ModUpdates/master/goblintraders/update.json"
 displayURL="https://mrcrayfish.com/mods?id=goblintraders"
@@ -17,12 +17,12 @@ description='Adds goblins that trade speical items with the player!'
 [[dependencies.goblintraders]]
     modId="forge"
     mandatory=true
-    versionRange="[31,)"
+    versionRange="[32,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.goblintraders]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.15.2,1.16)"
+    versionRange="[1.16,)"
     ordering="NONE"
     side="BOTH"

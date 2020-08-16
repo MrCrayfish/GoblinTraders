@@ -14,7 +14,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.spawner.WorldEntitySpawner;
 import net.minecraftforge.event.TickEvent;
@@ -98,8 +97,7 @@ public class GoblinTraderSpawner
     private boolean spawnTrader()
     {
         //List<PlayerEntity> players = this.world.getServer().getPlayerList().getPlayers().stream().filter(player -> player.dimension == this.world.getDimension().getType() && player.isAlive()).collect(Collectors.toList());
-        List<PlayerEntity> players = new ArrayList<>(this.world.getServer().getPlayerList().getPlayers());
-        players = players.stream().filter(player -> player.dimension == this.world.getDimension().getType()).collect(Collectors.toList());
+        List<PlayerEntity> players = new ArrayList<>(this.world.getPlayers());
         if(players.isEmpty())
         {
             return false;
@@ -115,7 +113,7 @@ public class GoblinTraderSpawner
         }
         else
         {
-            BlockPos blockpos = randomPlayer.getPosition();
+            BlockPos blockpos = randomPlayer.func_233580_cy_();
             BlockPos safestPos = this.getSafePositionAroundPlayer(randomPlayer.world, blockpos, 10);
             if(safestPos != null && this.isEmptyCollision(randomPlayer.world, safestPos))
             {
@@ -206,8 +204,8 @@ public class GoblinTraderSpawner
     {
         MinecraftServer server = event.getServer();
         GoblinTraderData traderData = GoblinTraderData.get(server);
-        spawners.add(new GoblinTraderSpawner(server.getWorld(DimensionType.OVERWORLD), traderData.getGoblinData("GoblinTrader"), ModEntities.GOBLIN_TRADER, 0, 64));
-        spawners.add(new GoblinTraderSpawner(server.getWorld(DimensionType.THE_NETHER), traderData.getGoblinData("VeinGoblinTrader"), ModEntities.VEIN_GOBLIN_TRADER, 0, 128));
+        spawners.add(new GoblinTraderSpawner(server.getWorld(World.field_234918_g_), traderData.getGoblinData("GoblinTrader"), ModEntities.GOBLIN_TRADER, 0, 64));
+        spawners.add(new GoblinTraderSpawner(server.getWorld(World.field_234919_h_), traderData.getGoblinData("VeinGoblinTrader"), ModEntities.VEIN_GOBLIN_TRADER, 0, 128));
     }
 
     @SubscribeEvent
@@ -225,7 +223,7 @@ public class GoblinTraderSpawner
         if(event.side != LogicalSide.SERVER)
             return;
 
-        if(!event.world.getDimension().isSurfaceWorld())
+        if(!event.world.func_234923_W_().equals(World.field_234918_g_))
             return;
 
         spawners.forEach(GoblinTraderSpawner::tick);

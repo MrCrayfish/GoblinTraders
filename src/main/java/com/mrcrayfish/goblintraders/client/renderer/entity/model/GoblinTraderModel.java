@@ -82,13 +82,13 @@ public class GoblinTraderModel extends SegmentedModel<AbstractGoblinEntity> impl
     }
 
     @Override
-    public Iterable<ModelRenderer> func_225601_a_()
+    public Iterable<ModelRenderer> getParts()
     {
         return this.parts;
     }
 
     @Override
-    public void render(AbstractGoblinEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
+    public void setRotationAngles(AbstractGoblinEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
     {
         float rotateFactor;
         rotateFactor = (float) entity.getMotion().lengthSquared();
@@ -137,15 +137,15 @@ public class GoblinTraderModel extends SegmentedModel<AbstractGoblinEntity> impl
     }
 
     @Override
-    public void func_225599_a_(HandSide handSide, MatrixStack matrixStack)
+    public void translateHand(HandSide handSide, MatrixStack matrixStack)
     {
         switch(handSide)
         {
             case LEFT:
-                this.leftArm.setAnglesAndRotation(matrixStack);
+                this.leftArm.translateRotate(matrixStack);
                 break;
             case RIGHT:
-                this.rightArm.setAnglesAndRotation(matrixStack);
+                this.rightArm.translateRotate(matrixStack);
                 matrixStack.translate(0.235, -0.15, 0.25);
                 matrixStack.scale(0.75F, 0.75F, 0.75F);
                 break;

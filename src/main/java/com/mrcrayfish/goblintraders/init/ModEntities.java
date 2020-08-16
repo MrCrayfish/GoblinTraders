@@ -1,11 +1,13 @@
 package com.mrcrayfish.goblintraders.init;
 
 import com.mrcrayfish.goblintraders.Reference;
+import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import com.mrcrayfish.goblintraders.entity.GoblinTraderEntity;
 import com.mrcrayfish.goblintraders.entity.VeinGoblinTraderEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
@@ -42,5 +44,11 @@ public class ModEntities
     {
         IForgeRegistry<EntityType<?>> registry = event.getRegistry();
         ENTITY_TYPES.forEach(registry::register);
+    }
+
+    public static void registerEntityTypeAttributes()
+    {
+        GlobalEntityTypeAttributes.put(GOBLIN_TRADER, GoblinTraderEntity.prepareAttributes().func_233813_a_());
+        GlobalEntityTypeAttributes.put(VEIN_GOBLIN_TRADER, VeinGoblinTraderEntity.prepareAttributes().func_233813_a_());
     }
 }

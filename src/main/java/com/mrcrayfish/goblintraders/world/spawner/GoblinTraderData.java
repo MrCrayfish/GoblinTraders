@@ -4,7 +4,7 @@ import com.mrcrayfish.goblintraders.Reference;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
@@ -80,7 +80,7 @@ public class GoblinTraderData extends WorldSavedData
 
     public static GoblinTraderData get(MinecraftServer server)
     {
-        ServerWorld world = server.getWorld(DimensionType.OVERWORLD);
+        ServerWorld world = server.getWorld(World.field_234918_g_);
         return world.getSavedData().getOrCreate(GoblinTraderData::new, DATA_NAME);
     }
 }
