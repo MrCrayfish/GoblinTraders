@@ -80,7 +80,7 @@ public class GoblinTraderData extends WorldSavedData
 
     public static GoblinTraderData get(MinecraftServer server)
     {
-        ServerWorld world = server.getWorld(World.field_234918_g_);
+        ServerWorld world = server.getWorld(World.OVERWORLD);
         return world.getSavedData().getOrCreate(GoblinTraderData::new, DATA_NAME);
     }
 }

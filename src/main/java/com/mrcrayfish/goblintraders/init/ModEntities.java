@@ -48,7 +48,7 @@ public class ModEntities
 
     public static void registerEntityTypeAttributes()
     {
-        GlobalEntityTypeAttributes.put(GOBLIN_TRADER, GoblinTraderEntity.prepareAttributes().func_233813_a_());
-        GlobalEntityTypeAttributes.put(VEIN_GOBLIN_TRADER, VeinGoblinTraderEntity.prepareAttributes().func_233813_a_());
+        GlobalEntityTypeAttributes.put(GOBLIN_TRADER, GoblinTraderEntity.prepareAttributes().create());
+        GlobalEntityTypeAttributes.put(VEIN_GOBLIN_TRADER, VeinGoblinTraderEntity.prepareAttributes().create());
     }
 }

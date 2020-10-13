@@ -226,7 +226,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     }
 
     @Override
-    public boolean func_213705_dZ()
+    public boolean hasXPBar()
     {
         return false;
     }
@@ -249,7 +249,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         ItemStack heldItem = player.getHeldItem(hand);
         if(heldItem.getItem() == Items.NAME_TAG)
         {
-            heldItem.func_111282_a_(player, this, hand);
+            heldItem.interactWithEntity(player, this, hand);
             return ActionResultType.SUCCESS;
         }
         else if(this.isAlive() && !this.hasCustomer() && !this.isChild()) //TODO check for egg
@@ -354,7 +354,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     public static AttributeModifierMap.MutableAttribute prepareAttributes()
     {
         return MobEntity.func_233666_p_()
-                .func_233815_a_(Attributes.field_233818_a_, 20D) // MAX_HEALTH
-                .func_233815_a_(Attributes.field_233821_d_, 0.7D); // MOVEMENT_SPEED
+                .createMutableAttribute(Attributes.MAX_HEALTH, 20D) // MAX_HEALTH
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.7D); // MOVEMENT_SPEED
     }
 }

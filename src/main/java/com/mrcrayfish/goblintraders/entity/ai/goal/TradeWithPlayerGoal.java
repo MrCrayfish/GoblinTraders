@@ -30,7 +30,7 @@ public class TradeWithPlayerGoal extends Goal
         {
             return false;
         }
-        else if(!this.entity.func_233570_aj_())
+        else if(!this.entity.isOnGround())
         {
             return false;
         }
