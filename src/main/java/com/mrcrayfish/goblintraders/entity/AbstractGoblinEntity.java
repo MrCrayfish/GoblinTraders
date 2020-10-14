@@ -8,6 +8,8 @@ import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.INPC;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.merchant.IMerchant;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
@@ -224,7 +226,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     }
 
     @Override
-    public boolean func_213705_dZ()
+    public boolean hasXPBar()
     {
         return false;
     }
@@ -242,28 +244,28 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     }
 
     @Override
-    protected boolean processInteract(PlayerEntity player, Hand hand)
+    protected ActionResultType func_230254_b_(PlayerEntity player, Hand hand)
     {
         ItemStack heldItem = player.getHeldItem(hand);
         if(heldItem.getItem() == Items.NAME_TAG)
         {
             heldItem.interactWithEntity(player, this, hand);
-            return true;
+            return ActionResultType.SUCCESS;
         }
         else if(this.isAlive() && !this.hasCustomer() && !this.isChild()) //TODO check for egg
         {
             if(this.getOffers().isEmpty())
             {
-                return super.processInteract(player, hand);
+                return super.func_230254_b_(player, hand);
             }
             else if(!this.world.isRemote && (this.getRevengeTarget() == null || this.getRevengeTarget() != player))
             {
                 this.setCustomer(player);
                 this.openMerchantContainer(player, this.getDisplayName(), 1);
             }
-            return true;
+            return ActionResultType.SUCCESS;
         }
-        return super.processInteract(player, hand);
+        return super.func_230254_b_(player, hand);
     }
 
     public boolean isPreviousCustomer(PlayerEntity player)
@@ -348,4 +350,11 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     }
 
     public abstract ItemStack getFavouriteFood();
+
+    public static AttributeModifierMap.MutableAttribute prepareAttributes()
+    {
+        return MobEntity.func_233666_p_()
+                .createMutableAttribute(Attributes.MAX_HEALTH, 20D) // MAX_HEALTH
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.7D); // MOVEMENT_SPEED
+    }
 }
