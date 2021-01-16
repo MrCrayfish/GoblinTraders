@@ -1,0 +1,8 @@
+{
+    "entity.goblintraders.goblin_trader": "고블린 행상인",
+    "entity.goblintraders.vein_goblin_trader": "혈맥 고블린 행상인",
+    "subtitle.goblintraders.goblin_trader.annoyed_grunt": "짜증 섞인 끙 소리",
+    "subtitle.goblintraders.goblin_trader.idle_grunt": "차분한 끙 소리",
+    "item.goblintraders.goblin_trader_spawn_egg": "고블린 행상인 생성 알",
+    "item.goblintraders.vein_goblin_trader_spawn_egg": "혈맥 고블린 행상인 생성 알"
+}
