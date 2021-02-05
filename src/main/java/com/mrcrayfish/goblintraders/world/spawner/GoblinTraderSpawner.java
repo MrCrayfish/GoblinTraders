@@ -162,7 +162,6 @@ public class GoblinTraderSpawner
     @Nullable
     private BlockPos findGround(World world, BlockPos pos, int maxDistance)
     {
-        System.out.println(world.getBlockState(pos).getBlock().getRegistryName());
         if(world.isAirBlock(pos))
         {
             BlockPos downPos = pos;
