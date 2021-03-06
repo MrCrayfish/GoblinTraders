@@ -4,6 +4,7 @@ import com.mrcrayfish.goblintraders.client.ClientHandler;
 import com.mrcrayfish.goblintraders.init.ModEntities;
 import com.mrcrayfish.goblintraders.init.ModItems;
 import com.mrcrayfish.goblintraders.init.ModSounds;
+import com.mrcrayfish.goblintraders.item.SupplierSpawnEggItem;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.EnchantedBookItem;
