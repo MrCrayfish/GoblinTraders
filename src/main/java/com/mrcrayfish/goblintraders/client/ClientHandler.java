@@ -14,7 +14,7 @@ public class ClientHandler
 {
     public static void setup()
     {
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.GOBLIN_TRADER, GoblinTraderRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.VEIN_GOBLIN_TRADER, GoblinTraderRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.GOBLIN_TRADER.get(), GoblinTraderRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.VEIN_GOBLIN_TRADER.get(), GoblinTraderRenderer::new);
     }
 }

@@ -59,7 +59,7 @@ public class FollowPotentialCustomerGoal extends Goal
         {
             if(this.hitTimer-- == 0)
             {
-                this.entity.world.playSound(null, this.entity.getPosX(), this.entity.getPosY(), this.entity.getPosZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT, SoundCategory.NEUTRAL, 1.0F, 0.9F + this.entity.getRNG().nextFloat() * 0.2F);
+                this.entity.world.playSound(null, this.entity.getPosX(), this.entity.getPosY(), this.entity.getPosZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT.get(), SoundCategory.NEUTRAL, 1.0F, 0.9F + this.entity.getRNG().nextFloat() * 0.2F);
                 this.potentialCustomer.attackEntityFrom(DamageSource.causeMobDamage(this.entity), 0.5F);
                 this.entity.swingArm(Hand.MAIN_HAND);
                 this.hitOnce = true;

@@ -15,7 +15,7 @@ public class GoblinTraderEntity extends AbstractGoblinEntity
 {
     public GoblinTraderEntity(World worldIn)
     {
-        super(ModEntities.GOBLIN_TRADER, worldIn);
+        super(ModEntities.GOBLIN_TRADER.get(), worldIn);
     }
 
     @Override

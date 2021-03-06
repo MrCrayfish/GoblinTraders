@@ -16,7 +16,7 @@ public class VeinGoblinTraderEntity extends AbstractGoblinEntity
 {
     public VeinGoblinTraderEntity(World worldIn)
     {
-        super(ModEntities.VEIN_GOBLIN_TRADER, worldIn);
+        super(ModEntities.VEIN_GOBLIN_TRADER.get(), worldIn);
     }
 
     @Override

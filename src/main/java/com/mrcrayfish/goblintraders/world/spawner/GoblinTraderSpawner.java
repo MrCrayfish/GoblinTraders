@@ -150,7 +150,7 @@ public class GoblinTraderSpawner
             int posY = pos.getY() + this.random.nextInt(range) - range / 2;
             int posZ = pos.getZ() + this.random.nextInt(range * 2) - range;
             BlockPos testPos = this.findGround(world, new BlockPos(posX, posY, posZ), range);
-            if(testPos != null && WorldEntitySpawner.canCreatureTypeSpawnAtLocation(EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, world, testPos, ModEntities.GOBLIN_TRADER))
+            if(testPos != null && WorldEntitySpawner.canCreatureTypeSpawnAtLocation(EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, world, testPos, ModEntities.GOBLIN_TRADER.get()))
             {
                 safestPos = testPos;
                 break;
@@ -205,8 +205,8 @@ public class GoblinTraderSpawner
     {
         MinecraftServer server = event.getServer();
         GoblinTraderData traderData = GoblinTraderData.get(server);
-        spawners.add(new GoblinTraderSpawner(server.getWorld(World.OVERWORLD), traderData.getGoblinData("GoblinTrader"), ModEntities.GOBLIN_TRADER, 0, 64));
-        spawners.add(new GoblinTraderSpawner(server.getWorld(World.THE_NETHER), traderData.getGoblinData("VeinGoblinTrader"), ModEntities.VEIN_GOBLIN_TRADER, 0, 128));
+        spawners.add(new GoblinTraderSpawner(server.getWorld(World.OVERWORLD), traderData.getGoblinData("GoblinTrader"), ModEntities.GOBLIN_TRADER.get(), 0, 64));
+        spawners.add(new GoblinTraderSpawner(server.getWorld(World.THE_NETHER), traderData.getGoblinData("VeinGoblinTrader"), ModEntities.VEIN_GOBLIN_TRADER.get(), 0, 128));
     }
 
     @SubscribeEvent

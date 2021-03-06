@@ -107,7 +107,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
             if(this.stunDelay == 0)
             {
                 this.dataManager.set(STUNNED, false);
-                this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT, SoundCategory.NEUTRAL, 1.0F, 0.9F + this.getRNG().nextFloat() * 0.2F);
+                this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT.get(), SoundCategory.NEUTRAL, 1.0F, 0.9F + this.getRNG().nextFloat() * 0.2F);
             }
         }
         if(!this.world.isRemote)
@@ -134,7 +134,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         {
             if(this.rand.nextInt(5) == 0)
             {
-                this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT, SoundCategory.NEUTRAL, 1.0F, 0.9F + this.getRNG().nextFloat() * 0.2F);
+                this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT.get(), SoundCategory.NEUTRAL, 1.0F, 0.9F + this.getRNG().nextFloat() * 0.2F);
                 this.customer.attackEntityFrom(DamageSource.causeMobDamage(this), 0.5F);
                 this.swingArm(Hand.MAIN_HAND);
             }
@@ -339,14 +339,14 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return ModSounds.ENTITY_GOBLIN_TRADER_IDLE_GRUNT;
+        return ModSounds.ENTITY_GOBLIN_TRADER_IDLE_GRUNT.get();
     }
 
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return ModSounds.ENTITY_GOBLIN_TRADER_IDLE_GRUNT;
+        return ModSounds.ENTITY_GOBLIN_TRADER_IDLE_GRUNT.get();
     }
 
     public abstract ItemStack getFavouriteFood();
