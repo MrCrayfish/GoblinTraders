@@ -5,6 +5,7 @@ import com.mrcrayfish.goblintraders.entity.ai.goal.TradeWithPlayerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.*;
 import com.mrcrayfish.goblintraders.init.ModSounds;
 import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.INPC;
 import net.minecraft.entity.MobEntity;
@@ -40,6 +41,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     protected static final int RARE_TRADES = 1;
 
     public static final DataParameter<Boolean> STUNNED = EntityDataManager.createKey(AbstractGoblinEntity.class, DataSerializers.BOOLEAN);
+    public static final DataParameter<Float> STUN_ROTATION = EntityDataManager.createKey(AbstractGoblinEntity.class, DataSerializers.FLOAT);
 
     @Nullable
     private PlayerEntity customer;
@@ -77,6 +79,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     {
         super.registerData();
         this.dataManager.register(STUNNED, false);
+        this.dataManager.register(STUN_ROTATION, 0F);
     }
 
     public abstract ResourceLocation getTexture();
@@ -280,10 +283,16 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         if(attacked)
         {
             this.dataManager.set(STUNNED, true);
+            this.dataManager.set(STUN_ROTATION, this.getStunRotation(source.getImmediateSource()));
             this.goalSelector.getRunningGoals().forEach(PrioritizedGoal::resetTask);
             this.stunDelay = 20;
         }
         return attacked;
+    }
+
+    private float getStunRotation(@Nullable Entity entity)
+    {
+        return entity != null ? entity.rotationYaw : 0F;
     }
 
     public int getStunDelay()
@@ -356,5 +365,10 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         return MobEntity.func_233666_p_()
                 .createMutableAttribute(Attributes.MAX_HEALTH, 20D) // MAX_HEALTH
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.7D); // MOVEMENT_SPEED
+    }
+
+    public float getStunRotation()
+    {
+        return this.dataManager.get(STUN_ROTATION);
     }
 }
