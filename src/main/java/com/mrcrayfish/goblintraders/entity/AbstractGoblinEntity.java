@@ -75,6 +75,18 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     }
 
     @Override
+    protected void updateMovementGoalFlags()
+    {
+        super.updateMovementGoalFlags();
+        if(this.isStunned())
+        {
+            this.goalSelector.setFlag(Goal.Flag.MOVE, true);
+            this.goalSelector.setFlag(Goal.Flag.JUMP, true);
+            this.goalSelector.setFlag(Goal.Flag.LOOK, true);
+        }
+    }
+
+    @Override
     protected void registerData()
     {
         super.registerData();
@@ -282,6 +294,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         boolean attacked = super.attackEntityFrom(source, amount);
         if(attacked)
         {
+            this.getNavigator().clearPath();
             this.dataManager.set(STUNNED, true);
             this.dataManager.set(STUN_ROTATION, this.getStunRotation(source.getImmediateSource()));
             this.goalSelector.getRunningGoals().forEach(PrioritizedGoal::resetTask);
@@ -365,6 +378,11 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         return MobEntity.func_233666_p_()
                 .createMutableAttribute(Attributes.MAX_HEALTH, 20D) // MAX_HEALTH
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.7D); // MOVEMENT_SPEED
+    }
+
+    public boolean isStunned()
+    {
+        return this.dataManager.get(STUNNED);
     }
 
     public float getStunRotation()

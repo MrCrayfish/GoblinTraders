@@ -16,7 +16,7 @@ public class EatFavouriteFoodGoal extends UseItemGoal<AbstractGoblinEntity>
 {
     public EatFavouriteFoodGoal(AbstractGoblinEntity entity)
     {
-        super(entity, entity.getFavouriteFood().copy(), SoundEvents.ENTITY_PLAYER_BURP, entity1 -> entity1.getHealth() < entity1.getMaxHealth() && entity1.getRNG().nextInt(100) == 0); //TODO change sound to a burp
+        super(entity, entity.getFavouriteFood().copy(), SoundEvents.ENTITY_PLAYER_BURP, entity1 -> entity1.getHealth() < entity1.getMaxHealth() && entity1.getRNG().nextInt(100) == 0 && !entity1.isStunned());
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 }

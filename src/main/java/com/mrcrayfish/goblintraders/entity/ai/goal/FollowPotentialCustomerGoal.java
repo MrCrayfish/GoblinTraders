@@ -43,6 +43,10 @@ public class FollowPotentialCustomerGoal extends Goal
             this.coolDown--;
             return false;
         }
+        if(this.entity.isStunned())
+        {
+            return false;
+        }
         this.findCustomer();
         return this.potentialCustomer != null && this.potentialCustomer.isAlive() && !this.entity.isPreviousCustomer(this.potentialCustomer);
     }
