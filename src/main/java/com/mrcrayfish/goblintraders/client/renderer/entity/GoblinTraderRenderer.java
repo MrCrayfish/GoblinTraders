@@ -34,7 +34,7 @@ public class GoblinTraderRenderer extends MobRenderer<AbstractGoblinEntity, Gobl
     public void render(AbstractGoblinEntity entity, float entityYaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int light)
     {
         matrixStack.push();
-        if(entity.isStunned())
+        if(entity.isStunned() && entity.isAlive())
         {
             float progress = Math.min(10F, entity.getFallCounter() + partialTicks) / 10F;
             matrixStack.rotate(Vector3f.YP.rotationDegrees(-entity.getStunRotation()));
