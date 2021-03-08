@@ -35,7 +35,7 @@ import java.util.stream.IntStream;
 /**
  * Author: MrCrayfish
  */
-public abstract class AbstractGoblinEntity extends CreatureEntity implements INPC, IMerchant
+public abstract class AbstractGoblinEntity extends TraderCreatureEntity implements INPC
 {
     protected static final int BASE_TRADES = 0;
     protected static final int RARE_TRADES = 1;
@@ -182,16 +182,16 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
 
     protected abstract void populateTradeData();
 
-    protected void addTrades(MerchantOffers offers, @Nullable VillagerTrades.ITrade[] trades, int max)
+    protected void addTrades(MerchantOffers offers, @Nullable List<VillagerTrades.ITrade> trades, int max)
     {
         if(trades == null)
             return;
-        List<Integer> randomIndexes = IntStream.range(0, trades.length).boxed().collect(Collectors.toList());
+        List<Integer> randomIndexes = IntStream.range(0, trades.size()).boxed().collect(Collectors.toList());
         Collections.shuffle(randomIndexes);
-        randomIndexes = randomIndexes.subList(0, Math.min(trades.length, max));
+        randomIndexes = randomIndexes.subList(0, Math.min(trades.size(), max));
         for(Integer index : randomIndexes)
         {
-            VillagerTrades.ITrade trade = trades[index];
+            VillagerTrades.ITrade trade = trades.get(index);
             MerchantOffer offer = trade.getOffer(this, this.rand);
             if(offer != null)
             {

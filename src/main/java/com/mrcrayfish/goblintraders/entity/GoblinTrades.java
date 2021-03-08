@@ -152,7 +152,7 @@ public class GoblinTrades
         return new Int2ObjectOpenHashMap<>(map);
     }
 
-    static class TradeWithEnchantment implements VillagerTrades.ITrade
+    public static class TradeWithEnchantment implements VillagerTrades.ITrade
     {
         private final ItemStack buyingStack;
         private ItemStack secondBuyingStack = ItemStack.EMPTY;
@@ -260,7 +260,7 @@ public class GoblinTrades
         }
     }
 
-    static class ItemsForEmeraldsTrade implements VillagerTrades.ITrade
+    public static class ItemsForEmeraldsTrade implements VillagerTrades.ITrade
     {
         private final ItemStack offerStack;
         private final int price;
