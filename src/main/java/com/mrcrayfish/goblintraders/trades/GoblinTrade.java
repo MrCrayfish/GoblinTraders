@@ -35,11 +35,6 @@ public class GoblinTrade implements VillagerTrades.ITrade
     @Override
     public MerchantOffer getOffer(Entity trader, Random rand)
     {
-        this.paymentStack.setCount(MathHelper.clamp(Math.max(this.paymentStack.getCount() - 4, 1) + rand.nextInt(8) + 1, 1, 64));
-        if(!this.secondaryPaymentStack.isEmpty())
-        {
-            this.secondaryPaymentStack.setCount(MathHelper.clamp(Math.max(this.secondaryPaymentStack.getCount() - 4, 1) + rand.nextInt(8) + 1, 1, 64));
-        }
         return new MerchantOffer(this.paymentStack, this.secondaryPaymentStack, this.offerStack, this.maxUses, this.experience, this.priceMultiplier);
     }
 }
