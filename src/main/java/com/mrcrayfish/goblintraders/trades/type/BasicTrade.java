@@ -80,12 +80,6 @@ public class BasicTrade implements ITradeType<GoblinTrade>
     }
 
     @Override
-    public TradeSerializer<?> getSerializer()
-    {
-        return SERIALIZER;
-    }
-
-    @Override
     public JsonObject serialize()
     {
         return SERIALIZER.serialize(this);
