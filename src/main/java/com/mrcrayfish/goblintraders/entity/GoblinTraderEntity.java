@@ -33,8 +33,8 @@ public class GoblinTraderEntity extends AbstractGoblinEntity
         EntityTrades trades = TradeManager.instance().getTrades(ModEntities.GOBLIN_TRADER.get());
         if(trades != null)
         {
-            this.addTrades(offers, trades.getCommonTrades(), Math.max(4, this.rand.nextInt(14) + 1));
-            this.addTrades(offers, trades.getRareTrades(), Math.max(2, this.rand.nextInt(6) + 1));
+            this.addTrades(offers, trades.getCommonTrades(), Math.max(8, this.rand.nextInt(14) + 1));
+            this.addTrades(offers, trades.getRareTrades(), Math.max(4, this.rand.nextInt(6) + 1));
         }
     }
 
