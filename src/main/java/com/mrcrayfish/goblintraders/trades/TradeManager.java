@@ -56,7 +56,7 @@ public class TradeManager implements IFutureReloadListener
 
     private List<EntityType<?>> traders = new ArrayList<>();
     private Map<EntityType<?>, EntityTrades> tradeMap = new HashMap<>();
-    private Map<ResourceLocation, ITradeType<?>> tradeTypes = new HashMap<>();
+    private Map<ResourceLocation, TradeSerializer<?>> tradeSerializer = new HashMap<>();
 
     @SubscribeEvent
     public static void addReloadListener(AddReloadListenerEvent event)
@@ -78,15 +78,15 @@ public class TradeManager implements IFutureReloadListener
         return this.tradeMap.get(type);
     }
 
-    public void registerTradeType(ResourceLocation id, ITradeType<?> type)
+    public void registerTypeSerializer(TradeSerializer<?> serializer)
     {
-        this.tradeTypes.putIfAbsent(id, type);
+        this.tradeSerializer.putIfAbsent(serializer.getId(), serializer);
     }
 
     @Nullable
-    public ITradeType<?> getTradeType(ResourceLocation id)
+    public TradeSerializer<?> getTypeSerializer(ResourceLocation id)
     {
-        return this.tradeTypes.get(id);
+        return this.tradeSerializer.get(id);
     }
 
     @Override

@@ -76,12 +76,12 @@ public class EntityTrades
                 {
                     throw new JsonParseException("");
                 }
-                ITradeType<?> type = TradeManager.instance().getTradeType(typeKey);
-                if(type == null)
+                TradeSerializer<?> serializer = TradeManager.instance().getTypeSerializer(typeKey);
+                if(serializer == null)
                 {
                     throw new JsonParseException(String.format("Invalid trade type: %s", typeKey));
                 }
-                trades.add(type.deserialize(tradeObject));
+                trades.add(serializer.deserialize(tradeObject).createVillagerTrade());
             }
         }
 

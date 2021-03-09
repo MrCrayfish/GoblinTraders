@@ -8,5 +8,7 @@ import net.minecraft.entity.merchant.villager.VillagerTrades;
  */
 public interface ITradeType<T extends VillagerTrades.ITrade>
 {
-    T deserialize(JsonObject object);
+    JsonObject serialize();
+
+    T createVillagerTrade();
 }

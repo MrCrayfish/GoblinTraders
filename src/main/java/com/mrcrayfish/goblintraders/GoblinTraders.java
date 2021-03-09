@@ -11,6 +11,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 /**
@@ -40,6 +41,6 @@ public class GoblinTraders
         TradeManager manager = TradeManager.instance();
         manager.registerTrader(ModEntities.GOBLIN_TRADER.get());
         manager.registerTrader(ModEntities.VEIN_GOBLIN_TRADER.get());
-        manager.registerTradeType(new ResourceLocation(Reference.MOD_ID, "basic"), new BasicTrade());
+        manager.registerTypeSerializer(BasicTrade.SERIALIZER);
     }
 }

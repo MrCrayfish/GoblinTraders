@@ -55,7 +55,8 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
-            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/')
+            args '--mod', 'goblintraders', '--all', '--output', file('src/generated/resources/')
+            arg '-mixin.config=goblintraders.mixins.json'
             mods {
                 goblintraders {
                     source sourceSets.main
