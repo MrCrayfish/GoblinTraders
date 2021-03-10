@@ -92,7 +92,6 @@ public class TradeManager implements IFutureReloadListener
     @Override
     public CompletableFuture<Void> reload(IStage stage, IResourceManager manager, IProfiler preparationsProfiler, IProfiler reloadProfiler, Executor backgroundExecutor, Executor gameExecutor)
     {
-        this.tradeMap.clear();
         Map<EntityType<?>, EntityTrades> entityToResourceList = new HashMap<>();
         return CompletableFuture.allOf(CompletableFuture.runAsync(() ->
         {
