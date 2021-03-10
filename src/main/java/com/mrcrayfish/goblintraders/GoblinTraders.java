@@ -4,6 +4,7 @@ import com.mrcrayfish.goblintraders.client.ClientHandler;
 import com.mrcrayfish.goblintraders.init.ModEntities;
 import com.mrcrayfish.goblintraders.init.ModItems;
 import com.mrcrayfish.goblintraders.init.ModSounds;
+import com.mrcrayfish.goblintraders.init.ModStats;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
 import com.mrcrayfish.goblintraders.trades.type.BasicTrade;
 import net.minecraft.util.ResourceLocation;
@@ -37,6 +38,7 @@ public class GoblinTraders
 
     private void onCommonSetup(FMLCommonSetupEvent event)
     {
+        ModStats.init();
         ModEntities.registerEntityTypeAttributes();
         TradeManager manager = TradeManager.instance();
         manager.registerTrader(ModEntities.GOBLIN_TRADER.get());
