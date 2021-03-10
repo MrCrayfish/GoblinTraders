@@ -37,9 +37,6 @@ import java.util.stream.IntStream;
  */
 public abstract class AbstractGoblinEntity extends TraderCreatureEntity implements INPC
 {
-    protected static final int BASE_TRADES = 0;
-    protected static final int RARE_TRADES = 1;
-
     public static final DataParameter<Boolean> STUNNED = EntityDataManager.createKey(AbstractGoblinEntity.class, DataSerializers.BOOLEAN);
     public static final DataParameter<Float> STUN_ROTATION = EntityDataManager.createKey(AbstractGoblinEntity.class, DataSerializers.FLOAT);
 
@@ -145,15 +142,6 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     @Override
     public void setCustomer(@Nullable PlayerEntity player)
     {
-        if(player == null && this.customer != null && !this.isPreviousCustomer(this.customer))
-        {
-            if(this.rand.nextInt(5) == 0)
-            {
-                this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT.get(), SoundCategory.NEUTRAL, 1.0F, 0.9F + this.getRNG().nextFloat() * 0.2F);
-                this.customer.attackEntityFrom(DamageSource.causeMobDamage(this), 0.5F);
-                this.swingArm(Hand.MAIN_HAND);
-            }
-        }
         this.customer = player;
     }
 

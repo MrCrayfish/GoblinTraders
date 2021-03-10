@@ -20,8 +20,6 @@ public class FollowPotentialCustomerGoal extends Goal
 {
     private PlayerEntity potentialCustomer;
     private AbstractGoblinEntity entity;
-    private int hitTimer = 200;
-    private boolean hitOnce = false;
     private int coolDown = 0;
     private int timeout = 600;
 
@@ -59,17 +57,6 @@ public class FollowPotentialCustomerGoal extends Goal
         {
             this.entity.getNavigator().tryMoveToEntityLiving(this.potentialCustomer, 0.4F);
         }
-        else if(!this.hitOnce)
-        {
-            if(this.hitTimer-- == 0)
-            {
-                this.entity.world.playSound(null, this.entity.getPosX(), this.entity.getPosY(), this.entity.getPosZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT.get(), SoundCategory.NEUTRAL, 1.0F, 0.9F + this.entity.getRNG().nextFloat() * 0.2F);
-                this.potentialCustomer.attackEntityFrom(DamageSource.causeMobDamage(this.entity), 0.5F);
-                this.entity.swingArm(Hand.MAIN_HAND);
-                this.hitOnce = true;
-                //TODO play a sound
-            }
-        }
         this.timeout--;
     }
 
@@ -84,10 +71,8 @@ public class FollowPotentialCustomerGoal extends Goal
     {
         this.entity.getNavigator().clearPath();
         this.potentialCustomer = null;
-        this.hitOnce = false;
         this.timeout = 600;
         this.coolDown = 300;
-        this.hitTimer = 200;
     }
 
     @Nullable
