@@ -4,6 +4,195 @@
     {
       "type": "goblintraders:basic",
       "offer_item": {
+        "item": "minecraft:diamond_sword",
+        "count": 1,
+        "nbt": "{Damage:0}"
+      },
+      "payment_item": {
+        "item": "minecraft:diamond_sword",
+        "count": 1,
+        "nbt": "{Damage:0}"
+      },
+      "secondary_payment_item": {
+        "item": "minecraft:enchanted_book",
+        "count": 1,
+        "nbt": "{StoredEnchantments:[{lvl:5s,id:\"minecraft:sharpness\"}]}"
+      },
+      "price_multiplier": 0.0,
+      "max_trades": 1,
+      "experience": 100,
+      "enchantments": [
+        {
+          "id": "minecraft:sharpness",
+          "level": 6
+        }
+      ]
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
+        "item": "minecraft:diamond_sword",
+        "count": 1,
+        "nbt": "{Damage:0}"
+      },
+      "payment_item": {
+        "item": "minecraft:diamond_sword",
+        "count": 1,
+        "nbt": "{Damage:0}"
+      },
+      "secondary_payment_item": {
+        "item": "minecraft:enchanted_book",
+        "count": 1,
+        "nbt": "{StoredEnchantments:[{lvl:3s,id:\"minecraft:looting\"}]}"
+      },
+      "price_multiplier": 0.0,
+      "max_trades": 1,
+      "experience": 100,
+      "enchantments": [
+        {
+          "id": "minecraft:looting",
+          "level": 4
+        }
+      ]
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
+        "item": "minecraft:diamond_sword",
+        "count": 1,
+        "nbt": "{Damage:0}"
+      },
+      "payment_item": {
+        "item": "minecraft:diamond_sword",
+        "count": 1,
+        "nbt": "{Damage:0}"
+      },
+      "secondary_payment_item": {
+        "item": "minecraft:enchanted_book",
+        "count": 1,
+        "nbt": "{StoredEnchantments:[{lvl:3s,id:\"minecraft:sweeping\"}]}"
+      },
+      "price_multiplier": 0.0,
+      "max_trades": 1,
+      "experience": 100,
+      "enchantments": [
+        {
+          "id": "minecraft:sweeping",
+          "level": 4
+        }
+      ]
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
+        "item": "minecraft:diamond_sword",
+        "count": 1,
+        "nbt": "{Damage:0}"
+      },
+      "payment_item": {
+        "item": "minecraft:diamond_sword",
+        "count": 1,
+        "nbt": "{Damage:0}"
+      },
+      "secondary_payment_item": {
+        "item": "minecraft:enchanted_book",
+        "count": 1,
+        "nbt": "{StoredEnchantments:[{lvl:2s,id:\"minecraft:fire_aspect\"}]}"
+      },
+      "price_multiplier": 0.0,
+      "max_trades": 1,
+      "experience": 100,
+      "enchantments": [
+        {
+          "id": "minecraft:fire_aspect",
+          "level": 3
+        }
+      ]
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
+        "item": "minecraft:diamond_sword",
+        "count": 1,
+        "nbt": "{Damage:0}"
+      },
+      "payment_item": {
+        "item": "minecraft:diamond_sword",
+        "count": 1,
+        "nbt": "{Damage:0}"
+      },
+      "secondary_payment_item": {
+        "item": "minecraft:enchanted_book",
+        "count": 1,
+        "nbt": "{StoredEnchantments:[{lvl:2s,id:\"minecraft:knockback\"}]}"
+      },
+      "price_multiplier": 0.0,
+      "max_trades": 1,
+      "experience": 100,
+      "enchantments": [
+        {
+          "id": "minecraft:knockback",
+          "level": 3
+        }
+      ]
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
+        "item": "minecraft:diamond_sword",
+        "count": 1,
+        "nbt": "{Damage:0}"
+      },
+      "payment_item": {
+        "item": "minecraft:diamond_sword",
+        "count": 1,
+        "nbt": "{Damage:0}"
+      },
+      "secondary_payment_item": {
+        "item": "minecraft:enchanted_book",
+        "count": 1,
+        "nbt": "{StoredEnchantments:[{lvl:5s,id:\"minecraft:bane_of_arthropods\"}]}"
+      },
+      "price_multiplier": 0.0,
+      "max_trades": 1,
+      "experience": 100,
+      "enchantments": [
+        {
+          "id": "minecraft:bane_of_arthropods",
+          "level": 6
+        }
+      ]
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
+        "item": "minecraft:diamond_sword",
+        "count": 1,
+        "nbt": "{Damage:0}"
+      },
+      "payment_item": {
+        "item": "minecraft:diamond_sword",
+        "count": 1,
+        "nbt": "{Damage:0}"
+      },
+      "secondary_payment_item": {
+        "item": "minecraft:enchanted_book",
+        "count": 1,
+        "nbt": "{StoredEnchantments:[{lvl:5s,id:\"minecraft:smite\"}]}"
+      },
+      "price_multiplier": 0.0,
+      "max_trades": 1,
+      "experience": 100,
+      "enchantments": [
+        {
+          "id": "minecraft:smite",
+          "level": 6
+        }
+      ]
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
         "item": "minecraft:diamond_helmet",
         "count": 1,
         "nbt": "{Damage:0}"
@@ -540,6 +729,63 @@
           "level": 4
         }
       ]
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
+        "item": "minecraft:spawner",
+        "count": 1,
+        "nbt": "{BlockEntityTag:{MaxNearbyEntities:3s,RequiredPlayerRange:32s,SpawnCount:2s,SpawnData:{id:\"minecraft:zombie\"},MaxSpawnDelay:800s,Delay:20s,x:0,y:0,z:0,id:\"minecraft:mob_spawner\",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:\"minecraft:zombie\"},Weight:1}]},display:{Lore:[\u0027{\"translate\":\"mob_spawner.type.zombie\"}\u0027]}}"
+      },
+      "payment_item": {
+        "item": "minecraft:zombie_head",
+        "count": 1
+      },
+      "secondary_payment_item": {
+        "item": "minecraft:nether_star",
+        "count": 1
+      },
+      "price_multiplier": 0.5,
+      "max_trades": 1,
+      "experience": 1000
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
+        "item": "minecraft:spawner",
+        "count": 1,
+        "nbt": "{BlockEntityTag:{MaxNearbyEntities:3s,RequiredPlayerRange:32s,SpawnCount:2s,SpawnData:{id:\"minecraft:skeleton\"},MaxSpawnDelay:800s,Delay:20s,x:0,y:0,z:0,id:\"minecraft:mob_spawner\",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:\"minecraft:skeleton\"},Weight:1}]},display:{Lore:[\u0027{\"translate\":\"mob_spawner.type.skeleton\"}\u0027]}}"
+      },
+      "payment_item": {
+        "item": "minecraft:skeleton_skull",
+        "count": 1
+      },
+      "secondary_payment_item": {
+        "item": "minecraft:nether_star",
+        "count": 1
+      },
+      "price_multiplier": 0.5,
+      "max_trades": 1,
+      "experience": 1000
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
+        "item": "minecraft:spawner",
+        "count": 1,
+        "nbt": "{BlockEntityTag:{MaxNearbyEntities:3s,RequiredPlayerRange:32s,SpawnCount:2s,SpawnData:{id:\"minecraft:creeper\"},MaxSpawnDelay:800s,Delay:20s,x:0,y:0,z:0,id:\"minecraft:mob_spawner\",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:\"minecraft:creeper\"},Weight:1}]},display:{Lore:[\u0027{\"translate\":\"mob_spawner.type.creeper\"}\u0027]}}"
+      },
+      "payment_item": {
+        "item": "minecraft:creeper_head",
+        "count": 1
+      },
+      "secondary_payment_item": {
+        "item": "minecraft:nether_star",
+        "count": 1
+      },
+      "price_multiplier": 0.5,
+      "max_trades": 1,
+      "experience": 1000
     }
   ]
 }

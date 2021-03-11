@@ -5,5 +5,8 @@
     "subtitle.goblintraders.goblin_trader.idle_grunt": "Idle Grunt",
     "item.goblintraders.goblin_trader_spawn_egg": "Goblin Trader Spawn Egg",
     "item.goblintraders.vein_goblin_trader_spawn_egg": "Vein Goblin Trader Spawn Egg",
-    "stat.goblintraders.trade_with_goblin": "Traded with Goblins"
+    "stat.goblintraders.trade_with_goblin": "Traded with Goblins",
+    "mob_spawner.type.zombie": "Zombie",
+    "mob_spawner.type.skeleton": "Skeleton",
+    "mob_spawner.type.creeper": "Creeper"
 }
