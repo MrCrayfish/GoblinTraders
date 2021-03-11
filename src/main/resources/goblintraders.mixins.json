@@ -5,9 +5,10 @@
   "minVersion": "0.8",
   "refmap": "goblintraders.refmap.json",
   "mixins": [
-    "SpawnEggItemMixin",
+    "EnchantmentMixin",
     "MerchantResultSlotMixin",
-    "RepairContainerMixin"
+    "RepairContainerMixin",
+    "SpawnEggItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1
