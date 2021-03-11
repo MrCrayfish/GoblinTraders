@@ -31,7 +31,7 @@ public class EnchantmentMixin
     @Redirect(method = "getDisplayName", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/text/IFormattableTextComponent;append(Lnet/minecraft/util/text/ITextComponent;)Lnet/minecraft/util/text/IFormattableTextComponent;", ordinal = 0))
     private IFormattableTextComponent append(IFormattableTextComponent textComponent, ITextComponent sibling)
     {
-        if(this.level > this.enchantment.getMaxLevel())
+        if(this.level > this.enchantment.getMaxLevel() && !this.enchantment.isCurse())
         {
             return textComponent.append(sibling).mergeStyle(TextFormatting.LIGHT_PURPLE);
         }
