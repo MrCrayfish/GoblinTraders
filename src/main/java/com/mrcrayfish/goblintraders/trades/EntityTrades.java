@@ -1,11 +1,11 @@
 package com.mrcrayfish.goblintraders.trades;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.mrcrayfish.goblintraders.trades.type.ITradeType;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
@@ -22,23 +22,16 @@ import java.util.Map;
  */
 public class EntityTrades
 {
-    private final List<VillagerTrades.ITrade> commonTrades;
-    private final List<VillagerTrades.ITrade> rareTrades;
+    private final Map<TradeRarity, List<VillagerTrades.ITrade>> tradeMap;
 
-    public EntityTrades(List<VillagerTrades.ITrade> commonTrades, List<VillagerTrades.ITrade> rareTrades)
+    public EntityTrades(Map<TradeRarity, List<VillagerTrades.ITrade>> tradeMap)
     {
-        this.commonTrades = ImmutableList.copyOf(commonTrades);
-        this.rareTrades = ImmutableList.copyOf(rareTrades);
+        this.tradeMap = ImmutableMap.copyOf(tradeMap);
     }
 
-    public List<VillagerTrades.ITrade> getCommonTrades()
+    public Map<TradeRarity, List<VillagerTrades.ITrade>> getTradeMap()
     {
-        return this.commonTrades;
-    }
-
-    public List<VillagerTrades.ITrade> getRareTrades()
-    {
-        return this.rareTrades;
+        return this.tradeMap;
     }
 
     public static class Builder
@@ -54,7 +47,7 @@ public class EntityTrades
 
         public EntityTrades build()
         {
-            return new EntityTrades(this.tradeMap.get(TradeRarity.COMMON), this.tradeMap.get(TradeRarity.RARE));
+            return new EntityTrades(this.tradeMap);
         }
 
         void deserialize(TradeRarity rarity, JsonObject object)

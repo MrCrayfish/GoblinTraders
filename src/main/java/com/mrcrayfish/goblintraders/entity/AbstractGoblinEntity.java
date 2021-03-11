@@ -193,12 +193,12 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
 
     protected abstract void populateTradeData();
 
-    protected void addTrades(MerchantOffers offers, @Nullable List<VillagerTrades.ITrade> trades, int max)
+    protected void addTrades(MerchantOffers offers, @Nullable List<VillagerTrades.ITrade> trades, int max, boolean shuffle)
     {
         if(trades == null)
             return;
         List<Integer> randomIndexes = IntStream.range(0, trades.size()).boxed().collect(Collectors.toList());
-        Collections.shuffle(randomIndexes);
+        if(shuffle) Collections.shuffle(randomIndexes);
         randomIndexes = randomIndexes.subList(0, Math.min(trades.size(), max));
         for(Integer index : randomIndexes)
         {

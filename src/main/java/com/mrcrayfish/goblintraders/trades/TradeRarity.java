@@ -6,6 +6,7 @@ package com.mrcrayfish.goblintraders.trades;
 public enum TradeRarity
 {
     COMMON("common"),
+    UNCOMMON("uncommon"),
     RARE("rare");
 
     private final String key;
