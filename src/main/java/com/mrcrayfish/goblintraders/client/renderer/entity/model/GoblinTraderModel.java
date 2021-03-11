@@ -133,6 +133,15 @@ public class GoblinTraderModel extends SegmentedModel<AbstractGoblinEntity> impl
         {
             this.rightArm.rotateAngleX = (float) Math.toRadians(-90F + 5F * Math.sin(ageInTicks));
             this.leftArm.rotateAngleX = (float) Math.toRadians(-90F + 5F * Math.sin(ageInTicks));
+            this.rightLeg.rotateAngleX = (float) Math.toRadians(-90F);
+            this.rightLeg.rotateAngleY = (float) Math.toRadians(25F);
+            this.leftLeg.rotateAngleX = (float) Math.toRadians(-90F);
+            this.leftLeg.rotateAngleY = (float) Math.toRadians(-25F);
+        }
+        else
+        {
+            this.rightLeg.rotateAngleY = (float) Math.toRadians(0);
+            this.leftLeg.rotateAngleY = (float) Math.toRadians(0);
         }
     }
 
