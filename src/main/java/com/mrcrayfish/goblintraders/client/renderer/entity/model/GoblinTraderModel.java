@@ -152,6 +152,8 @@ public class GoblinTraderModel extends SegmentedModel<AbstractGoblinEntity> impl
         {
             case LEFT:
                 this.leftArm.translateRotate(matrixStack);
+                matrixStack.translate(-0.235, -0.15, 0.25);
+                matrixStack.scale(0.75F, 0.75F, 0.75F);
                 break;
             case RIGHT:
                 this.rightArm.translateRotate(matrixStack);
