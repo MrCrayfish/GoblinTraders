@@ -1,8 +1,11 @@
 package com.mrcrayfish.goblintraders.entity;
 
+import com.mrcrayfish.goblintraders.entity.ai.goal.AttackRevengeTargetGoal;
+import com.mrcrayfish.goblintraders.entity.ai.goal.EatFavouriteFoodGoal;
+import com.mrcrayfish.goblintraders.entity.ai.goal.FindFavouriteFoodGoal;
+import com.mrcrayfish.goblintraders.entity.ai.goal.FollowPotentialCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.LookAtCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.TradeWithPlayerGoal;
-import com.mrcrayfish.goblintraders.entity.ai.goal.*;
 import com.mrcrayfish.goblintraders.init.ModSounds;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
@@ -11,24 +14,44 @@ import net.minecraft.entity.INPC;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.merchant.IMerchant;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.LookAtWithoutMovingGoal;
+import net.minecraft.entity.ai.goal.MoveTowardsRestrictionGoal;
+import net.minecraft.entity.ai.goal.PrioritizedGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.MerchantOffer;
 import net.minecraft.item.MerchantOffers;
+import net.minecraft.item.UseAction;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.*;
+import net.minecraft.particles.ItemParticleData;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -269,6 +292,45 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
             return ActionResultType.SUCCESS;
         }
         return super.func_230254_b_(player, hand);
+    }
+
+    @Override
+    protected void triggerItemUseEffects(ItemStack stack, int count)
+    {
+        if(!stack.isEmpty() && this.isHandActive())
+        {
+            if(stack.getUseAction() == UseAction.DRINK)
+            {
+                this.playSound(this.getDrinkSound(stack), 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+            }
+            if(stack.getUseAction() == UseAction.EAT)
+            {
+                this.spawnFoodParticles(stack, count);
+                this.playSound(this.getEatSound(stack), 0.5F + 0.5F * (float) this.rand.nextInt(2), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+            }
+        }
+    }
+
+    /**
+     * A custom implementation that fixes the position of the particles
+     */
+    protected void spawnFoodParticles(ItemStack stack, int count)
+    {
+        for(int i = 0; i < count; ++i)
+        {
+            Vector3d frontPosition = Vector3d.fromPitchYaw(0F, this.renderYawOffset).scale(0.25);
+            frontPosition = frontPosition.add(0, 0.35, 0);
+            frontPosition = frontPosition.add(this.getPositionVec());
+            Vector3d motion = new Vector3d(this.rand.nextDouble() * 0.2 - 0.1, 0.1, this.rand.nextDouble() * 0.2 - 0.1);
+            if(this.world instanceof ServerWorld)
+            {
+                ((ServerWorld) this.world).spawnParticle(new ItemParticleData(ParticleTypes.ITEM, stack), frontPosition.x, frontPosition.y, frontPosition.z, 1, motion.x, motion.y + 0.05D, motion.z, 0.0D);
+            }
+            else
+            {
+                this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, stack), frontPosition.x, frontPosition.y, frontPosition.z, motion.x, motion.y + 0.05D, motion.z);
+            }
+        }
     }
 
     public boolean isPreviousCustomer(PlayerEntity player)
