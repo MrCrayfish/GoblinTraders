@@ -88,13 +88,13 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         this.goalSelector.addGoal(2, new LookAtCustomerGoal(this));
         this.goalSelector.addGoal(3, new AttackRevengeTargetGoal(this));
         this.goalSelector.addGoal(5, new FollowPotentialCustomerGoal(this));
-        this.goalSelector.addGoal(6, new TemptGoal(this, 0.4D, Ingredient.fromStacks(this.getFavouriteFood()), false));
         this.goalSelector.addGoal(6, new FindFavouriteFoodGoal(this));
-        this.goalSelector.addGoal(7, new EatFavouriteFoodGoal(this));
-        this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 0.4D));
-        this.goalSelector.addGoal(8, new MoveTowardsRestrictionGoal(this, 0.4D));
-        this.goalSelector.addGoal(9, new LookAtWithoutMovingGoal(this, PlayerEntity.class, 4.0F, 1.0F));
-        this.goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, 8.0F));
+        this.goalSelector.addGoal(7, new TemptGoal(this, 0.4D, Ingredient.fromStacks(this.getFavouriteFood()), false));
+        this.goalSelector.addGoal(8, new EatFavouriteFoodGoal(this));
+        this.goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 0.4D));
+        this.goalSelector.addGoal(9, new MoveTowardsRestrictionGoal(this, 0.4D));
+        this.goalSelector.addGoal(10, new LookAtWithoutMovingGoal(this, PlayerEntity.class, 4.0F, 1.0F));
+        this.goalSelector.addGoal(11, new LookAtGoal(this, MobEntity.class, 8.0F));
     }
 
     @Override
