@@ -13,7 +13,9 @@ public enum TradeRarity
 {
     COMMON("common", (trades, random) -> trades.size(), (trades, random) -> trades.size(), true),
     UNCOMMON("uncommon", (trades, random) -> 3, (trades, random) -> random.nextInt(5) + 1, true),
-    RARE("rare", (trades, random) -> 3, (trades, random) -> random.nextInt(4) + 1, true);
+    RARE("rare", (trades, random) -> 3, (trades, random) -> random.nextInt(4) + 1, true),
+    EPIC("epic", (trades, random) -> 0, (trades, random) -> random.nextInt(2), true),
+    LEGENDARY("legendary", (trades, random) -> 0, (trades, random) -> random.nextInt(10) == 0 ? 1 : 0, true);
 
     private final String key;
     private final BiFunction<List<VillagerTrades.ITrade>, Random, Integer> minimum;
