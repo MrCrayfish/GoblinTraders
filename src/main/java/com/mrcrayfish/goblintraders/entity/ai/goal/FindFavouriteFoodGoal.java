@@ -42,7 +42,7 @@ public class FindFavouriteFoodGoal extends Goal
         this.entity.getLookController().setLookPositionWithEntity(this.itemEntity, 10.0F, (float) this.entity.getVerticalFaceSpeed());
         this.entity.getNavigator().clearPath();
         Path path = this.entity.getNavigator().getPathToEntity(this.itemEntity, 0);
-        if(path != null) this.entity.getNavigator().setPath(path, 0.5F);
+        if(path != null) this.entity.getNavigator().setPath(path, 0.4F);
         if(this.entity.getDistance(this.itemEntity) <= 1.0D && this.itemEntity.isAlive())
         {
             this.itemEntity.remove();
