@@ -41,7 +41,7 @@ public class GoblinTraderEntity extends AbstractGoblinEntity
             Map<TradeRarity, List<VillagerTrades.ITrade>> tradeMap = entityTrades.getTradeMap();
             for(TradeRarity rarity : TradeRarity.values())
             {
-                List<VillagerTrades.ITrade> trades = tradeMap.get(TradeRarity.COMMON);
+                List<VillagerTrades.ITrade> trades = tradeMap.get(rarity);
                 int min = rarity.getMaximum().apply(trades, this.rand);
                 int max = rarity.getMaximum().apply(trades, this.rand);
                 this.addTrades(offers, trades, Math.max(min, max), rarity.shouldShuffle());
