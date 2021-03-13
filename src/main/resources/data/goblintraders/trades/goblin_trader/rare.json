@@ -4,6 +4,20 @@
     {
       "type": "goblintraders:basic",
       "offer_item": {
+        "item": "minecraft:experience_bottle",
+        "count": 1
+      },
+      "payment_item": {
+        "item": "minecraft:emerald",
+        "count": 3
+      },
+      "price_multiplier": 0.0,
+      "max_trades": 64,
+      "experience": 50
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
         "item": "minecraft:name_tag",
         "count": 1
       },
@@ -17,6 +31,20 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 2,
+      "experience": 40
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
+        "item": "minecraft:blue_ice",
+        "count": 1
+      },
+      "payment_item": {
+        "item": "minecraft:packed_ice",
+        "count": 4
+      },
+      "price_multiplier": 0.0,
+      "max_trades": 64,
       "experience": 40
     },
     {
@@ -329,40 +357,6 @@
         {
           "id": "minecraft:unbreaking",
           "level": 4
-        }
-      ]
-    },
-    {
-      "type": "goblintraders:basic",
-      "offer_item": {
-        "item": "minecraft:diamond_pickaxe",
-        "count": 1,
-        "nbt": "{Damage:0}"
-      },
-      "payment_item": {
-        "item": "minecraft:dragon_head",
-        "count": 5
-      },
-      "secondary_payment_item": {
-        "item": "minecraft:diamond_pickaxe",
-        "count": 1,
-        "nbt": "{Damage:0}"
-      },
-      "price_multiplier": 0.0,
-      "max_trades": 1,
-      "experience": 500,
-      "enchantments": [
-        {
-          "id": "minecraft:fortune",
-          "level": 5
-        },
-        {
-          "id": "minecraft:unbreaking",
-          "level": 5
-        },
-        {
-          "id": "minecraft:vanishing_curse",
-          "level": 1
         }
       ]
     }

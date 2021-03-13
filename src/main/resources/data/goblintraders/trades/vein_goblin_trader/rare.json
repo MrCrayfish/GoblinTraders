@@ -733,6 +733,186 @@
     {
       "type": "goblintraders:basic",
       "offer_item": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"goblintraders:extended_night_vision\"}"
+      },
+      "payment_item": {
+        "item": "minecraft:emerald",
+        "count": 15
+      },
+      "secondary_payment_item": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"minecraft:awkward\"}"
+      },
+      "price_multiplier": 0.5,
+      "max_trades": 8,
+      "experience": 1000
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"goblintraders:extended_invisibility\"}"
+      },
+      "payment_item": {
+        "item": "minecraft:emerald",
+        "count": 15
+      },
+      "secondary_payment_item": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"minecraft:awkward\"}"
+      },
+      "price_multiplier": 0.5,
+      "max_trades": 8,
+      "experience": 1000
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"goblintraders:powerful_jump_boost\"}"
+      },
+      "payment_item": {
+        "item": "minecraft:emerald",
+        "count": 15
+      },
+      "secondary_payment_item": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"minecraft:awkward\"}"
+      },
+      "price_multiplier": 0.5,
+      "max_trades": 8,
+      "experience": 1000
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"goblintraders:extended_fire_resistance\"}"
+      },
+      "payment_item": {
+        "item": "minecraft:emerald",
+        "count": 15
+      },
+      "secondary_payment_item": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"minecraft:awkward\"}"
+      },
+      "price_multiplier": 0.5,
+      "max_trades": 8,
+      "experience": 1000
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"goblintraders:powerful_speed\"}"
+      },
+      "payment_item": {
+        "item": "minecraft:emerald",
+        "count": 15
+      },
+      "secondary_payment_item": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"minecraft:awkward\"}"
+      },
+      "price_multiplier": 0.5,
+      "max_trades": 8,
+      "experience": 1000
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"goblintraders:extended_water_breathing\"}"
+      },
+      "payment_item": {
+        "item": "minecraft:emerald",
+        "count": 15
+      },
+      "secondary_payment_item": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"minecraft:awkward\"}"
+      },
+      "price_multiplier": 0.5,
+      "max_trades": 8,
+      "experience": 1000
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"goblintraders:powerful_instant_health\"}"
+      },
+      "payment_item": {
+        "item": "minecraft:emerald",
+        "count": 15
+      },
+      "secondary_payment_item": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"minecraft:awkward\"}"
+      },
+      "price_multiplier": 0.5,
+      "max_trades": 8,
+      "experience": 1000
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"goblintraders:powerful_regeneration\"}"
+      },
+      "payment_item": {
+        "item": "minecraft:emerald",
+        "count": 15
+      },
+      "secondary_payment_item": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"minecraft:awkward\"}"
+      },
+      "price_multiplier": 0.5,
+      "max_trades": 8,
+      "experience": 1000
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"goblintraders:extended_slow_falling\"}"
+      },
+      "payment_item": {
+        "item": "minecraft:emerald",
+        "count": 15
+      },
+      "secondary_payment_item": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"minecraft:awkward\"}"
+      },
+      "price_multiplier": 0.5,
+      "max_trades": 8,
+      "experience": 1000
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
         "item": "minecraft:spawner",
         "count": 1,
         "nbt": "{BlockEntityTag:{MaxNearbyEntities:3s,RequiredPlayerRange:32s,SpawnCount:2s,SpawnData:{id:\"minecraft:zombie\"},MaxSpawnDelay:800s,Delay:20s,x:0,y:0,z:0,id:\"minecraft:mob_spawner\",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:\"minecraft:zombie\"},Weight:1}]},display:{Lore:[\u0027{\"translate\":\"mob_spawner.type.zombie\"}\u0027]}}"

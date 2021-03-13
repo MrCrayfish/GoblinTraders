@@ -31,15 +31,19 @@
     {
       "type": "goblintraders:basic",
       "offer_item": {
-        "item": "minecraft:glowstone_dust",
-        "count": 4
+        "item": "minecraft:red_nether_bricks",
+        "count": 1
       },
       "payment_item": {
-        "item": "minecraft:glowstone",
+        "item": "minecraft:nether_wart",
+        "count": 1
+      },
+      "secondary_payment_item": {
+        "item": "minecraft:nether_brick",
         "count": 1
       },
       "price_multiplier": 0.0,
-      "max_trades": 32,
+      "max_trades": 128,
       "experience": 20
     }
   ]

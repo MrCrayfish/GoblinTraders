@@ -3,6 +3,7 @@ package com.mrcrayfish.goblintraders;
 import com.mrcrayfish.goblintraders.client.ClientHandler;
 import com.mrcrayfish.goblintraders.init.ModEntities;
 import com.mrcrayfish.goblintraders.init.ModItems;
+import com.mrcrayfish.goblintraders.init.ModPotions;
 import com.mrcrayfish.goblintraders.init.ModSounds;
 import com.mrcrayfish.goblintraders.init.ModStats;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
@@ -24,6 +25,7 @@ public class GoblinTraders
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         ModEntities.REGISTER.register(bus);
         ModItems.REGISTER.register(bus);
+        ModPotions.REGISTER.register(bus);
         ModSounds.REGISTER.register(bus);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onClientSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onCommonSetup);
