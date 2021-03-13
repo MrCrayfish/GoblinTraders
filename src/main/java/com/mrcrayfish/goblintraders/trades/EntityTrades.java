@@ -1,6 +1,5 @@
 package com.mrcrayfish.goblintraders.trades;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

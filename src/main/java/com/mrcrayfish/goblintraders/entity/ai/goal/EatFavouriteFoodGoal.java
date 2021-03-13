@@ -3,8 +3,6 @@ package com.mrcrayfish.goblintraders.entity.ai.goal;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.UseItemGoal;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.SoundEvents;
 
 import java.util.EnumSet;

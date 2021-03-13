@@ -1,7 +1,6 @@
 package com.mrcrayfish.goblintraders.init;
 
 import com.mrcrayfish.goblintraders.Reference;
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.RegistryObject;

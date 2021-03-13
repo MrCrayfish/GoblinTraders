@@ -6,7 +6,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mrcrayfish.goblintraders.Reference;
 import com.mrcrayfish.goblintraders.entity.TraderCreatureEntity;
-import com.mrcrayfish.goblintraders.trades.type.ITradeType;
 import net.minecraft.entity.EntityType;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IFutureReloadListener;

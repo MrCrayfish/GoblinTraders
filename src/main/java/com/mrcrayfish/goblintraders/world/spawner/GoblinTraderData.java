@@ -9,7 +9,8 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Author: MrCrayfish

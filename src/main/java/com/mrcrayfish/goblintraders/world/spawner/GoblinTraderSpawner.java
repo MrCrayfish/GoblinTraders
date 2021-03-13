@@ -2,9 +2,7 @@ package com.mrcrayfish.goblintraders.world.spawner;
 
 import com.mrcrayfish.goblintraders.Reference;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
-import com.mrcrayfish.goblintraders.entity.GoblinTraderEntity;
 import com.mrcrayfish.goblintraders.init.ModEntities;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -29,7 +27,6 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 /**
  * Author: MrCrayfish

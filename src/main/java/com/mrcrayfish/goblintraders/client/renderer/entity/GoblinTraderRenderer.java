@@ -3,14 +3,11 @@ package com.mrcrayfish.goblintraders.client.renderer.entity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mrcrayfish.goblintraders.client.renderer.entity.model.GoblinTraderModel;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 
 /**
