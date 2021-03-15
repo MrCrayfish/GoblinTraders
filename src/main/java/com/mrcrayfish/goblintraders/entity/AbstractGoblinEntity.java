@@ -346,7 +346,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
         boolean attacked = super.attackEntityFrom(source, amount);
-        if(attacked)
+        if(attacked && source.getTrueSource() instanceof PlayerEntity)
         {
             this.getNavigator().clearPath();
             this.dataManager.set(STUNNED, true);
