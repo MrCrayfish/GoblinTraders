@@ -283,6 +283,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
             heldItem.interactWithEntity(player, this, hand);
             return ActionResultType.SUCCESS;
         }
+        else if(this.isAlive() && !this.hasCustomer() && !this.isChild() && (this.isImmuneToFire() || !this.isBurning()) && !this.isStunned()) //TODO check for egg
         {
             if(this.getOffers().isEmpty())
             {
