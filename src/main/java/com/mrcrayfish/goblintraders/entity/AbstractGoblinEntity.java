@@ -3,6 +3,7 @@ package com.mrcrayfish.goblintraders.entity;
 import com.mrcrayfish.goblintraders.entity.ai.goal.AttackRevengeTargetGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.EatFavouriteFoodGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.FindFavouriteFoodGoal;
+import com.mrcrayfish.goblintraders.entity.ai.goal.FirePanicGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.FollowPotentialCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.LookAtCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.TradeWithPlayerGoal;
@@ -84,9 +85,10 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     protected void registerGoals()
     {
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
-        this.goalSelector.addGoal(2, new LookAtCustomerGoal(this));
-        this.goalSelector.addGoal(3, new AttackRevengeTargetGoal(this));
+        this.goalSelector.addGoal(1, new FirePanicGoal(this, 0.5F));
+        this.goalSelector.addGoal(2, new TradeWithPlayerGoal(this));
+        this.goalSelector.addGoal(3, new LookAtCustomerGoal(this));
+        this.goalSelector.addGoal(4, new AttackRevengeTargetGoal(this));
         this.goalSelector.addGoal(5, new FollowPotentialCustomerGoal(this));
         this.goalSelector.addGoal(6, new FindFavouriteFoodGoal(this));
         this.goalSelector.addGoal(7, new TemptGoal(this, 0.4D, Ingredient.fromStacks(this.getFavouriteFood()), false));
@@ -281,7 +283,6 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
             heldItem.interactWithEntity(player, this, hand);
             return ActionResultType.SUCCESS;
         }
-        else if(this.isAlive() && !this.hasCustomer() && !this.isChild()) //TODO check for egg
         {
             if(this.getOffers().isEmpty())
             {
