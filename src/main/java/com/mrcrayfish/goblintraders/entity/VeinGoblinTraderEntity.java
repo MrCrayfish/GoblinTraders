@@ -69,4 +69,10 @@ public class VeinGoblinTraderEntity extends AbstractGoblinEntity
             this.world.addParticle(ParticleTypes.FLAME, this.getPosX() - 0.5 + 1.0 * this.rand.nextDouble(), this.getPosY() + 0.5 - 0.5 + 1.0 * this.rand.nextDouble(), this.getPosZ() - 0.5 + 1.0 * this.rand.nextDouble(), 0, 0, 0);
         }
     }
+
+    @Override
+    public boolean isImmuneToFire()
+    {
+        return true;
+    }
 }
