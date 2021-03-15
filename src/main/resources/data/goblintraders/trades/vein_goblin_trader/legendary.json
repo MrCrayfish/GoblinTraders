@@ -1,35 +1,35 @@
 {
-  "replace": false,
-  "trades": [
-    {
-      "type": "goblintraders:basic",
-      "offer_item": {
-        "item": "minecraft:diamond_sword",
-        "count": 1,
-        "nbt": "{Damage:0}"
-      },
-      "payment_item": {
-        "item": "minecraft:dragon_head",
-        "count": 5
-      },
-      "secondary_payment_item": {
-        "item": "minecraft:diamond_sword",
-        "count": 1,
-        "nbt": "{Damage:0}"
-      },
-      "price_multiplier": 0.0,
-      "max_trades": 1,
-      "experience": 500,
-      "enchantments": [
+    "replace": false,
+    "trades": [
         {
-          "id": "minecraft:sharpness",
-          "level": 7
-        },
-        {
-          "id": "minecraft:unbreaking",
-          "level": 7
+            "type": "goblintraders:basic",
+            "offer_item": {
+                "item": "minecraft:diamond_sword",
+                "count": 1,
+                "nbt": "{Damage:0}"
+            },
+            "payment_item": {
+                "item": "minecraft:dragon_head",
+                "count": 5
+            },
+            "secondary_payment_item": {
+                "item": "minecraft:diamond_sword",
+                "count": 1,
+                "nbt": "{Damage:0}"
+            },
+            "price_multiplier": 0.0,
+            "max_trades": 1,
+            "experience": 500,
+            "enchantments": [
+                {
+                    "id": "minecraft:sharpness",
+                    "level": 7
+                },
+                {
+                    "id": "minecraft:unbreaking",
+                    "level": 7
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }
