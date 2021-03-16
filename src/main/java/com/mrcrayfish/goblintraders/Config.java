@@ -10,43 +10,41 @@ public class Config
 {
     public static class Common
     {
-        public final ForgeConfigSpec.IntValue goblinTraderSpawnChance;
-        public final ForgeConfigSpec.IntValue goblinTraderSpawnDelay;
-        public final ForgeConfigSpec.IntValue goblinTraderMinSpawnLevel;
-        public final ForgeConfigSpec.IntValue goblinTraderMaxSpawnLevel;
-        public final ForgeConfigSpec.IntValue veinGoblinTraderSpawnChance;
-        public final ForgeConfigSpec.IntValue veinGoblinTraderSpawnDelay;
-        public final ForgeConfigSpec.IntValue veinGoblinTraderMinSpawnLevel;
-        public final ForgeConfigSpec.IntValue veinGoblinTraderMaxSpawnLevel;
+        public final Goblin goblinTrader;
+        public final Goblin veinGoblinTrader;
 
         Common(ForgeConfigSpec.Builder builder)
         {
             builder.comment("Common configuration settings").push("common");
-            this.goblinTraderSpawnChance = builder
-                    .comment("The chance out of one hundred that the Goblin Trader will spawn in the over world")
-                    .defineInRange("goblinTraderSpawnChance", 25, 1, 100);
-            this.goblinTraderSpawnDelay = builder
-                    .comment("The amount of ticks before the Goblin Trader will spawn again")
-                    .defineInRange("goblinTraderSpawnDelay", 24000, 0, Integer.MAX_VALUE);
-            this.goblinTraderMinSpawnLevel = builder
-                    .comment("The minimum level the Goblin Trader can spawn")
-                    .defineInRange("goblinTraderMinSpawnLevel", 0, 0, 256);
-            this.goblinTraderMaxSpawnLevel = builder
-                    .comment("The maximum level the Goblin Trader can spawn")
-                    .defineInRange("goblinTraderMaxSpawnLevel", 64, 0, 256);
-            this.veinGoblinTraderSpawnChance = builder
-                    .comment("The chance out of one hundred that the Vein Goblin Trader will spawn in the over world")
-                    .defineInRange("veinGoblinTraderSpawnChance", 25, 1, 100);
-            this.veinGoblinTraderSpawnDelay = builder
-                    .comment("The amount of ticks before the Vein Goblin Trader will spawn again")
-                    .defineInRange("veinGoblinTraderSpawnDelay", 24000, 0, Integer.MAX_VALUE);
-            this.veinGoblinTraderMinSpawnLevel = builder
-                    .comment("The minimum level the Goblin Trader can spawn")
-                    .defineInRange("veinGoblinTraderMinSpawnLevel", 0, 0, 256);
-            this.veinGoblinTraderMaxSpawnLevel = builder
-                    .comment("The maximum level the Goblin Trader can spawn")
-                    .defineInRange("veinGoblinTraderMaxSpawnLevel", 128, 0, 256);
+            this.goblinTrader = new Goblin(builder, "Goblin Trader", "goblin_trader", 25, 24000, 0, 64);
+            this.veinGoblinTrader = new Goblin(builder, "Vein Goblin Trader", "vein_goblin_trader", 25, 24000, 0, 128);
             builder.pop();
+        }
+
+        public static class Goblin
+        {
+            public final ForgeConfigSpec.IntValue traderSpawnChance;
+            public final ForgeConfigSpec.IntValue traderSpawnDelay;
+            public final ForgeConfigSpec.IntValue traderMinSpawnLevel;
+            public final ForgeConfigSpec.IntValue traderMaxSpawnLevel;
+
+            Goblin(ForgeConfigSpec.Builder builder, String name, String key, int spawnChance, int spawnDelay, int minLevel, int maxLevel)
+            {
+                builder.comment(name + " settings").push(key);
+                this.traderSpawnChance = builder
+                        .comment("The chance out of one hundred that the trader will spawn in the over world")
+                        .defineInRange("traderSpawnChance", spawnChance, 1, 100);
+                this.traderSpawnDelay = builder
+                        .comment("The amount of ticks before the trader will spawn again")
+                        .defineInRange("traderSpawnDelay", spawnDelay, 0, Integer.MAX_VALUE);
+                this.traderMinSpawnLevel = builder
+                        .comment("The minimum level the trader can spawn")
+                        .defineInRange("traderMinSpawnLevel", minLevel, 0, 256);
+                this.traderMaxSpawnLevel = builder
+                        .comment("The maximum level the trader can spawn")
+                        .defineInRange("traderMaxSpawnLevel", maxLevel, 0, 256);
+                builder.pop();
+            }
         }
     }
 

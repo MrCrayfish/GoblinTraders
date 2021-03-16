@@ -28,8 +28,8 @@ public class SpawnHandler
     public static void onServerStart(FMLServerStartedEvent event)
     {
         MinecraftServer server = event.getServer();
-        spawners.put(DimensionType.OVERWORLD_ID, new GoblinTraderSpawner(server, "GoblinTrader", ModEntities.GOBLIN_TRADER.get(), Config.COMMON.goblinTraderMinSpawnLevel.get(), Config.COMMON.goblinTraderMaxSpawnLevel.get(), Config.COMMON.goblinTraderSpawnDelay.get(), Config.COMMON.goblinTraderSpawnChance.get()));
-        spawners.put(DimensionType.THE_NETHER_ID, new GoblinTraderSpawner(server, "VeinGoblinTrader", ModEntities.VEIN_GOBLIN_TRADER.get(), Config.COMMON.veinGoblinTraderMinSpawnLevel.get(), Config.COMMON.veinGoblinTraderMaxSpawnLevel.get(), Config.COMMON.veinGoblinTraderSpawnDelay.get(), Config.COMMON.veinGoblinTraderSpawnChance.get()));
+        spawners.put(DimensionType.OVERWORLD_ID, new GoblinTraderSpawner(server, "GoblinTrader", ModEntities.GOBLIN_TRADER.get(), Config.COMMON.goblinTrader));
+        spawners.put(DimensionType.THE_NETHER_ID, new GoblinTraderSpawner(server, "VeinGoblinTrader", ModEntities.VEIN_GOBLIN_TRADER.get(), Config.COMMON.veinGoblinTrader));
     }
 
     @SubscribeEvent
