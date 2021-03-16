@@ -1,5 +1,6 @@
 package com.mrcrayfish.goblintraders.world.spawner;
 
+import com.mrcrayfish.goblintraders.Config;
 import com.mrcrayfish.goblintraders.Reference;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import com.mrcrayfish.goblintraders.init.ModEntities;
@@ -15,6 +16,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.spawner.ISpecialSpawner;
 import net.minecraft.world.spawner.WorldEntitySpawner;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,89 +28,85 @@ import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Author: MrCrayfish
  */
-@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 public class GoblinTraderSpawner
 {
-    private final Random random = new Random();
-    private final ServerWorld world;
     private final GoblinData data;
+    private final EntityType<? extends AbstractGoblinEntity> entityType;
     private int delayBeforeSpawnLogic;
-    private int traderSpawnDelay;
-    private int traderSpawnChance;
-    private EntityType<? extends AbstractGoblinEntity> entityType;
+    private final int traderSpawnDelay;
+    private final int traderSpawnChance;
+    private int currentTraderSpawnDelay;
+    private int currentTraderSpawnChance;
     private int minLevel;
     private int maxLevel;
 
-    public GoblinTraderSpawner(ServerWorld world, GoblinData data, EntityType<? extends AbstractGoblinEntity> entityType, int minLevel, int maxLevel)
+    public GoblinTraderSpawner(MinecraftServer server, String key, EntityType<? extends AbstractGoblinEntity> entityType, int minLevel, int maxLevel, int traderSpawnDelay, int traderSpawnChance)
     {
-        this.world = world;
-        this.data = data;
-        this.delayBeforeSpawnLogic = 600;
-        this.traderSpawnDelay = data.getGoblinTraderSpawnDelay();
-        this.traderSpawnChance = data.getGoblinTraderSpawnChance();
+        this.data = GoblinTraderData.get(server).getGoblinData(key);
         this.entityType = entityType;
+        this.delayBeforeSpawnLogic = 600;
+        this.currentTraderSpawnDelay = this.data.getGoblinTraderSpawnDelay();
+        this.currentTraderSpawnChance = this.data.getGoblinTraderSpawnChance();
+        this.traderSpawnDelay = traderSpawnDelay;
+        this.traderSpawnChance = traderSpawnChance;
         this.minLevel = Math.min(minLevel, maxLevel);
         this.maxLevel = Math.max(minLevel, maxLevel);
-        if(this.traderSpawnDelay == 0 && this.traderSpawnChance == 0)
+        if(this.currentTraderSpawnDelay == 0 && this.currentTraderSpawnChance == 0)
         {
-            this.traderSpawnDelay = 24000;
-            this.traderSpawnChance = 25;
-            data.setGoblinTraderSpawnDelay(this.traderSpawnDelay);
-            data.setGoblinTraderSpawnChance(this.traderSpawnChance);
+            this.currentTraderSpawnDelay = this.traderSpawnDelay;
+            this.currentTraderSpawnChance = this.traderSpawnChance;
+            this.data.setGoblinTraderSpawnDelay(this.currentTraderSpawnDelay);
+            this.data.setGoblinTraderSpawnChance(this.currentTraderSpawnChance);
         }
     }
 
-    private void tick()
+    public int tick(World world)
     {
-        if(this.world.getGameRules().getBoolean(GameRules.DO_TRADER_SPAWNING))
+        if(world.getGameRules().getBoolean(GameRules.DO_TRADER_SPAWNING))
         {
             if(--this.delayBeforeSpawnLogic <= 0)
             {
-                this.delayBeforeSpawnLogic = 1200;
-                this.traderSpawnDelay -= 1200;
-                this.data.setGoblinTraderSpawnDelay(this.traderSpawnDelay);
-                if(this.traderSpawnDelay <= 0)
+                int delay = this.traderSpawnDelay / 20;
+                this.delayBeforeSpawnLogic = delay;
+                this.currentTraderSpawnDelay -= delay;
+                this.data.setGoblinTraderSpawnDelay(this.currentTraderSpawnDelay);
+                if(this.currentTraderSpawnDelay <= 0)
                 {
-                    this.traderSpawnDelay = 24000;
-                    if(this.world.getGameRules().getBoolean(GameRules.DO_MOB_SPAWNING))
+                    this.currentTraderSpawnDelay = this.traderSpawnDelay;
+                    if(world.getGameRules().getBoolean(GameRules.DO_MOB_SPAWNING))
                     {
-                        int i = this.traderSpawnChance;
-                        this.traderSpawnChance = MathHelper.clamp(this.traderSpawnChance + 25, 25, 75);
-                        this.data.setGoblinTraderSpawnChance(this.traderSpawnChance);
-                        if(this.random.nextInt(100) <= i)
+                        int spawnChance = this.currentTraderSpawnChance;
+                        this.currentTraderSpawnChance = MathHelper.clamp(this.currentTraderSpawnChance + this.traderSpawnChance, this.traderSpawnChance, 100);
+                        this.data.setGoblinTraderSpawnChance(this.currentTraderSpawnChance);
+                        if(world.rand.nextInt(100) <= spawnChance)
                         {
-                            if(this.spawnTrader())
+                            if(this.spawnTrader(world))
                             {
-                                this.traderSpawnChance = 25;
+                                this.currentTraderSpawnChance = this.traderSpawnChance;
                             }
                         }
                     }
                 }
             }
         }
+        return 0;
     }
 
-    private boolean spawnTrader()
+    private boolean spawnTrader(World world)
     {
-        //List<PlayerEntity> players = this.world.getServer().getPlayerList().getPlayers().stream().filter(player -> player.dimension == this.world.getDimension().getType() && player.isAlive()).collect(Collectors.toList());
-        List<PlayerEntity> players = new ArrayList<>(this.world.getPlayers());
+        List<PlayerEntity> players = new ArrayList<>(world.getPlayers());
         if(players.isEmpty())
         {
             return false;
         }
-        PlayerEntity randomPlayer = players.get(this.world.rand.nextInt(players.size()));
+        PlayerEntity randomPlayer = players.get(world.rand.nextInt(players.size()));
         if(randomPlayer == null)
         {
             return true;
-        }
-        else if (this.random.nextInt(5) != 0)
-        {
-            return false;
         }
         else
         {
@@ -124,7 +122,7 @@ public class GoblinTraderSpawner
                 if(goblin != null)
                 {
                     this.data.setGoblinTraderId(goblin.getUniqueID());
-                    goblin.setDespawnDelay(24000);
+                    goblin.setDespawnDelay(this.traderSpawnDelay);
                     goblin.setHomePosAndDistance(safestPos, 16);
                     return true;
                 }
@@ -143,9 +141,9 @@ public class GoblinTraderSpawner
         BlockPos safestPos = null;
         for(int attempts = 0; attempts < 50; attempts++)
         {
-            int posX = pos.getX() + this.random.nextInt(range * 2) - range;
-            int posY = pos.getY() + this.random.nextInt(range) - range / 2;
-            int posZ = pos.getZ() + this.random.nextInt(range * 2) - range;
+            int posX = pos.getX() + world.rand.nextInt(range * 2) - range;
+            int posY = pos.getY() + world.rand.nextInt(range) - range / 2;
+            int posZ = pos.getZ() + world.rand.nextInt(range * 2) - range;
             BlockPos testPos = this.findGround(world, new BlockPos(posX, posY, posZ), range);
             if(testPos != null && WorldEntitySpawner.canCreatureTypeSpawnAtLocation(EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, world, testPos, ModEntities.GOBLIN_TRADER.get()))
             {
@@ -193,37 +191,5 @@ public class GoblinTraderSpawner
             return false;
         }
         return true;
-    }
-
-    private static List<GoblinTraderSpawner> spawners = new ArrayList<>();
-
-    @SubscribeEvent
-    public static void onServerStart(FMLServerStartedEvent event)
-    {
-        MinecraftServer server = event.getServer();
-        GoblinTraderData traderData = GoblinTraderData.get(server);
-        spawners.add(new GoblinTraderSpawner(server.getWorld(World.OVERWORLD), traderData.getGoblinData("GoblinTrader"), ModEntities.GOBLIN_TRADER.get(), 0, 64));
-        spawners.add(new GoblinTraderSpawner(server.getWorld(World.THE_NETHER), traderData.getGoblinData("VeinGoblinTrader"), ModEntities.VEIN_GOBLIN_TRADER.get(), 0, 128));
-    }
-
-    @SubscribeEvent
-    public static void onServerStart(FMLServerStoppedEvent event)
-    {
-        spawners.clear();
-    }
-
-    @SubscribeEvent
-    public static void onWorldTick(TickEvent.WorldTickEvent event)
-    {
-        if(event.phase != TickEvent.Phase.START)
-            return;
-
-        if(event.side != LogicalSide.SERVER)
-            return;
-
-        if(!event.world.getDimensionKey().equals(World.OVERWORLD))
-            return;
-
-        spawners.forEach(GoblinTraderSpawner::tick);
     }
 }
