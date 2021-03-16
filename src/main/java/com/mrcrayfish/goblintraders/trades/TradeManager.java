@@ -25,6 +25,7 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -98,6 +99,10 @@ public class TradeManager implements IFutureReloadListener
             {
                 String folder = String.format("trades/%s", Objects.requireNonNull(entityType.getRegistryName()).getPath());
                 List<ResourceLocation> resources = new ArrayList<>(manager.getAllResourceLocations(folder, (fileName) -> fileName.endsWith(".json")));
+                resources.sort((r1, r2) -> {
+                    if(r1.getNamespace().equals(r2.getNamespace())) return 0;
+                    return r2.getNamespace().equals(Reference.MOD_ID) ? 1 : -1;
+                });
                 Map<TradeRarity, LinkedHashSet<ResourceLocation>> tradeResources = new EnumMap<>(TradeRarity.class);
                 Arrays.stream(TradeRarity.values()).forEach(rarity -> tradeResources.put(rarity, new LinkedHashSet<>()));
                 resources.forEach(resource ->
