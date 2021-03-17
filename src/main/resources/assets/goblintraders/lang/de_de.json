@@ -1,8 +1,8 @@
 {
-    "entity.goblintraders.goblin_trader": "Kobold H\u00e4ndler",
-    "entity.goblintraders.vein_goblin_trader": "Venenkobold H\u00e4ndler",
-    "subtitle.goblintraders.goblin_trader.annoyed_grunt": "Kobold genervtes grunzen",
-    "subtitle.goblintraders.goblin_trader.idle_grunt": "Kobold grunzt",
-    "item.goblintraders.goblin_trader_spawn_egg": "Kobold H\u00e4ndler-Spawn-Ei",
-    "item.goblintraders.vein_goblin_trader_spawn_egg": "Venenkobold H\u00e4ndler-Spawn-Ei"
+    "entity.goblintraders.goblin_trader": "Koboldh\u00e4ndler",
+    "entity.goblintraders.vein_goblin_trader": "Venenkoboldh\u00e4ndler",
+    "subtitle.goblintraders.goblin_trader.annoyed_grunt": "genervtes Koboldgrunzen",
+    "subtitle.goblintraders.goblin_trader.idle_grunt": "Koboldgrunzen",
+    "item.goblintraders.goblin_trader_spawn_egg": "Koboldh\u00e4ndler-Spawn-Ei",
+    "item.goblintraders.vein_goblin_trader_spawn_egg": "Venenkoboldh\u00e4ndler-Spawn-Ei"
 }
