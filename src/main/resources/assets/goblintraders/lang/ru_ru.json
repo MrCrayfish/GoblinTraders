@@ -1,8 +1,21 @@
 {
     "entity.goblintraders.goblin_trader": "Гоблин-торговец",
-    "entity.goblintraders.vein_goblin_trader": "Жилистый гоблин-торговец",
-    "subtitle.goblintraders.goblin_trader.annoyed_grunt": "Раздражённое ворчание",
-    "subtitle.goblintraders.goblin_trader.idle_grunt": "Ворчание",
+    "entity.goblintraders.vein_goblin_trader": "Гоблин-торговец жилами",
+    "subtitle.goblintraders.goblin_trader.annoyed_grunt": "Раздраженный ворчание",
+    "subtitle.goblintraders.goblin_trader.idle_grunt": "Пассивное ворчание",
     "item.goblintraders.goblin_trader_spawn_egg": "Яйцо призыва гоблина-торговца",
-    "item.goblintraders.vein_goblin_trader_spawn_egg": "Яйцо призыва жилистого гоблина-торговца"
+    "item.goblintraders.vein_goblin_trader_spawn_egg": "Яйцо призыва гоблина-торговца жиалми",
+    "stat.goblintraders.trade_with_goblin": "Торговля с гоблином",
+    "mob_spawner.type.zombie": "Зомби",
+    "mob_spawner.type.skeleton": "Скелет",
+    "mob_spawner.type.creeper": "Крипер",
+    "item.minecraft.potion.effect.haste": "Зелье Спешки",
+    "item.minecraft.potion.effect.absorption": "Зелье Поглощения",
+    "item.minecraft.potion.effect.dolphins_grace": "Зелье Грации дельфина",
+    "item.minecraft.splash_potion.effect.haste": "Взрывное зелье Спешки",
+    "item.minecraft.splash_potion.effect.absorption": "Взрывное зелье Поглощения",
+    "item.minecraft.splash_potion.effect.dolphins_grace": "Взрывное зелье Грации дельфина",
+    "item.minecraft.lingering_potion.effect.haste": "Оседающее зелье Спешки",
+    "item.minecraft.lingering_potion.effect.absorption": "Оседающее зелье Поглощения",
+    "item.minecraft.lingering_potion.effect.dolphins_grace": "Оседающее зелье Грации дельфина"
 }
