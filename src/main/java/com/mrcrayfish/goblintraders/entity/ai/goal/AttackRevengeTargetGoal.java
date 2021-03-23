@@ -32,7 +32,7 @@ public class AttackRevengeTargetGoal extends Goal
     public void tick()
     {
         LivingEntity revengeTarget = this.entity.getRevengeTarget();
-        if(revengeTarget != null && this.entity.getCustomer() == null && this.entity.getStunDelay() == 0)
+        if(revengeTarget != null && this.entity.getCustomer() == null && !this.entity.isStunned())
         {
             this.entity.getLookController().setLookPositionWithEntity(revengeTarget, 10.0F, (float) this.entity.getVerticalFaceSpeed());
             if(this.entity.getDistance(revengeTarget) >= 1.5D)

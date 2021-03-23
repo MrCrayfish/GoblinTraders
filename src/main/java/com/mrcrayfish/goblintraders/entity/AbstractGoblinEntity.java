@@ -1,43 +1,69 @@
 package com.mrcrayfish.goblintraders.entity;
 
+import com.mrcrayfish.goblintraders.entity.ai.goal.AttackRevengeTargetGoal;
+import com.mrcrayfish.goblintraders.entity.ai.goal.EatFavouriteFoodGoal;
+import com.mrcrayfish.goblintraders.entity.ai.goal.FindFavouriteFoodGoal;
+import com.mrcrayfish.goblintraders.entity.ai.goal.FirePanicGoal;
+import com.mrcrayfish.goblintraders.entity.ai.goal.FollowPotentialCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.LookAtCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.TradeWithPlayerGoal;
-import com.mrcrayfish.goblintraders.entity.ai.goal.*;
 import com.mrcrayfish.goblintraders.init.ModSounds;
 import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.INPC;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.merchant.IMerchant;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.LookAtWithoutMovingGoal;
+import net.minecraft.entity.ai.goal.MoveTowardsRestrictionGoal;
+import net.minecraft.entity.ai.goal.PrioritizedGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.TemptGoal;
+import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.MerchantOffer;
 import net.minecraft.item.MerchantOffers;
+import net.minecraft.item.UseAction;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.*;
+import net.minecraft.particles.ItemParticleData;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
  * Author: MrCrayfish
  */
-public abstract class AbstractGoblinEntity extends CreatureEntity implements INPC, IMerchant
+public abstract class AbstractGoblinEntity extends TraderCreatureEntity implements INPC
 {
-    protected static final int BASE_TRADES = 0;
-    protected static final int RARE_TRADES = 1;
-
     public static final DataParameter<Boolean> STUNNED = EntityDataManager.createKey(AbstractGoblinEntity.class, DataSerializers.BOOLEAN);
+    public static final DataParameter<Float> STUN_ROTATION = EntityDataManager.createKey(AbstractGoblinEntity.class, DataSerializers.FLOAT);
 
     @Nullable
     private PlayerEntity customer;
@@ -58,16 +84,30 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     protected void registerGoals()
     {
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
-        this.goalSelector.addGoal(2, new LookAtCustomerGoal(this));
-        this.goalSelector.addGoal(3, new AttackRevengeTargetGoal(this));
+        this.goalSelector.addGoal(1, new FirePanicGoal(this, 0.5F));
+        this.goalSelector.addGoal(2, new TradeWithPlayerGoal(this));
+        this.goalSelector.addGoal(3, new LookAtCustomerGoal(this));
+        this.goalSelector.addGoal(4, new AttackRevengeTargetGoal(this));
         this.goalSelector.addGoal(5, new FollowPotentialCustomerGoal(this));
         this.goalSelector.addGoal(6, new FindFavouriteFoodGoal(this));
-        this.goalSelector.addGoal(7, new EatFavouriteFoodGoal(this));
-        this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 0.4D));
-        this.goalSelector.addGoal(8, new MoveTowardsRestrictionGoal(this, 0.4D));
-        this.goalSelector.addGoal(9, new LookAtWithoutMovingGoal(this, PlayerEntity.class, 4.0F, 1.0F));
-        this.goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, 8.0F));
+        this.goalSelector.addGoal(7, new TemptGoal(this, 0.4D, Ingredient.fromStacks(this.getFavouriteFood()), false));
+        this.goalSelector.addGoal(8, new EatFavouriteFoodGoal(this));
+        this.goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 0.4D));
+        this.goalSelector.addGoal(9, new MoveTowardsRestrictionGoal(this, 0.4D));
+        this.goalSelector.addGoal(10, new LookAtWithoutMovingGoal(this, PlayerEntity.class, 4.0F, 1.0F));
+        this.goalSelector.addGoal(11, new LookAtGoal(this, MobEntity.class, 8.0F));
+    }
+
+    @Override
+    protected void updateMovementGoalFlags()
+    {
+        super.updateMovementGoalFlags();
+        if(this.isStunned())
+        {
+            this.goalSelector.setFlag(Goal.Flag.MOVE, true);
+            this.goalSelector.setFlag(Goal.Flag.JUMP, true);
+            this.goalSelector.setFlag(Goal.Flag.LOOK, true);
+        }
     }
 
     @Override
@@ -75,6 +115,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     {
         super.registerData();
         this.dataManager.register(STUNNED, false);
+        this.dataManager.register(STUN_ROTATION, 0F);
     }
 
     public abstract ResourceLocation getTexture();
@@ -105,7 +146,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
             if(this.stunDelay == 0)
             {
                 this.dataManager.set(STUNNED, false);
-                this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT, SoundCategory.NEUTRAL, 1.0F, 0.9F + this.getRNG().nextFloat() * 0.2F);
+                this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT.get(), SoundCategory.NEUTRAL, 1.0F, 0.9F + this.getRNG().nextFloat() * 0.2F);
             }
         }
         if(!this.world.isRemote)
@@ -128,15 +169,6 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     @Override
     public void setCustomer(@Nullable PlayerEntity player)
     {
-        if(player == null && this.customer != null && !this.isPreviousCustomer(this.customer))
-        {
-            if(this.rand.nextInt(5) == 0)
-            {
-                this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT, SoundCategory.NEUTRAL, 1.0F, 0.9F + this.getRNG().nextFloat() * 0.2F);
-                this.customer.attackEntityFrom(DamageSource.causeMobDamage(this), 0.5F);
-                this.swingArm(Hand.MAIN_HAND);
-            }
-        }
         this.customer = player;
     }
 
@@ -165,16 +197,16 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
 
     protected abstract void populateTradeData();
 
-    protected void addTrades(MerchantOffers offers, @Nullable VillagerTrades.ITrade[] trades, int max)
+    protected void addTrades(MerchantOffers offers, @Nullable List<VillagerTrades.ITrade> trades, int max, boolean shuffle)
     {
         if(trades == null)
             return;
-        List<Integer> randomIndexes = IntStream.range(0, trades.length).boxed().collect(Collectors.toList());
-        Collections.shuffle(randomIndexes);
-        randomIndexes = randomIndexes.subList(0, Math.min(trades.length, max));
+        List<Integer> randomIndexes = IntStream.range(0, trades.size()).boxed().collect(Collectors.toList());
+        if(shuffle) Collections.shuffle(randomIndexes);
+        randomIndexes = randomIndexes.subList(0, Math.min(trades.size(), max));
         for(Integer index : randomIndexes)
         {
-            VillagerTrades.ITrade trade = trades[index];
+            VillagerTrades.ITrade trade = trades.get(index);
             MerchantOffer offer = trade.getOffer(this, this.rand);
             if(offer != null)
             {
@@ -242,7 +274,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     }
 
     @Override
-    protected boolean processInteract(PlayerEntity player, Hand hand)
+    public boolean processInteract(PlayerEntity player, Hand hand)
     {
         ItemStack heldItem = player.getHeldItem(hand);
         if(heldItem.getItem() == Items.NAME_TAG)
@@ -250,7 +282,7 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
             heldItem.interactWithEntity(player, this, hand);
             return true;
         }
-        else if(this.isAlive() && !this.hasCustomer() && !this.isChild()) //TODO check for egg
+        else if(this.isAlive() && !this.hasCustomer() && !this.isChild() && (this.isImmuneToFire() || !this.isBurning()) && !this.isStunned()) //TODO check for egg
         {
             if(this.getOffers().isEmpty())
             {
@@ -266,6 +298,45 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
         return super.processInteract(player, hand);
     }
 
+    @Override
+    protected void func_226293_b_(ItemStack stack, int count)
+    {
+        if(!stack.isEmpty() && this.isHandActive())
+        {
+            if(stack.getUseAction() == UseAction.DRINK)
+            {
+                this.playSound(this.getDrinkSound(stack), 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+            }
+            if(stack.getUseAction() == UseAction.EAT)
+            {
+                this.spawnFoodParticles(stack, count);
+                this.playSound(this.getEatSound(stack), 0.5F + 0.5F * (float) this.rand.nextInt(2), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+            }
+        }
+    }
+
+    /**
+     * A custom implementation that fixes the position of the particles
+     */
+    protected void spawnFoodParticles(ItemStack stack, int count)
+    {
+        for(int i = 0; i < count; ++i)
+        {
+            Vec3d frontPosition = Vec3d.fromPitchYaw(0F, this.renderYawOffset).scale(0.25);
+            frontPosition = frontPosition.add(0, 0.35, 0);
+            frontPosition = frontPosition.add(this.getPositionVec());
+            Vec3d motion = new Vec3d(this.rand.nextDouble() * 0.2 - 0.1, 0.1, this.rand.nextDouble() * 0.2 - 0.1);
+            if(this.world instanceof ServerWorld)
+            {
+                ((ServerWorld) this.world).spawnParticle(new ItemParticleData(ParticleTypes.ITEM, stack), frontPosition.x, frontPosition.y, frontPosition.z, 1, motion.x, motion.y + 0.05D, motion.z, 0.0D);
+            }
+            else
+            {
+                this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, stack), frontPosition.x, frontPosition.y, frontPosition.z, motion.x, motion.y + 0.05D, motion.z);
+            }
+        }
+    }
+
     public boolean isPreviousCustomer(PlayerEntity player)
     {
         return this.tradedCustomers.contains(player.getUniqueID());
@@ -275,13 +346,20 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
         boolean attacked = super.attackEntityFrom(source, amount);
-        if(attacked)
+        if(attacked && source.getTrueSource() instanceof PlayerEntity)
         {
+            this.getNavigator().clearPath();
             this.dataManager.set(STUNNED, true);
+            this.dataManager.set(STUN_ROTATION, this.getStunRotation(source.getImmediateSource()));
             this.goalSelector.getRunningGoals().forEach(PrioritizedGoal::resetTask);
             this.stunDelay = 20;
         }
         return attacked;
+    }
+
+    private float getStunRotation(@Nullable Entity entity)
+    {
+        return entity != null ? entity.rotationYaw : 0F;
     }
 
     public int getStunDelay()
@@ -337,15 +415,33 @@ public abstract class AbstractGoblinEntity extends CreatureEntity implements INP
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return ModSounds.ENTITY_GOBLIN_TRADER_IDLE_GRUNT;
+        return ModSounds.ENTITY_GOBLIN_TRADER_IDLE_GRUNT.get();
     }
 
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return ModSounds.ENTITY_GOBLIN_TRADER_IDLE_GRUNT;
+        return ModSounds.ENTITY_GOBLIN_TRADER_IDLE_GRUNT.get();
     }
 
     public abstract ItemStack getFavouriteFood();
+
+    @Override
+    protected void registerAttributes()
+    {
+        super.registerAttributes();
+        this.getAttributes().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20D);
+        this.getAttributes().getAttributeInstance(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.7D);
+    }
+
+    public boolean isStunned()
+    {
+        return this.dataManager.get(STUNNED);
+    }
+
+    public float getStunRotation()
+    {
+        return this.dataManager.get(STUN_ROTATION);
+    }
 }

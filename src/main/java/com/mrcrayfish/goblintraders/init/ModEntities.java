@@ -3,18 +3,19 @@ package com.mrcrayfish.goblintraders.init;
 import com.mrcrayfish.goblintraders.Reference;
 import com.mrcrayfish.goblintraders.entity.GoblinTraderEntity;
 import com.mrcrayfish.goblintraders.entity.VeinGoblinTraderEntity;
+import com.mrcrayfish.goblintraders.item.SupplierSpawnEggItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -23,24 +24,22 @@ import java.util.function.Function;
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEntities
 {
-    private static final List<EntityType<?>> ENTITY_TYPES = new ArrayList<>();
+    public static final DeferredRegister<EntityType<?>> REGISTER = new DeferredRegister<>(ForgeRegistries.ENTITIES, Reference.MOD_ID);
 
-    public static final EntityType<GoblinTraderEntity> GOBLIN_TRADER = build(new ResourceLocation(Reference.MOD_ID, "goblin_trader"), GoblinTraderEntity::new, 0.5F, 1.0F);
-    public static final EntityType<VeinGoblinTraderEntity> VEIN_GOBLIN_TRADER = build(new ResourceLocation(Reference.MOD_ID, "vein_goblin_trader"), VeinGoblinTraderEntity::new, 0.5F, 1.0F);
+    public static final RegistryObject<EntityType<GoblinTraderEntity>> GOBLIN_TRADER = build("goblin_trader", GoblinTraderEntity::new, 0.5F, 1.0F);
+    public static final RegistryObject<EntityType<VeinGoblinTraderEntity>> VEIN_GOBLIN_TRADER = build("vein_goblin_trader", VeinGoblinTraderEntity::new, 0.5F, 1.0F);
 
-    private static <T extends Entity> EntityType<T> build(ResourceLocation id, Function<World, T> function, float width, float height)
+    private static <T extends Entity> RegistryObject<EntityType<T>> build(String id, Function<World, T> function, float width, float height)
     {
-        EntityType<T> type = EntityType.Builder.<T>create((entityType, world) -> function.apply(world), EntityClassification.CREATURE).size(width, height).setCustomClientFactory((spawnEntity, world) -> function.apply(world)).build(id.toString());
-        type.setRegistryName(id);
-        ENTITY_TYPES.add(type);
-        return type;
+        EntityType.Builder<T> builder = EntityType.Builder.<T>create((entityType, world) -> function.apply(world), EntityClassification.CREATURE).size(width, height).setCustomClientFactory((spawnEntity, world) -> function.apply(world));
+        builder.immuneToFire();
+        EntityType<T> type = builder.build(id);
+        return REGISTER.register(id, () -> type);
     }
 
-    @SubscribeEvent
-    @SuppressWarnings("unused")
-    public static void registerTypes(final RegistryEvent.Register<EntityType<?>> event)
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void register(RegistryEvent.Register<EntityType<?>> event)
     {
-        IForgeRegistry<EntityType<?>> registry = event.getRegistry();
-        ENTITY_TYPES.forEach(registry::register);
+        SupplierSpawnEggItem.updateEggMap();
     }
 }

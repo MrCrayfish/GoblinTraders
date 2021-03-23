@@ -3,6 +3,7 @@ package com.mrcrayfish.goblintraders.entity.ai.goal;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 
@@ -29,16 +30,20 @@ public class FindFavouriteFoodGoal extends Goal
     public boolean shouldExecute()
     {
         this.findFavouriteFood();
-        return this.itemEntity != null && this.itemEntity.isAlive() && this.entity.getNavigator().getPathToEntity(this.itemEntity, 0) != null;
+        return this.itemEntity != null && this.itemEntity.isAlive() && this.entity.getNavigator().getPathToEntity(this.itemEntity, 0) != null && !this.entity.isStunned();
     }
 
     @Override
     public void tick()
     {
+        if(this.entity.isStunned())
+            return;
+
         this.entity.getLookController().setLookPositionWithEntity(this.itemEntity, 10.0F, (float) this.entity.getVerticalFaceSpeed());
         this.entity.getNavigator().clearPath();
-        this.entity.getNavigator().tryMoveToEntityLiving(this.itemEntity, 0.5F);
-        if(this.entity.getDistance(this.itemEntity) <= 1.5D && this.itemEntity.isAlive())
+        Path path = this.entity.getNavigator().getPathToEntity(this.itemEntity, 0);
+        if(path != null) this.entity.getNavigator().setPath(path, 0.4F);
+        if(this.entity.getDistance(this.itemEntity) <= 1.0D && this.itemEntity.isAlive())
         {
             this.itemEntity.remove();
             this.entity.world.playSound(null, this.itemEntity.getPosX(), this.itemEntity.getPosY(), this.itemEntity.getPosZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.NEUTRAL, 1.0F, 0.75F);

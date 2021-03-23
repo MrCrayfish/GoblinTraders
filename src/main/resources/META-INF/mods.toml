@@ -1,23 +1,24 @@
 modLoader="javafml"
 loaderVersion="[31,)"
+license="All rights reserved"
 
 issueTrackerURL="https://github.com/MrCrayfish/GoblinTraders/issues"
 
 [[mods]]
 modId="goblintraders"
-version="1.2.0"
+version="1.3.1"
 displayName="Goblin Traders"
 updateJSONURL="https://raw.githubusercontent.com/MrCrayfish/ModUpdates/master/goblintraders/update.json"
 displayURL="https://mrcrayfish.com/mods?id=goblintraders"
 logoFile="goblintraders.png"
 credits="@ItsNahteTV on Twitter for idea. Thank you to @MCVinnyq for creating goblin model"
 authors="MrCrayfish"
-description='Adds goblins that trade speical items with the player!'
+description='Adds goblins that have unique trades to improve your adventure!'
 
 [[dependencies.goblintraders]]
     modId="forge"
     mandatory=true
-    versionRange="[31,)"
+    versionRange="[31.2.45,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.goblintraders]]

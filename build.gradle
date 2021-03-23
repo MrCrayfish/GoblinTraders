@@ -1,21 +1,28 @@
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url = 'https://repo.spongepowered.org/maven' }
         jcenter()
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
+apply plugin: 'org.spongepowered.mixin'
 
-version = '1.2.0-1.15.2'
+version = '1.3.1-1.15.2'
 group = 'com.mrcrayfish'
 archivesBaseName = 'goblintraders'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+
+mixin {
+    add sourceSets.main, "goblintraders.refmap.json"
+}
 
 minecraft {
     mappings channel: 'snapshot', version: '20200122-1.15.1'
@@ -24,6 +31,7 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
+            arg '-mixin.config=goblintraders.mixins.json'
             mods {
                 goblintraders {
                     source sourceSets.main
@@ -35,6 +43,7 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
+            arg '-mixin.config=goblintraders.mixins.json'
             mods {
                 goblintraders {
                     source sourceSets.main
@@ -46,7 +55,8 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
-            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/')
+            args '--mod', 'goblintraders', '--all', '--output', file('src/generated/resources/')
+            arg '-mixin.config=goblintraders.mixins.json'
             mods {
                 goblintraders {
                     source sourceSets.main
@@ -57,7 +67,7 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.15.2-31.1.0'
+    minecraft 'net.minecraftforge:forge:1.15.2-31.2.45'
 }
 
 jar {
@@ -69,7 +79,8 @@ jar {
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
             "Implementation-Vendor" : "MrCrayfish",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            "MixinConfigs": "goblintraders.mixins.json"
         ])
     }
 }

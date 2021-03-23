@@ -1,41 +1,20 @@
 package com.mrcrayfish.goblintraders.init;
 
 import com.mrcrayfish.goblintraders.Reference;
+import com.mrcrayfish.goblintraders.item.SupplierSpawnEggItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.SpawnEggItem;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.IForgeRegistry;
-
-import java.util.ArrayList;
-import java.util.List;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * Author: MrCrayfish
  */
-@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModItems
 {
-    private static final List<Item> ITEMS = new ArrayList<>();
+    public static final DeferredRegister<Item> REGISTER = new DeferredRegister<>(ForgeRegistries.ITEMS, Reference.MOD_ID);
 
-    public static final Item GOBLIN_TRADER_SPAWN_EGG = build(new ResourceLocation(Reference.MOD_ID, "goblin_trader_spawn_egg"), new SpawnEggItem(ModEntities.GOBLIN_TRADER, 0x4da744, 0x316f5d, new Item.Properties().group(ItemGroup.MISC)));
-    public static final Item VEIN_GOBLIN_TRADER_SPAWN_EGG = build(new ResourceLocation(Reference.MOD_ID, "vein_goblin_trader_spawn_egg"), new SpawnEggItem(ModEntities.VEIN_GOBLIN_TRADER, 0xf3982e, 0xf45b1f, new Item.Properties().group(ItemGroup.MISC)));
-
-    private static Item build(ResourceLocation id, Item item)
-    {
-        item.setRegistryName(id);
-        ITEMS.add(item);
-        return item;
-    }
-
-    @SubscribeEvent
-    @SuppressWarnings("unused")
-    public static void registerTypes(final RegistryEvent.Register<Item> event)
-    {
-        IForgeRegistry<Item> registry = event.getRegistry();
-        ITEMS.forEach(registry::register);
-    }
+    public static final RegistryObject<Item> GOBLIN_TRADER_SPAWN_EGG = REGISTER.register("goblin_trader_spawn_egg", () -> new SupplierSpawnEggItem(ModEntities.GOBLIN_TRADER::get, 0x4da744, 0x316f5d, new Item.Properties().group(ItemGroup.MISC)));
+    public static final RegistryObject<Item> VEIN_GOBLIN_TRADER_SPAWN_EGG = REGISTER.register("vein_goblin_trader_spawn_egg", () -> new SupplierSpawnEggItem(ModEntities.VEIN_GOBLIN_TRADER::get, 0xf3982e, 0xf45b1f, new Item.Properties().group(ItemGroup.MISC)));
 }

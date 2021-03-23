@@ -1,0 +1,125 @@
+{
+    "replace": false,
+    "trades": [
+        {
+            "type": "goblintraders:basic",
+            "offer_item": {
+                "item": "minecraft:potion",
+                "count": 1,
+                "nbt": "{Potion:\"goblintraders:haste\"}"
+            },
+            "payment_item": {
+                "item": "minecraft:emerald",
+                "count": 25
+            },
+            "secondary_payment_item": {
+                "item": "minecraft:potion",
+                "count": 1,
+                "nbt": "{Potion:\"minecraft:awkward\"}"
+            },
+            "price_multiplier": 0.5,
+            "max_trades": 4,
+            "experience": 1000
+        },
+        {
+            "type": "goblintraders:basic",
+            "offer_item": {
+                "item": "minecraft:potion",
+                "count": 1,
+                "nbt": "{Potion:\"goblintraders:absorption\"}"
+            },
+            "payment_item": {
+                "item": "minecraft:emerald",
+                "count": 25
+            },
+            "secondary_payment_item": {
+                "item": "minecraft:potion",
+                "count": 1,
+                "nbt": "{Potion:\"minecraft:awkward\"}"
+            },
+            "price_multiplier": 0.5,
+            "max_trades": 4,
+            "experience": 1000
+        },
+        {
+            "type": "goblintraders:basic",
+            "offer_item": {
+                "item": "minecraft:potion",
+                "count": 1,
+                "nbt": "{Potion:\"goblintraders:levitation\"}"
+            },
+            "payment_item": {
+                "item": "minecraft:emerald",
+                "count": 25
+            },
+            "secondary_payment_item": {
+                "item": "minecraft:potion",
+                "count": 1,
+                "nbt": "{Potion:\"minecraft:awkward\"}"
+            },
+            "price_multiplier": 0.5,
+            "max_trades": 4,
+            "experience": 1000
+        },
+        {
+            "type": "goblintraders:basic",
+            "offer_item": {
+                "item": "minecraft:potion",
+                "count": 1,
+                "nbt": "{Potion:\"goblintraders:luck\"}"
+            },
+            "payment_item": {
+                "item": "minecraft:emerald",
+                "count": 25
+            },
+            "secondary_payment_item": {
+                "item": "minecraft:potion",
+                "count": 1,
+                "nbt": "{Potion:\"minecraft:awkward\"}"
+            },
+            "price_multiplier": 0.5,
+            "max_trades": 4,
+            "experience": 1000
+        },
+        {
+            "type": "goblintraders:basic",
+            "offer_item": {
+                "item": "minecraft:potion",
+                "count": 1,
+                "nbt": "{Potion:\"goblintraders:dolphins_grace\"}"
+            },
+            "payment_item": {
+                "item": "minecraft:emerald",
+                "count": 25
+            },
+            "secondary_payment_item": {
+                "item": "minecraft:potion",
+                "count": 1,
+                "nbt": "{Potion:\"minecraft:awkward\"}"
+            },
+            "price_multiplier": 0.5,
+            "max_trades": 4,
+            "experience": 1000
+        },
+        {
+            "type": "goblintraders:basic",
+            "offer_item": {
+                "item": "minecraft:potion",
+                "count": 1,
+                "nbt": "{Potion:\"goblintraders:powerful_strength\"}"
+            },
+            "payment_item": {
+                "item": "minecraft:emerald",
+                "count": 25
+            },
+            "secondary_payment_item": {
+                "item": "minecraft:potion",
+                "count": 1,
+                "nbt": "{Potion:\"minecraft:awkward\"}"
+            },
+            "price_multiplier": 0.5,
+            "max_trades": 4,
+            "experience": 1000
+        }
+    ]
+}

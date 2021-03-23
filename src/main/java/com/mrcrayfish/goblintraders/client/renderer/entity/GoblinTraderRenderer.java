@@ -28,16 +28,21 @@ public class GoblinTraderRenderer extends MobRenderer<AbstractGoblinEntity, Gobl
     }
 
     @Override
-    public void render(AbstractGoblinEntity entity, float f1, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int light)
+    public void render(AbstractGoblinEntity entity, float entityYaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int light)
     {
         matrixStack.push();
-        if(entity.getDataManager().get(AbstractGoblinEntity.STUNNED))
+        if(entity.isHandActive())
+        {
+            matrixStack.translate(0, -0.15, 0);
+        }
+        if(entity.isStunned() && entity.isAlive())
         {
             float progress = Math.min(10F, entity.getFallCounter() + partialTicks) / 10F;
+            matrixStack.rotate(Vector3f.field_229181_d_.func_229187_a_(-entity.getStunRotation()));
             matrixStack.rotate(Vector3f.field_229179_b_.func_229187_a_(90F * progress));
-            matrixStack.translate(0, -0.5 * progress, 0);
+            matrixStack.rotate(Vector3f.field_229181_d_.func_229187_a_(entity.getStunRotation()));
         }
-        super.render(entity, f1, partialTicks, matrixStack, renderTypeBuffer, light);
+        super.render(entity, 0F, partialTicks, matrixStack, renderTypeBuffer, light);
         matrixStack.pop();
     }
 }

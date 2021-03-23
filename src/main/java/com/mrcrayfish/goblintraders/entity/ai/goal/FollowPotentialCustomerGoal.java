@@ -1,12 +1,8 @@
 package com.mrcrayfish.goblintraders.entity.ai.goal;
 
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
-import com.mrcrayfish.goblintraders.init.ModSounds;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
 
 import javax.annotation.Nullable;
 import java.util.Comparator;
@@ -20,8 +16,6 @@ public class FollowPotentialCustomerGoal extends Goal
 {
     private PlayerEntity potentialCustomer;
     private AbstractGoblinEntity entity;
-    private int hitTimer = 200;
-    private boolean hitOnce = false;
     private int coolDown = 0;
     private int timeout = 600;
 
@@ -43,6 +37,10 @@ public class FollowPotentialCustomerGoal extends Goal
             this.coolDown--;
             return false;
         }
+        if(this.entity.isStunned())
+        {
+            return false;
+        }
         this.findCustomer();
         return this.potentialCustomer != null && this.potentialCustomer.isAlive() && !this.entity.isPreviousCustomer(this.potentialCustomer);
     }
@@ -54,17 +52,6 @@ public class FollowPotentialCustomerGoal extends Goal
         if(this.entity.getDistance(this.potentialCustomer) >= 2.0D)
         {
             this.entity.getNavigator().tryMoveToEntityLiving(this.potentialCustomer, 0.4F);
-        }
-        else if(!this.hitOnce)
-        {
-            if(this.hitTimer-- == 0)
-            {
-                this.entity.world.playSound(null, this.entity.getPosX(), this.entity.getPosY(), this.entity.getPosZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT, SoundCategory.NEUTRAL, 1.0F, 0.9F + this.entity.getRNG().nextFloat() * 0.2F);
-                this.potentialCustomer.attackEntityFrom(DamageSource.causeMobDamage(this.entity), 0.5F);
-                this.entity.swingArm(Hand.MAIN_HAND);
-                this.hitOnce = true;
-                //TODO play a sound
-            }
         }
         this.timeout--;
     }
@@ -80,10 +67,8 @@ public class FollowPotentialCustomerGoal extends Goal
     {
         this.entity.getNavigator().clearPath();
         this.potentialCustomer = null;
-        this.hitOnce = false;
         this.timeout = 600;
         this.coolDown = 300;
-        this.hitTimer = 200;
     }
 
     @Nullable

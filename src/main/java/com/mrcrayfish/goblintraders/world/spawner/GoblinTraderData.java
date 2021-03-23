@@ -4,12 +4,14 @@ import com.mrcrayfish.goblintraders.Reference;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Author: MrCrayfish
