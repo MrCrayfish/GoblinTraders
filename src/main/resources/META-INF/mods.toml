@@ -14,6 +14,8 @@ logoFile="goblintraders.png"
 credits="@ItsNahteTV on Twitter for idea. Thank you to @MCVinnyq for creating goblin model"
 authors="MrCrayfish"
 description='Adds goblins that have unique trades to improve your adventure!'
+itemIcon="minecraft:apple"
+configBackground="minecraft:textures/block/stone.png"
 
 [[dependencies.goblintraders]]
     modId="forge"
