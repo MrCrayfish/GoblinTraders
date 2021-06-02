@@ -10,12 +10,10 @@ version="1.4.0"
 displayName="Goblin Traders"
 updateJSONURL="https://raw.githubusercontent.com/MrCrayfish/ModUpdates/master/goblintraders/update.json"
 displayURL="https://mrcrayfish.com/mods?id=goblintraders"
-logoFile="goblintraders.png"
+logoFile="goblintraders_logo.png"
 credits="@ItsNahteTV on Twitter for idea. Thank you to @MCVinnyq for creating goblin model"
 authors="MrCrayfish"
 description='Adds goblins that have unique trades to improve your adventure!'
-itemIcon="minecraft:apple"
-configBackground="minecraft:textures/block/stone.png"
 
 [[dependencies.goblintraders]]
     modId="forge"
@@ -29,3 +27,19 @@ configBackground="minecraft:textures/block/stone.png"
     versionRange="[1.16.3,1.17)"
     ordering="NONE"
     side="BOTH"
+[[dependencies.goblintraders]]
+    modId="configured"
+    mandatory=false
+    versionRange="[1.0.0,)"
+    ordering="NONE"
+    side="CLIENT"
+[[dependencies.goblintraders]]
+    modId="catalogue"
+    mandatory=false
+    versionRange="[1.2.0,)"
+    ordering="NONE"
+    side="CLIENT"
+
+[modproperties.goblintraders]
+    catalogueImageIcon="goblintraders_icon.png"
+    configuredBackground="minecraft:textures/block/stone.png"
