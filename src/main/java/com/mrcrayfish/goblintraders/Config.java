@@ -27,6 +27,7 @@ public class Config
             public final ForgeConfigSpec.IntValue traderSpawnDelay;
             public final ForgeConfigSpec.IntValue traderMinSpawnLevel;
             public final ForgeConfigSpec.IntValue traderMaxSpawnLevel;
+            public final ForgeConfigSpec.IntValue restockDelay;
 
             Goblin(ForgeConfigSpec.Builder builder, String name, String key, int spawnChance, int spawnDelay, int minLevel, int maxLevel)
             {
@@ -43,6 +44,9 @@ public class Config
                 this.traderMaxSpawnLevel = builder
                         .comment("The maximum level the trader can spawn")
                         .defineInRange("traderMaxSpawnLevel", maxLevel, 0, 256);
+                this.restockDelay = builder
+                        .comment("The amount of ticks before the trader will replenish it's trades")
+                        .defineInRange("restockDelay", 48000, 1, Integer.MAX_VALUE);
                 builder.pop();
             }
         }

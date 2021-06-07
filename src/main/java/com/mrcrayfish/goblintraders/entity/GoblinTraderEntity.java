@@ -1,5 +1,6 @@
 package com.mrcrayfish.goblintraders.entity;
 
+import com.mrcrayfish.goblintraders.Config;
 import com.mrcrayfish.goblintraders.Reference;
 import com.mrcrayfish.goblintraders.init.ModEntities;
 import com.mrcrayfish.goblintraders.trades.EntityTrades;
@@ -53,5 +54,11 @@ public class GoblinTraderEntity extends AbstractGoblinEntity
     public ItemStack getFavouriteFood()
     {
         return new ItemStack(Items.APPLE);
+    }
+
+    @Override
+    protected int getMaxRestockDelay()
+    {
+        return Config.COMMON.goblinTrader.restockDelay.get();
     }
 }

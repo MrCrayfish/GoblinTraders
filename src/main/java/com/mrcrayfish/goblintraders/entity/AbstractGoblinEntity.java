@@ -75,6 +75,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     private int stunDelay;
     private int despawnDelay;
     private int fallCounter;
+    private int restockDelay;
 
     protected AbstractGoblinEntity(EntityType<? extends CreatureEntity> type, World worldIn)
     {
@@ -164,6 +165,14 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         else
         {
             this.fallCounter = 0;
+        }
+        if(!this.world.isRemote())
+        {
+            if(++this.restockDelay == this.getMaxRestockDelay())
+            {
+                this.getOffers().forEach(MerchantOffer::resetUses);
+                this.restockDelay = 0;
+            }
         }
     }
 
@@ -390,6 +399,10 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         {
             this.despawnDelay = compound.getInt("DespawnDelay");
         }
+        if(compound.contains("RestockDelay", Constants.NBT.TAG_INT))
+        {
+            this.restockDelay = compound.getInt("RestockDelay");
+        }
     }
 
     @Override
@@ -402,6 +415,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
             compound.put("Offers", merchantoffers.write());
         }
         compound.putInt("DespawnDelay", this.despawnDelay);
+        compound.putInt("RestockDelay", this.restockDelay);
     }
 
     private void handleDespawn()
@@ -444,4 +458,6 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     {
         return this.dataManager.get(STUN_ROTATION);
     }
+
+    protected abstract int getMaxRestockDelay();
 }

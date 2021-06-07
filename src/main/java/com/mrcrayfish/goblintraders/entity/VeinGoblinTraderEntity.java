@@ -1,5 +1,6 @@
 package com.mrcrayfish.goblintraders.entity;
 
+import com.mrcrayfish.goblintraders.Config;
 import com.mrcrayfish.goblintraders.Reference;
 import com.mrcrayfish.goblintraders.init.ModEntities;
 import com.mrcrayfish.goblintraders.trades.EntityTrades;
@@ -74,5 +75,11 @@ public class VeinGoblinTraderEntity extends AbstractGoblinEntity
     public boolean isImmuneToFire()
     {
         return true;
+    }
+
+    @Override
+    protected int getMaxRestockDelay()
+    {
+        return Config.COMMON.veinGoblinTrader.restockDelay.get();
     }
 }
