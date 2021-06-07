@@ -118,10 +118,9 @@ public class GoblinTraderSpawner
                 {
                     return false;
                 }
-                AbstractGoblinEntity goblin = this.entityType.spawn((ServerWorld) randomPlayer.world, (CompoundNBT) null, (ITextComponent) null, (PlayerEntity) null, safestPos, SpawnReason.EVENT, false, false);
+                AbstractGoblinEntity goblin = this.entityType.spawn((ServerWorld) randomPlayer.world, null, null, null, safestPos, SpawnReason.EVENT, false, false);
                 if(goblin != null)
                 {
-                    this.data.setGoblinTraderId(goblin.getUniqueID());
                     goblin.setDespawnDelay(this.traderSpawnDelay);
                     goblin.setHomePosAndDistance(safestPos, 16);
                     return true;

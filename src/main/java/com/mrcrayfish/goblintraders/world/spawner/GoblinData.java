@@ -13,7 +13,6 @@ public class GoblinData
     private GoblinTraderData data;
     private int goblinTraderSpawnDelay;
     private int goblinTraderSpawnChance;
-    private UUID goblinTraderId;
 
     public GoblinData(GoblinTraderData data)
     {
@@ -32,12 +31,6 @@ public class GoblinData
         this.data.setDirty(true);
     }
 
-    public void setGoblinTraderId(UUID goblinTraderId)
-    {
-        this.goblinTraderId = goblinTraderId;
-        this.data.setDirty(true);
-    }
-
     public int getGoblinTraderSpawnDelay()
     {
         return goblinTraderSpawnDelay;
@@ -46,11 +39,6 @@ public class GoblinData
     public int getGoblinTraderSpawnChance()
     {
         return goblinTraderSpawnChance;
-    }
-
-    public UUID getGoblinTraderId()
-    {
-        return goblinTraderId;
     }
 
     public void read(CompoundNBT compound)
@@ -63,20 +51,12 @@ public class GoblinData
         {
             this.goblinTraderSpawnChance = compound.getInt("GoblinTraderSpawnChance");
         }
-        if(compound.hasUniqueId("GoblinTraderId"))
-        {
-            this.goblinTraderId = compound.getUniqueId("GoblinTraderId");
-        }
     }
 
     public CompoundNBT write(CompoundNBT compound)
     {
         compound.putInt("GoblinTraderSpawnDelay", this.goblinTraderSpawnDelay);
         compound.putInt("GoblinTraderSpawnChance", this.goblinTraderSpawnChance);
-        if(this.goblinTraderId != null)
-        {
-            compound.putUniqueId("GoblinTraderId", this.goblinTraderId);
-        }
         return compound;
     }
 }
