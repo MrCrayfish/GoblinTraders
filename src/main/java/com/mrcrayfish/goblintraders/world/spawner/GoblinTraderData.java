@@ -47,10 +47,6 @@ public class GoblinTraderData extends WorldSavedData
         {
             this.getGoblinData("GoblinTrader").setGoblinTraderSpawnChance(compound.getInt("GoblinTraderSpawnChance"));
         }
-        if(compound.hasUniqueId("GoblinTraderId"))
-        {
-            this.getGoblinData("GoblinTrader").setGoblinTraderId(compound.getUniqueId("GoblinTraderId"));
-        }
         if(compound.contains("Data", Constants.NBT.TAG_LIST))
         {
             this.data.clear();
