@@ -12,12 +12,14 @@ public class Config
     {
         public final Goblin goblinTrader;
         public final Goblin veinGoblinTrader;
+        public final ForgeConfigSpec.BooleanValue preventDespawnIfNamed;
 
         Common(ForgeConfigSpec.Builder builder)
         {
             builder.comment("Common configuration settings").push("common");
             this.goblinTrader = new Goblin(builder, "Goblin Trader", "goblin_trader", 25, 24000, 0, 64);
             this.veinGoblinTrader = new Goblin(builder, "Vein Goblin Trader", "vein_goblin_trader", 25, 24000, 0, 128);
+            this.preventDespawnIfNamed = builder.comment("If true, prevents the trader from despawning if named").define("preventDespawnIfNamed", true);
             builder.pop();
         }
 

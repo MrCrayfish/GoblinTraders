@@ -1,5 +1,6 @@
 package com.mrcrayfish.goblintraders.entity;
 
+import com.mrcrayfish.goblintraders.Config;
 import com.mrcrayfish.goblintraders.entity.ai.goal.AttackRevengeTargetGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.EatFavouriteFoodGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.FindFavouriteFoodGoal;
@@ -151,7 +152,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
                 this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT.get(), SoundCategory.NEUTRAL, 1.0F, 0.9F + this.getRNG().nextFloat() * 0.2F);
             }
         }
-        if(!this.world.isRemote && !this.isNoDespawnRequired())
+        if(!this.world.isRemote && (!Config.COMMON.preventDespawnIfNamed.get() || !this.isNoDespawnRequired()))
         {
             this.handleDespawn();
         }
