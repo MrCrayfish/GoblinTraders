@@ -13,8 +13,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 64,
-      "experience": 50,
-      "limited": false
+      "experience": 50
     },
     {
       "type": "goblintraders:basic",
@@ -32,8 +31,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 2,
-      "experience": 40,
-      "limited": false
+      "experience": 40
     },
     {
       "type": "goblintraders:basic",
@@ -47,8 +45,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 64,
-      "experience": 40,
-      "limited": false
+      "experience": 40
     },
     {
       "type": "goblintraders:basic",
@@ -75,8 +72,7 @@
           "id": "minecraft:luck_of_the_sea",
           "level": 5
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -103,8 +99,7 @@
           "id": "minecraft:lure",
           "level": 5
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -118,8 +113,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
-      "limited": true
+      "experience": 100
     },
     {
       "type": "goblintraders:basic",
@@ -133,8 +127,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
-      "limited": true
+      "experience": 100
     },
     {
       "type": "goblintraders:basic",
@@ -148,8 +141,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
-      "limited": true
+      "experience": 100
     },
     {
       "type": "goblintraders:basic",
@@ -163,8 +155,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
-      "limited": true
+      "experience": 100
     },
     {
       "type": "goblintraders:basic",
@@ -178,8 +169,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
-      "limited": true
+      "experience": 100
     },
     {
       "type": "goblintraders:basic",
@@ -206,8 +196,7 @@
           "id": "minecraft:efficiency",
           "level": 6
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -234,8 +223,7 @@
           "id": "minecraft:unbreaking",
           "level": 4
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -262,8 +250,7 @@
           "id": "minecraft:fortune",
           "level": 4
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -290,8 +277,7 @@
           "id": "minecraft:efficiency",
           "level": 6
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -318,8 +304,7 @@
           "id": "minecraft:unbreaking",
           "level": 4
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -346,8 +331,7 @@
           "id": "minecraft:efficiency",
           "level": 6
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -374,8 +358,7 @@
           "id": "minecraft:unbreaking",
           "level": 4
         }
-      ],
-      "limited": true
+      ]
     }
   ]
 }

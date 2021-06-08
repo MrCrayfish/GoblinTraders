@@ -26,8 +26,7 @@
           "id": "minecraft:sharpness",
           "level": 6
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -54,8 +53,7 @@
           "id": "minecraft:looting",
           "level": 4
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -82,8 +80,7 @@
           "id": "minecraft:sweeping",
           "level": 4
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -110,8 +107,7 @@
           "id": "minecraft:fire_aspect",
           "level": 3
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -138,8 +134,7 @@
           "id": "minecraft:knockback",
           "level": 3
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -166,8 +161,7 @@
           "id": "minecraft:bane_of_arthropods",
           "level": 6
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -194,8 +188,7 @@
           "id": "minecraft:smite",
           "level": 6
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -222,8 +215,7 @@
           "id": "minecraft:blast_protection",
           "level": 5
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -250,8 +242,7 @@
           "id": "minecraft:fire_protection",
           "level": 5
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -278,8 +269,7 @@
           "id": "minecraft:projectile_protection",
           "level": 5
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -306,8 +296,7 @@
           "id": "minecraft:protection",
           "level": 5
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -334,8 +323,7 @@
           "id": "minecraft:unbreaking",
           "level": 4
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -362,8 +350,7 @@
           "id": "minecraft:blast_protection",
           "level": 5
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -390,8 +377,7 @@
           "id": "minecraft:fire_protection",
           "level": 5
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -418,8 +404,7 @@
           "id": "minecraft:projectile_protection",
           "level": 5
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -446,8 +431,7 @@
           "id": "minecraft:protection",
           "level": 5
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -474,8 +458,7 @@
           "id": "minecraft:unbreaking",
           "level": 4
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -502,8 +485,7 @@
           "id": "minecraft:blast_protection",
           "level": 5
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -530,8 +512,7 @@
           "id": "minecraft:fire_protection",
           "level": 5
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -558,8 +539,7 @@
           "id": "minecraft:projectile_protection",
           "level": 5
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -586,8 +566,7 @@
           "id": "minecraft:protection",
           "level": 5
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -614,8 +593,7 @@
           "id": "minecraft:unbreaking",
           "level": 4
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -642,8 +620,7 @@
           "id": "minecraft:blast_protection",
           "level": 5
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -670,8 +647,7 @@
           "id": "minecraft:fire_protection",
           "level": 5
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -698,8 +674,7 @@
           "id": "minecraft:projectile_protection",
           "level": 5
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -726,8 +701,7 @@
           "id": "minecraft:protection",
           "level": 5
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -754,8 +728,7 @@
           "id": "minecraft:unbreaking",
           "level": 4
         }
-      ],
-      "limited": true
+      ]
     },
     {
       "type": "goblintraders:basic",
@@ -775,8 +748,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 8,
-      "experience": 1000,
-      "limited": false
+      "experience": 1000
     },
     {
       "type": "goblintraders:basic",
@@ -796,8 +768,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 8,
-      "experience": 1000,
-      "limited": false
+      "experience": 1000
     },
     {
       "type": "goblintraders:basic",
@@ -817,8 +788,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 8,
-      "experience": 1000,
-      "limited": false
+      "experience": 1000
     },
     {
       "type": "goblintraders:basic",
@@ -838,8 +808,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 8,
-      "experience": 1000,
-      "limited": false
+      "experience": 1000
     },
     {
       "type": "goblintraders:basic",
@@ -859,8 +828,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 8,
-      "experience": 1000,
-      "limited": false
+      "experience": 1000
     },
     {
       "type": "goblintraders:basic",
@@ -880,8 +848,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 8,
-      "experience": 1000,
-      "limited": false
+      "experience": 1000
     },
     {
       "type": "goblintraders:basic",
@@ -901,8 +868,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 8,
-      "experience": 1000,
-      "limited": false
+      "experience": 1000
     },
     {
       "type": "goblintraders:basic",
@@ -922,8 +888,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 8,
-      "experience": 1000,
-      "limited": false
+      "experience": 1000
     },
     {
       "type": "goblintraders:basic",

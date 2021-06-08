@@ -19,8 +19,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 4,
-      "experience": 1000,
-      "limited": false
+      "experience": 1000
     },
     {
       "type": "goblintraders:basic",
@@ -40,8 +39,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 4,
-      "experience": 1000,
-      "limited": false
+      "experience": 1000
     },
     {
       "type": "goblintraders:basic",
@@ -61,8 +59,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 4,
-      "experience": 1000,
-      "limited": false
+      "experience": 1000
     },
     {
       "type": "goblintraders:basic",
@@ -82,8 +79,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 4,
-      "experience": 1000,
-      "limited": false
+      "experience": 1000
     },
     {
       "type": "goblintraders:basic",
@@ -103,8 +99,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 4,
-      "experience": 1000,
-      "limited": false
+      "experience": 1000
     },
     {
       "type": "goblintraders:basic",
@@ -124,8 +119,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 4,
-      "experience": 1000,
-      "limited": false
+      "experience": 1000
     }
   ]
 }
