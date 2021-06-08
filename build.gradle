@@ -24,6 +24,8 @@ mixin {
     add sourceSets.main, "goblintraders.refmap.json"
 }
 
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
 minecraft {
     mappings channel: 'snapshot', version: '20201028-1.16.3'
     runs {

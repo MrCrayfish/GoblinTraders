@@ -194,6 +194,7 @@ public class GoblinTradeProvider extends TradeProvider
                 .setMaxTrades(2)
                 .setExperience(100)
                 .addEnchantment(new EnchantmentData(Enchantments.LUCK_OF_THE_SEA, 5))
+                
                 .build());
 
         ItemStack lureBook = new ItemStack(Items.ENCHANTED_BOOK);
@@ -206,6 +207,7 @@ public class GoblinTradeProvider extends TradeProvider
                 .setMaxTrades(2)
                 .setExperience(100)
                 .addEnchantment(new EnchantmentData(Enchantments.LURE, 5))
+                
                 .build());
 
         Item[] creeperMusicDiscs = new Item[]{Items.MUSIC_DISC_CAT, Items.MUSIC_DISC_BLOCKS, Items.MUSIC_DISC_CHIRP, Items.MUSIC_DISC_MELLOHI, Items.MUSIC_DISC_STAL};

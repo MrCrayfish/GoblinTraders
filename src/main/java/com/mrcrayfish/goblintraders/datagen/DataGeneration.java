@@ -21,5 +21,6 @@ public class DataGeneration
     private static void registerCommonProviders(DataGenerator generator)
     {
         generator.addProvider(new GoblinTradeProvider(generator));
+        generator.addProvider(new LootTableProvider(generator));
     }
 }
