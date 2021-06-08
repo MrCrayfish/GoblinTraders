@@ -47,8 +47,8 @@ public class Config
                         .comment("The maximum level the trader can spawn")
                         .defineInRange("traderMaxSpawnLevel", maxLevel, 0, 256);
                 this.restockDelay = builder
-                        .comment("The amount of ticks before the trader will replenish it's trades")
-                        .defineInRange("restockDelay", 48000, 1, Integer.MAX_VALUE);
+                        .comment("The amount of ticks before the trader will replenish it's trades. Set to -1 to disable restocking")
+                        .defineInRange("restockDelay", 48000, -1, Integer.MAX_VALUE);
                 builder.pop();
             }
         }

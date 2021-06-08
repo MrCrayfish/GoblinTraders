@@ -167,7 +167,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         {
             this.fallCounter = 0;
         }
-        if(!this.world.isRemote())
+        if(!this.world.isRemote() && this.getMaxRestockDelay() != -1)
         {
             if(++this.restockDelay == this.getMaxRestockDelay())
             {
