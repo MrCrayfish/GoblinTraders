@@ -461,4 +461,6 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     }
 
     protected abstract int getMaxRestockDelay();
+
+    public abstract boolean canAttackBack();
 }

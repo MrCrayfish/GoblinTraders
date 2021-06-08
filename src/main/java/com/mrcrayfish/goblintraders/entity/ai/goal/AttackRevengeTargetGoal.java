@@ -25,7 +25,7 @@ public class AttackRevengeTargetGoal extends Goal
     @Override
     public boolean shouldExecute()
     {
-        return this.entity.getRevengeTarget() != null && this.entity.getRevengeTarget().isAlive() && this.entity.getDistance(this.entity.getRevengeTarget()) <= 10.0F && (!(this.entity.getRevengeTarget() instanceof PlayerEntity) || !((PlayerEntity)this.entity.getRevengeTarget()).isCreative());
+        return this.entity.canAttackBack() && this.entity.getRevengeTarget() != null && this.entity.getRevengeTarget().isAlive() && this.entity.getDistance(this.entity.getRevengeTarget()) <= 10.0F && (!(this.entity.getRevengeTarget() instanceof PlayerEntity) || !((PlayerEntity)this.entity.getRevengeTarget()).isCreative());
     }
 
     @Override

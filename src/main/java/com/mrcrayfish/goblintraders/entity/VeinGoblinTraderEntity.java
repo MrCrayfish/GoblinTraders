@@ -82,4 +82,10 @@ public class VeinGoblinTraderEntity extends AbstractGoblinEntity
     {
         return Config.COMMON.veinGoblinTrader.restockDelay.get();
     }
+
+    @Override
+    public boolean canAttackBack()
+    {
+        return Config.COMMON.veinGoblinTrader.canAttackBack.get();
+    }
 }

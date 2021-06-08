@@ -30,6 +30,7 @@ public class Config
             public final ForgeConfigSpec.IntValue traderMinSpawnLevel;
             public final ForgeConfigSpec.IntValue traderMaxSpawnLevel;
             public final ForgeConfigSpec.IntValue restockDelay;
+            public final ForgeConfigSpec.BooleanValue canAttackBack;
 
             Goblin(ForgeConfigSpec.Builder builder, String name, String key, int spawnChance, int spawnDelay, int minLevel, int maxLevel)
             {
@@ -49,6 +50,9 @@ public class Config
                 this.restockDelay = builder
                         .comment("The amount of ticks before the trader will replenish it's trades. Set to -1 to disable restocking")
                         .defineInRange("restockDelay", 48000, -1, Integer.MAX_VALUE);
+                this.canAttackBack = builder
+                        .comment("If true, the goblin will try to hit back a player or mob that hit them first")
+                        .define("canAttackBack", true);
                 builder.pop();
             }
         }

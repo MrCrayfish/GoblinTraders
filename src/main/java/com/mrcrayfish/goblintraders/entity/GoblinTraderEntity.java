@@ -61,4 +61,10 @@ public class GoblinTraderEntity extends AbstractGoblinEntity
     {
         return Config.COMMON.goblinTrader.restockDelay.get();
     }
+
+    @Override
+    public boolean canAttackBack()
+    {
+        return Config.COMMON.goblinTrader.canAttackBack.get();
+    }
 }
