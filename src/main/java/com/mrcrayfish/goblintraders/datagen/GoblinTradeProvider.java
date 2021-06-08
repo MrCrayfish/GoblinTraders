@@ -355,7 +355,7 @@ public class GoblinTradeProvider extends TradeProvider
         }
 
         //TODO not sure if this will make it into the final version.
-        ImmutableMap<EntityType<?>, Item> spawnerMap = ImmutableMap.of(EntityType.ZOMBIE, Items.ZOMBIE_HEAD, EntityType.SKELETON, Items.SKELETON_SKULL, EntityType.CREEPER, Items.CREEPER_HEAD);
+        /*ImmutableMap<EntityType<?>, Item> spawnerMap = ImmutableMap.of(EntityType.ZOMBIE, Items.ZOMBIE_HEAD, EntityType.SKELETON, Items.SKELETON_SKULL, EntityType.CREEPER, Items.CREEPER_HEAD);
         spawnerMap.forEach((entityType, item) ->
         {
             MobSpawnerTileEntity mobSpawner = new MobSpawnerTileEntity();
@@ -382,7 +382,7 @@ public class GoblinTradeProvider extends TradeProvider
                     .setMaxTrades(1)
                     .setExperience(1000)
                     .build());
-        });
+        });*/
 
         /* ************************************************************************************** *
          *                                      EPIC                                              *
