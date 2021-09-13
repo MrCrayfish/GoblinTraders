@@ -1,8 +1,8 @@
 package com.mrcrayfish.goblintraders.entity.ai.goal;
 
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.EnumSet;
 
@@ -16,11 +16,11 @@ public class TradeWithPlayerGoal extends Goal
     public TradeWithPlayerGoal(AbstractGoblinEntity entity)
     {
         this.entity = entity;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE));
+        this.setFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE));
     }
 
     @Override
-    public boolean shouldExecute()
+    public boolean canUse()
     {
         if(!this.entity.isAlive())
         {
@@ -34,34 +34,34 @@ public class TradeWithPlayerGoal extends Goal
         {
             return false;
         }
-        else if(this.entity.velocityChanged)
+        else if(this.entity.hurtMarked)
         {
             return false;
         }
         else
         {
-            PlayerEntity playerEntity = this.entity.getCustomer();
-            if(playerEntity == null)
+            Player player = this.entity.getTradingPlayer();
+            if(player == null)
             {
                 return false;
             }
-            else if(this.entity.getDistanceSq(playerEntity) > 16.0D)
+            else if(this.entity.distanceToSqr(player) > 16.0D)
             {
                 return false;
             }
-            return playerEntity.openContainer != null;
+            return player.containerMenu != null;
         }
     }
 
     @Override
-    public void startExecuting()
+    public void start()
     {
-        this.entity.getNavigator().clearPath();
+        this.entity.getNavigation().stop();
     }
 
     @Override
-    public void resetTask()
+    public void stop()
     {
-        this.entity.setCustomer(null);
+        this.entity.setTradingPlayer(null);
     }
 }

@@ -2,23 +2,23 @@ buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
         maven { url = 'https://repo.spongepowered.org/maven' }
-        jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'eclipse'
 apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'maven-publish'
+apply plugin: 'eclipse'
 
-version = '1.6.0-1.16.3'
+version = '1.6.0-1.17.1'
 group = 'com.mrcrayfish'
 archivesBaseName = 'goblintraders'
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 mixin {
     add sourceSets.main, "goblintraders.refmap.json"
@@ -27,7 +27,7 @@ mixin {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 minecraft {
-    mappings channel: 'snapshot', version: '20201028-1.16.3'
+    mappings channel: 'official', version: '1.17.1'
     runs {
         client {
             workingDirectory project.file('run')
@@ -68,8 +68,14 @@ minecraft {
     }
 }
 
+repositories {
+    maven {
+        url = "https://www.cursemaven.com"
+    }
+}
+
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.3-34.1.10'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.59'
 }
 
 jar {

@@ -5,10 +5,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.entity.merchant.villager.VillagerTrades;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Util;
+import net.minecraft.Util;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.npc.VillagerTrades;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,23 +21,23 @@ import java.util.Map;
  */
 public class EntityTrades
 {
-    private final Map<TradeRarity, List<VillagerTrades.ITrade>> tradeMap;
+    private final Map<TradeRarity, List<VillagerTrades.ItemListing>> tradeMap;
 
-    public EntityTrades(Map<TradeRarity, List<VillagerTrades.ITrade>> tradeMap)
+    public EntityTrades(Map<TradeRarity, List<VillagerTrades.ItemListing>> tradeMap)
     {
         this.tradeMap = ImmutableMap.copyOf(tradeMap);
     }
 
-    public Map<TradeRarity, List<VillagerTrades.ITrade>> getTradeMap()
+    public Map<TradeRarity, List<VillagerTrades.ItemListing>> getTradeMap()
     {
         return this.tradeMap;
     }
 
     public static class Builder
     {
-        private final Map<TradeRarity, List<VillagerTrades.ITrade>> tradeMap = Util.make(() ->
+        private final Map<TradeRarity, List<VillagerTrades.ItemListing>> tradeMap = Util.make(() ->
         {
-            Map<TradeRarity, List<VillagerTrades.ITrade>> map = new EnumMap<>(TradeRarity.class);
+            Map<TradeRarity, List<VillagerTrades.ItemListing>> map = new EnumMap<>(TradeRarity.class);
             Arrays.stream(TradeRarity.values()).forEach(rarity -> map.put(rarity, new ArrayList<>()));
             return map;
         });
@@ -51,19 +51,19 @@ public class EntityTrades
 
         void deserialize(TradeRarity rarity, JsonObject object)
         {
-            List<VillagerTrades.ITrade> trades = this.tradeMap.get(rarity);
+            List<VillagerTrades.ItemListing> trades = this.tradeMap.get(rarity);
 
-            if(JSONUtils.getBoolean(object, "replace", false))
+            if(GsonHelper.getAsBoolean(object, "replace", false))
             {
                 trades.clear();
             }
 
-            JsonArray tradeArray = JSONUtils.getJsonArray(object, "trades");
+            JsonArray tradeArray = GsonHelper.getAsJsonArray(object, "trades");
             for(JsonElement tradeElement : tradeArray)
             {
                 JsonObject tradeObject = tradeElement.getAsJsonObject();
-                String rawType = JSONUtils.getString(tradeObject, "type");
-                ResourceLocation typeKey = ResourceLocation.tryCreate(rawType);
+                String rawType = GsonHelper.getAsString(tradeObject, "type");
+                ResourceLocation typeKey = ResourceLocation.tryParse(rawType);
                 if(typeKey == null)
                 {
                     throw new JsonParseException("");

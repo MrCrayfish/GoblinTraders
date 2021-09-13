@@ -4,7 +4,7 @@ import com.mrcrayfish.goblintraders.Reference;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 
 /**
  * Author: MrCrayfish
@@ -21,6 +21,6 @@ public class DataGeneration
     private static void registerCommonProviders(DataGenerator generator)
     {
         generator.addProvider(new GoblinTradeProvider(generator));
-        generator.addProvider(new LootTableProvider(generator));
+        generator.addProvider(new GoblinLootTableProvider(generator));
     }
 }

@@ -6,16 +6,16 @@ import com.google.gson.JsonObject;
 import com.mrcrayfish.goblintraders.Reference;
 import com.mrcrayfish.goblintraders.trades.GoblinTrade;
 import com.mrcrayfish.goblintraders.trades.TradeSerializer;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.PotionUtils;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -39,10 +39,10 @@ public class BasicTrade implements ITradeType<GoblinTrade>
     private final float priceMultiplier;
     private final int maxTrades;
     private final int experience;
-    private final EnchantmentData[] enchantments;
-    private final Collection<EffectInstance> potionEffects;
+    private final EnchantmentInstance[] enchantments;
+    private final Collection<MobEffectInstance> mobEffects;
 
-    public BasicTrade(ItemStack offerStack, ItemStack paymentStack, ItemStack secondaryPaymentStack, float priceMultiplier, int maxTrades, int experience, EnchantmentData[] enchantments, Collection<EffectInstance> potionEffects)
+    public BasicTrade(ItemStack offerStack, ItemStack paymentStack, ItemStack secondaryPaymentStack, float priceMultiplier, int maxTrades, int experience, EnchantmentInstance[] enchantments, Collection<MobEffectInstance> mobEffects)
     {
         this.offerStack = offerStack;
         this.paymentStack = paymentStack;
@@ -51,7 +51,7 @@ public class BasicTrade implements ITradeType<GoblinTrade>
         this.maxTrades = maxTrades;
         this.experience = experience;
         this.enchantments = enchantments;
-        this.potionEffects = potionEffects;
+        this.mobEffects = mobEffects;
     }
 
     @Override
@@ -62,19 +62,19 @@ public class BasicTrade implements ITradeType<GoblinTrade>
         {
             if(offerStack.getItem() == Items.ENCHANTED_BOOK)
             {
-                EnchantmentHelper.setEnchantments(Stream.of(this.enchantments).collect(Collectors.toMap(o -> o.enchantment, e -> e.enchantmentLevel)), offerStack);
+                EnchantmentHelper.setEnchantments(Stream.of(this.enchantments).collect(Collectors.toMap(o -> o.enchantment, e -> e.level)), offerStack);
             }
             else
             {
-                for(EnchantmentData data : this.enchantments)
+                for(EnchantmentInstance data : this.enchantments)
                 {
-                    offerStack.addEnchantment(data.enchantment, data.enchantmentLevel);
+                    offerStack.enchant(data.enchantment, data.level);
                 }
             }
         }
-        if(this.potionEffects.size() > 0)
+        if(this.mobEffects.size() > 0)
         {
-            PotionUtils.appendEffects(offerStack, this.potionEffects);
+            PotionUtils.setCustomEffects(offerStack, this.mobEffects);
         }
         return new GoblinTrade(offerStack, this.paymentStack.copy(), this.secondaryPaymentStack.copy(), this.maxTrades, this.experience, this.priceMultiplier);
     }
@@ -96,27 +96,27 @@ public class BasicTrade implements ITradeType<GoblinTrade>
         public BasicTrade deserialize(JsonObject object)
         {
             Builder builder = Builder.create();
-            builder.setOfferStack(CraftingHelper.getItemStack(JSONUtils.getJsonObject(object, "offer_item"), true));
-            builder.setPaymentStack(CraftingHelper.getItemStack(JSONUtils.getJsonObject(object, "payment_item"), true));
-            if(JSONUtils.hasField(object, "secondary_payment_item"))
+            builder.setOfferStack(CraftingHelper.getItemStack(GsonHelper.getAsJsonObject(object, "offer_item"), true));
+            builder.setPaymentStack(CraftingHelper.getItemStack(GsonHelper.getAsJsonObject(object, "payment_item"), true));
+            if(GsonHelper.isValidNode(object, "secondary_payment_item"))
             {
-                builder.setSecondaryPaymentStack(CraftingHelper.getItemStack(JSONUtils.getJsonObject(object, "secondary_payment_item"), true));
+                builder.setSecondaryPaymentStack(CraftingHelper.getItemStack(GsonHelper.getAsJsonObject(object, "secondary_payment_item"), true));
             }
-            builder.setPriceMultiplier(JSONUtils.getFloat(object, "price_multiplier", 0.05F));
-            builder.setMaxTrades(JSONUtils.getInt(object, "max_trades", 12));
-            builder.setExperience(JSONUtils.getInt(object, "experience", 0));
-            if(JSONUtils.hasField(object, "enchantments"))
+            builder.setPriceMultiplier(GsonHelper.getAsFloat(object, "price_multiplier", 0.05F));
+            builder.setMaxTrades(GsonHelper.getAsInt(object, "max_trades", 12));
+            builder.setExperience(GsonHelper.getAsInt(object, "experience", 0));
+            if(GsonHelper.isValidNode(object, "enchantments"))
             {
-                Collection<EnchantmentData> enchantments = this.getEnchantments(JSONUtils.getJsonArray(object, "enchantments"));
-                for(EnchantmentData enchantment : enchantments)
+                Collection<EnchantmentInstance> enchantments = this.getEnchantments(GsonHelper.getAsJsonArray(object, "enchantments"));
+                for(EnchantmentInstance enchantment : enchantments)
                 {
                     builder.addEnchantment(enchantment);
                 }
             }
-            if(JSONUtils.hasField(object, "potion_effects"))
+            if(GsonHelper.isValidNode(object, "potion_effects"))
             {
-                Collection<EffectInstance> effects = this.getPotionEffects(JSONUtils.getJsonArray(object, "potion_effects"));
-                for(EffectInstance effect : effects)
+                Collection<MobEffectInstance> effects = this.getPotionEffects(GsonHelper.getAsJsonArray(object, "potion_effects"));
+                for(MobEffectInstance effect : effects)
                 {
                     builder.addPotionEffect(effect);
                 }
@@ -149,16 +149,16 @@ public class BasicTrade implements ITradeType<GoblinTrade>
             if(trade.enchantments.length > 0)
             {
                 JsonArray enchantmentArray = new JsonArray();
-                for(EnchantmentData enchantment : trade.enchantments)
+                for(EnchantmentInstance enchantment : trade.enchantments)
                 {
                     enchantmentArray.add(this.serializeEnchantment(enchantment));
                 }
                 object.add("enchantments", enchantmentArray);
             }
-            if(trade.potionEffects.size() > 0)
+            if(trade.mobEffects.size() > 0)
             {
                 JsonArray effectArray = new JsonArray();
-                for(EffectInstance effect : trade.potionEffects)
+                for(MobEffectInstance effect : trade.mobEffects)
                 {
                     effectArray.add(this.serializePotionEffect(effect));
                 }
@@ -179,55 +179,55 @@ public class BasicTrade implements ITradeType<GoblinTrade>
             return object;
         }
 
-        private JsonObject serializeEnchantment(EnchantmentData enchantment)
+        private JsonObject serializeEnchantment(EnchantmentInstance enchantment)
         {
             JsonObject object = new JsonObject();
             object.addProperty("id", Objects.requireNonNull(enchantment.enchantment.getRegistryName()).toString());
-            object.addProperty("level", enchantment.enchantmentLevel);
+            object.addProperty("level", enchantment.level);
             return object;
         }
 
-        private JsonObject serializePotionEffect(EffectInstance effect)
+        private JsonObject serializePotionEffect(MobEffectInstance effect)
         {
             JsonObject object = new JsonObject();
-            object.addProperty("id", Objects.requireNonNull(effect.getPotion().getRegistryName()).toString());
+            object.addProperty("id", Objects.requireNonNull(effect.getEffect().getRegistryName()).toString());
             object.addProperty("duration", effect.getDuration());
             object.addProperty("amplifier", effect.getAmplifier());
-            object.addProperty("show_particles", effect.doesShowParticles());
+            object.addProperty("show_particles", effect.isVisible());
             return object;
         }
 
-        private Collection<EnchantmentData> getEnchantments(JsonArray enchantmentArray)
+        private Collection<EnchantmentInstance> getEnchantments(JsonArray enchantmentArray)
         {
-            List<EnchantmentData> enchantments = new ArrayList<>();
+            List<EnchantmentInstance> enchantments = new ArrayList<>();
             for(JsonElement enchantmentElement : enchantmentArray)
             {
                 JsonObject enchantmentObject = enchantmentElement.getAsJsonObject();
-                String id = JSONUtils.getString(enchantmentObject, "id");
+                String id = GsonHelper.getAsString(enchantmentObject, "id");
                 Enchantment enchantment = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(id));
                 if(enchantment != null)
                 {
-                    int level = JSONUtils.getInt(enchantmentObject, "level", 1);
-                    enchantments.add(new EnchantmentData(enchantment, level));
+                    int level = GsonHelper.getAsInt(enchantmentObject, "level", 1);
+                    enchantments.add(new EnchantmentInstance(enchantment, level));
                 }
             }
             return enchantments;
         }
 
-        private Collection<EffectInstance> getPotionEffects(JsonArray effectsArray)
+        private Collection<MobEffectInstance> getPotionEffects(JsonArray effectsArray)
         {
-            List<EffectInstance> effects = new ArrayList<>();
+            List<MobEffectInstance> effects = new ArrayList<>();
             for(JsonElement effectElement : effectsArray)
             {
                 JsonObject effectObject = effectElement.getAsJsonObject();
-                String id = JSONUtils.getString(effectObject, "id");
-                Effect effect = ForgeRegistries.POTIONS.getValue(new ResourceLocation(id));
+                String id = GsonHelper.getAsString(effectObject, "id");
+                MobEffect effect = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(id));
                 if(effect != null)
                 {
-                    int duration = JSONUtils.getInt(effectObject, "duration", 1);
-                    int amplifier = JSONUtils.getInt(effectObject, "amplifier", 1);
-                    boolean showParticles = JSONUtils.getBoolean(effectObject, "show_particles", true);
-                    effects.add(new EffectInstance(effect, duration, amplifier, false, showParticles));
+                    int duration = GsonHelper.getAsInt(effectObject, "duration", 1);
+                    int amplifier = GsonHelper.getAsInt(effectObject, "amplifier", 1);
+                    boolean showParticles = GsonHelper.getAsBoolean(effectObject, "show_particles", true);
+                    effects.add(new MobEffectInstance(effect, duration, amplifier, false, showParticles));
                 }
             }
             return effects;
@@ -242,8 +242,8 @@ public class BasicTrade implements ITradeType<GoblinTrade>
         private float priceMultiplier = 0.0F;
         private int maxTrades = 12;
         private int experience = 10;
-        private List<EnchantmentData> enchantments = new ArrayList<>();
-        private List<EffectInstance> potionEffects = new ArrayList<>();
+        private List<EnchantmentInstance> enchantments = new ArrayList<>();
+        private List<MobEffectInstance> modEffects = new ArrayList<>();
 
         private Builder() {}
 
@@ -254,7 +254,7 @@ public class BasicTrade implements ITradeType<GoblinTrade>
 
         public BasicTrade build()
         {
-            return new BasicTrade(this.offerStack, this.paymentStack, this.secondaryPaymentStack, this.priceMultiplier, this.maxTrades, this.experience, this.enchantments.toArray(new EnchantmentData[0]), this.potionEffects);
+            return new BasicTrade(this.offerStack, this.paymentStack, this.secondaryPaymentStack, this.priceMultiplier, this.maxTrades, this.experience, this.enchantments.toArray(new EnchantmentInstance[0]), this.modEffects);
         }
 
         public Builder setOfferStack(ItemStack offerStack)
@@ -293,15 +293,15 @@ public class BasicTrade implements ITradeType<GoblinTrade>
             return this;
         }
 
-        public Builder addEnchantment(EnchantmentData enchantment)
+        public Builder addEnchantment(EnchantmentInstance enchantment)
         {
             this.enchantments.add(enchantment);
             return this;
         }
 
-        public Builder addPotionEffect(EffectInstance effect)
+        public Builder addPotionEffect(MobEffectInstance effect)
         {
-            this.potionEffects.add(effect);
+            this.modEffects.add(effect);
             return this;
         }
     }

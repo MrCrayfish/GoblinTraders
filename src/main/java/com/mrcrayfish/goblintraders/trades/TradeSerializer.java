@@ -2,13 +2,13 @@ package com.mrcrayfish.goblintraders.trades;
 
 import com.google.gson.JsonObject;
 import com.mrcrayfish.goblintraders.trades.type.ITradeType;
-import net.minecraft.entity.merchant.villager.VillagerTrades;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.npc.VillagerTrades;
 
 /**
  * Author: MrCrayfish
  */
-public abstract class TradeSerializer<T extends ITradeType<? extends VillagerTrades.ITrade>>
+public abstract class TradeSerializer<T extends ITradeType<? extends VillagerTrades.ItemListing>>
 {
     private ResourceLocation id;
 

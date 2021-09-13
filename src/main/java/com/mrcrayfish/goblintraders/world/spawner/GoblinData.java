@@ -1,9 +1,7 @@
 package com.mrcrayfish.goblintraders.world.spawner;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.util.Constants;
-
-import java.util.UUID;
 
 /**
  * Author: MrCrayfish
@@ -41,7 +39,7 @@ public class GoblinData
         return goblinTraderSpawnChance;
     }
 
-    public void read(CompoundNBT compound)
+    public void read(CompoundTag compound)
     {
         if(compound.contains("GoblinTraderSpawnDelay", Constants.NBT.TAG_INT))
         {
@@ -53,7 +51,7 @@ public class GoblinData
         }
     }
 
-    public CompoundNBT write(CompoundNBT compound)
+    public CompoundTag write(CompoundTag compound)
     {
         compound.putInt("GoblinTraderSpawnDelay", this.goblinTraderSpawnDelay);
         compound.putInt("GoblinTraderSpawnChance", this.goblinTraderSpawnChance);

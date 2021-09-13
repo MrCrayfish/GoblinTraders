@@ -6,13 +6,13 @@ import com.mrcrayfish.goblintraders.init.ModEntities;
 import com.mrcrayfish.goblintraders.trades.EntityTrades;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
 import com.mrcrayfish.goblintraders.trades.TradeRarity;
-import net.minecraft.entity.merchant.villager.VillagerTrades;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.MerchantOffers;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.trading.MerchantOffers;
+import net.minecraft.world.level.Level;
 
 import java.util.List;
 import java.util.Map;
@@ -22,9 +22,9 @@ import java.util.Map;
  */
 public class VeinGoblinTraderEntity extends AbstractGoblinEntity
 {
-    public VeinGoblinTraderEntity(World worldIn)
+    public VeinGoblinTraderEntity(Level level)
     {
-        super(ModEntities.VEIN_GOBLIN_TRADER.get(), worldIn);
+        super(ModEntities.VEIN_GOBLIN_TRADER.get(), level);
     }
 
     @Override
@@ -40,12 +40,12 @@ public class VeinGoblinTraderEntity extends AbstractGoblinEntity
         EntityTrades entityTrades = TradeManager.instance().getTrades(ModEntities.VEIN_GOBLIN_TRADER.get());
         if(entityTrades != null)
         {
-            Map<TradeRarity, List<VillagerTrades.ITrade>> tradeMap = entityTrades.getTradeMap();
+            Map<TradeRarity, List<VillagerTrades.ItemListing>> tradeMap = entityTrades.getTradeMap();
             for(TradeRarity rarity : TradeRarity.values())
             {
-                List<VillagerTrades.ITrade> trades = tradeMap.get(rarity);
-                int min = rarity.getMaximum().apply(trades, this.rand);
-                int max = rarity.getMaximum().apply(trades, this.rand);
+                List<VillagerTrades.ItemListing> trades = tradeMap.get(rarity);
+                int min = rarity.getMaximum().apply(trades, this.getRandom());
+                int max = rarity.getMaximum().apply(trades, this.getRandom());
                 this.addTrades(offers, trades, Math.max(min, max), rarity.shouldShuffle());
             }
         }
@@ -58,21 +58,17 @@ public class VeinGoblinTraderEntity extends AbstractGoblinEntity
     }
 
     @Override
-    public void livingTick()
+    public void aiStep()
     {
-        super.livingTick();
-        if(this.world.isRemote && this.ticksExisted % 2 == 0)
+        if(this.level.isClientSide() && this.tickCount % 2 == 0)
         {
-            if(this.getPosX() != this.prevPosX || this.getPosY() != this.prevPosY || this.getPosZ() != this.prevPosZ)
-            {
-                //this.world.addParticle(ParticleTypes.FLAME, this.getPosX() - 0.1 + 0.2 * this.rand.nextDouble(), this.getPosY() + 0.25 - 0.1 + 0.2 * this.rand.nextDouble(), this.getPosZ() - 0.1 + 0.2 * this.rand.nextDouble(), 0, 0, 0);
-            }
-            this.world.addParticle(ParticleTypes.FLAME, this.getPosX() - 0.5 + 1.0 * this.rand.nextDouble(), this.getPosY() + 0.5 - 0.5 + 1.0 * this.rand.nextDouble(), this.getPosZ() - 0.5 + 1.0 * this.rand.nextDouble(), 0, 0, 0);
+            this.level.addParticle(ParticleTypes.FLAME, this.getX() - 0.5 + this.getRandom().nextDouble(), this.getY() + 0.5 - 0.5 + this.getRandom().nextDouble(), this.getZ() - 0.5 + this.getRandom().nextDouble(), 0, 0, 0);
         }
+        super.aiStep();
     }
 
     @Override
-    public boolean isImmuneToFire()
+    public boolean fireImmune()
     {
         return true;
     }

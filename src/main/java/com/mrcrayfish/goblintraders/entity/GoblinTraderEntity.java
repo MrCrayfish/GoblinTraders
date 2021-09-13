@@ -6,12 +6,12 @@ import com.mrcrayfish.goblintraders.init.ModEntities;
 import com.mrcrayfish.goblintraders.trades.EntityTrades;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
 import com.mrcrayfish.goblintraders.trades.TradeRarity;
-import net.minecraft.entity.merchant.villager.VillagerTrades;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.MerchantOffers;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.trading.MerchantOffers;
+import net.minecraft.world.level.Level;
 
 import java.util.List;
 import java.util.Map;
@@ -21,9 +21,9 @@ import java.util.Map;
  */
 public class GoblinTraderEntity extends AbstractGoblinEntity
 {
-    public GoblinTraderEntity(World worldIn)
+    public GoblinTraderEntity(Level level)
     {
-        super(ModEntities.GOBLIN_TRADER.get(), worldIn);
+        super(ModEntities.GOBLIN_TRADER.get(), level);
     }
 
     @Override
@@ -39,12 +39,12 @@ public class GoblinTraderEntity extends AbstractGoblinEntity
         EntityTrades entityTrades = TradeManager.instance().getTrades(ModEntities.GOBLIN_TRADER.get());
         if(entityTrades != null)
         {
-            Map<TradeRarity, List<VillagerTrades.ITrade>> tradeMap = entityTrades.getTradeMap();
+            Map<TradeRarity, List<VillagerTrades.ItemListing>> tradeMap = entityTrades.getTradeMap();
             for(TradeRarity rarity : TradeRarity.values())
             {
-                List<VillagerTrades.ITrade> trades = tradeMap.get(rarity);
-                int min = rarity.getMaximum().apply(trades, this.rand);
-                int max = rarity.getMaximum().apply(trades, this.rand);
+                List<VillagerTrades.ItemListing> trades = tradeMap.get(rarity);
+                int min = rarity.getMaximum().apply(trades, this.getRandom());
+                int max = rarity.getMaximum().apply(trades, this.getRandom());
                 this.addTrades(offers, trades, Math.max(min, max), rarity.shouldShuffle());
             }
         }

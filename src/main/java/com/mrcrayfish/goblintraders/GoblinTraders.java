@@ -1,6 +1,5 @@
 package com.mrcrayfish.goblintraders;
 
-import com.mrcrayfish.goblintraders.client.ClientHandler;
 import com.mrcrayfish.goblintraders.init.ModEntities;
 import com.mrcrayfish.goblintraders.init.ModItems;
 import com.mrcrayfish.goblintraders.init.ModPotions;
@@ -12,7 +11,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -30,19 +28,12 @@ public class GoblinTraders
         ModItems.REGISTER.register(bus);
         ModPotions.REGISTER.register(bus);
         ModSounds.REGISTER.register(bus);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onClientSetup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onCommonSetup);
-    }
-
-    private void onClientSetup(FMLClientSetupEvent event)
-    {
-        ClientHandler.setup();
+        bus.addListener(this::onCommonSetup);
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event)
     {
         ModStats.init();
-        ModEntities.registerEntityTypeAttributes();
         TradeManager manager = TradeManager.instance();
         manager.registerTrader(ModEntities.GOBLIN_TRADER.get());
         manager.registerTrader(ModEntities.VEIN_GOBLIN_TRADER.get());

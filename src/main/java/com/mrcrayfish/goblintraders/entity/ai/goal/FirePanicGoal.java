@@ -1,13 +1,13 @@
 package com.mrcrayfish.goblintraders.entity.ai.goal;
 
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -27,15 +27,15 @@ public class FirePanicGoal extends Goal
     {
         this.goblin = goblin;
         this.speed = speedIn;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
-    public boolean shouldExecute()
+    public boolean canUse()
     {
-        if(this.goblin.isBurning() && !this.goblin.isStunned())
+        if(this.goblin.isOnFire() && !this.goblin.isStunned())
         {
-            BlockPos blockpos = this.getClosestWaterPos(this.goblin.world, this.goblin, 5, 4);
+            BlockPos blockpos = this.getClosestWaterPos(this.goblin.level, this.goblin, 5, 4);
             if(blockpos != null)
             {
                 this.randPosX = (double) blockpos.getX();
@@ -49,20 +49,20 @@ public class FirePanicGoal extends Goal
     }
 
     @Override
-    public void startExecuting()
+    public void start()
     {
-        this.goblin.getNavigator().tryMoveToXYZ(this.randPosX, this.randPosY, this.randPosZ, this.speed);
+        this.goblin.getNavigation().moveTo(this.randPosX, this.randPosY, this.randPosZ, this.speed);
     }
 
     @Override
-    public boolean shouldContinueExecuting()
+    public boolean canContinueToUse()
     {
-        return !this.goblin.getNavigator().noPath();
+        return !this.goblin.getNavigation().isDone();
     }
 
     private boolean findRandomPosition()
     {
-        Vector3d randomPos = RandomPositionGenerator.findRandomTarget(this.goblin, 5, 4);
+        Vec3 randomPos = DefaultRandomPos.getPos(this.goblin, 5, 4);
         if(randomPos == null)
         {
             return false;
@@ -77,23 +77,23 @@ public class FirePanicGoal extends Goal
     }
 
     @Nullable
-    private BlockPos getClosestWaterPos(IBlockReader worldIn, Entity entityIn, int horizontalRange, int verticalRange)
+    private BlockPos getClosestWaterPos(BlockGetter blockGetter, Entity entityIn, int horizontalRange, int verticalRange)
     {
-        BlockPos entityPos = entityIn.getPosition();
+        BlockPos entityPos = entityIn.blockPosition();
         int entityX = entityPos.getX();
         int entityY = entityPos.getY();
         int entityZ = entityPos.getZ();
         float range = (float) (horizontalRange * horizontalRange * verticalRange * 2);
         BlockPos randomPos = null;
-        BlockPos.Mutable currentPos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos currentPos = new BlockPos.MutableBlockPos();
         for(int x = entityX - horizontalRange; x <= entityX + horizontalRange; ++x)
         {
             for(int y = entityY - verticalRange; y <= entityY + verticalRange; ++y)
             {
                 for(int z = entityZ - horizontalRange; z <= entityZ + horizontalRange; ++z)
                 {
-                    currentPos.setPos(x, y, z);
-                    if(worldIn.getFluidState(currentPos).isTagged(FluidTags.WATER))
+                    currentPos.set(x, y, z);
+                    if(blockGetter.getFluidState(currentPos).is(FluidTags.WATER))
                     {
                         float f1 = (float) ((x - entityX) * (x - entityX) + (y - entityY) * (y - entityY) + (z - entityZ) * (z - entityZ));
                         if(f1 < range)

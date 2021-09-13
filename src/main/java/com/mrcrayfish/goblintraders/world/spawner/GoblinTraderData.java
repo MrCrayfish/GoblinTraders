@@ -1,12 +1,12 @@
 package com.mrcrayfish.goblintraders.world.spawner;
 
 import com.mrcrayfish.goblintraders.Reference;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.WorldSavedData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.HashMap;
@@ -15,20 +15,15 @@ import java.util.Map;
 /**
  * Author: MrCrayfish
  */
-public class GoblinTraderData extends WorldSavedData
+public class GoblinTraderData extends SavedData
 {
     private static final String DATA_NAME = Reference.MOD_ID + "_goblin_trader";
 
-    private Map<String, GoblinData> data = new HashMap<>();
+    private final Map<String, GoblinData> data = new HashMap<>();
 
-    public GoblinTraderData()
+    public GoblinTraderData(CompoundTag tag)
     {
-        super(DATA_NAME);
-    }
-
-    public GoblinTraderData(String name)
-    {
-        super(name);
+        this.read(tag);
     }
 
     public GoblinData getGoblinData(String key)
@@ -36,23 +31,22 @@ public class GoblinTraderData extends WorldSavedData
         return this.data.computeIfAbsent(key, s -> new GoblinData(this));
     }
 
-    @Override
-    public void read(CompoundNBT compound)
+    public void read(CompoundTag tag)
     {
-        if(compound.contains("GoblinTraderSpawnDelay", Constants.NBT.TAG_INT))
+        if(tag.contains("GoblinTraderSpawnDelay", Constants.NBT.TAG_INT))
         {
-            this.getGoblinData("GoblinTrader").setGoblinTraderSpawnDelay(compound.getInt("GoblinTraderSpawnDelay"));
+            this.getGoblinData("GoblinTrader").setGoblinTraderSpawnDelay(tag.getInt("GoblinTraderSpawnDelay"));
         }
-        if(compound.contains("GoblinTraderSpawnChance", Constants.NBT.TAG_INT))
+        if(tag.contains("GoblinTraderSpawnChance", Constants.NBT.TAG_INT))
         {
-            this.getGoblinData("GoblinTrader").setGoblinTraderSpawnChance(compound.getInt("GoblinTraderSpawnChance"));
+            this.getGoblinData("GoblinTrader").setGoblinTraderSpawnChance(tag.getInt("GoblinTraderSpawnChance"));
         }
-        if(compound.contains("Data", Constants.NBT.TAG_LIST))
+        if(tag.contains("Data", Constants.NBT.TAG_LIST))
         {
             this.data.clear();
-            ListNBT list = compound.getList("Data", Constants.NBT.TAG_COMPOUND);
+            ListTag list = tag.getList("Data", Constants.NBT.TAG_COMPOUND);
             list.forEach(nbt -> {
-                CompoundNBT goblinTag = (CompoundNBT) nbt;
+                CompoundTag goblinTag = (CompoundTag) nbt;
                 String key = goblinTag.getString("Key");
                 GoblinData data = new GoblinData(this);
                 data.read(goblinTag);
@@ -62,11 +56,11 @@ public class GoblinTraderData extends WorldSavedData
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound)
+    public CompoundTag save(CompoundTag compound)
     {
-        ListNBT list = new ListNBT();
+        ListTag list = new ListTag();
         this.data.forEach((s, goblinData) -> {
-            CompoundNBT goblinTag = new CompoundNBT();
+            CompoundTag goblinTag = new CompoundTag();
             goblinData.write(goblinTag);
             goblinTag.putString("Key", s);
             list.add(goblinTag);
@@ -77,7 +71,7 @@ public class GoblinTraderData extends WorldSavedData
 
     public static GoblinTraderData get(MinecraftServer server)
     {
-        ServerWorld world = server.getWorld(World.OVERWORLD);
-        return world.getSavedData().getOrCreate(GoblinTraderData::new, DATA_NAME);
+        ServerLevel level = server.getLevel(Level.OVERWORLD);
+        return level.getDataStorage().get(GoblinTraderData::new, DATA_NAME);
     }
 }

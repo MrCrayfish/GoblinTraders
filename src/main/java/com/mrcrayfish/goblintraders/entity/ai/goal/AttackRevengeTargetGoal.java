@@ -1,11 +1,11 @@
 package com.mrcrayfish.goblintraders.entity.ai.goal;
 
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.EnumSet;
 
@@ -19,44 +19,44 @@ public class AttackRevengeTargetGoal extends Goal
     public AttackRevengeTargetGoal(AbstractGoblinEntity entity)
     {
         this.entity = entity;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     @Override
-    public boolean shouldExecute()
+    public boolean canUse()
     {
-        return this.entity.canAttackBack() && this.entity.getRevengeTarget() != null && this.entity.getRevengeTarget().isAlive() && this.entity.getDistance(this.entity.getRevengeTarget()) <= 10.0F && (!(this.entity.getRevengeTarget() instanceof PlayerEntity) || !((PlayerEntity)this.entity.getRevengeTarget()).isCreative());
+        return this.entity.canAttackBack() && this.entity.getLastHurtByMob() != null && this.entity.getLastHurtByMob().isAlive() && this.entity.distanceTo(this.entity.getLastHurtByMob()) <= 10.0F && (!(this.entity.getLastHurtByMob() instanceof Player) || !((Player)this.entity.getLastHurtByMob()).isCreative());
     }
 
     @Override
     public void tick()
     {
-        LivingEntity revengeTarget = this.entity.getRevengeTarget();
-        if(revengeTarget != null && this.entity.getCustomer() == null && !this.entity.isStunned())
+        LivingEntity revengeTarget = this.entity.getLastHurtByMob();
+        if(revengeTarget != null && this.entity.getTradingPlayer() == null && !this.entity.isStunned())
         {
-            this.entity.getLookController().setLookPositionWithEntity(revengeTarget, 10.0F, (float) this.entity.getVerticalFaceSpeed());
-            if(this.entity.getDistance(revengeTarget) >= 1.5D)
+            this.entity.getLookControl().setLookAt(revengeTarget, 10.0F, (float) this.entity.getHeadRotSpeed());
+            if(this.entity.distanceTo(revengeTarget) >= 1.5D)
             {
-                this.entity.getNavigator().tryMoveToEntityLiving(revengeTarget, 0.5F);
+                this.entity.getNavigation().moveTo(revengeTarget, 0.5F);
             }
             else
             {
-                revengeTarget.attackEntityFrom(DamageSource.causeMobDamage(this.entity), 1.0F);
-                this.entity.swingArm(Hand.MAIN_HAND);
-                this.entity.setRevengeTarget(null);
+                revengeTarget.hurt(DamageSource.mobAttack(this.entity), 1.0F);
+                this.entity.swing(InteractionHand.MAIN_HAND);
+                this.entity.setLastHurtByMob(null);
             }
         }
     }
 
     @Override
-    public boolean shouldContinueExecuting()
+    public boolean canContinueToUse()
     {
-        return this.entity.getRevengeTarget() != null && this.entity.getRevengeTarget().isAlive() && this.entity.getDistance(this.entity.getRevengeTarget()) <= 10.0F && this.entity.getCustomer() == null;
+        return this.entity.getLastHurtByMob() != null && this.entity.getLastHurtByMob().isAlive() && this.entity.distanceTo(this.entity.getLastHurtByMob()) <= 10.0F && this.entity.getTradingPlayer() == null;
     }
 
     @Override
-    public void resetTask()
+    public void stop()
     {
-        this.entity.setRevengeTarget(null);
+        this.entity.setLastHurtByMob(null);
     }
 }

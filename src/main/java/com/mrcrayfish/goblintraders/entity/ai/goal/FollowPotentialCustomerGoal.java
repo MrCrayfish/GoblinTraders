@@ -1,8 +1,8 @@
 package com.mrcrayfish.goblintraders.entity.ai.goal;
 
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
 import java.util.Comparator;
@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class FollowPotentialCustomerGoal extends Goal
 {
-    private PlayerEntity potentialCustomer;
+    private Player potentialCustomer;
     private AbstractGoblinEntity entity;
     private int coolDown = 0;
     private int timeout = 600;
@@ -22,13 +22,13 @@ public class FollowPotentialCustomerGoal extends Goal
     public FollowPotentialCustomerGoal(AbstractGoblinEntity entity)
     {
         this.entity = entity;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     @Override
-    public boolean shouldExecute()
+    public boolean canUse()
     {
-        if(this.entity.getCustomer() != null)
+        if(this.entity.getTradingPlayer() != null)
         {
             return false;
         }
@@ -48,24 +48,24 @@ public class FollowPotentialCustomerGoal extends Goal
     @Override
     public void tick()
     {
-        this.entity.getLookController().setLookPositionWithEntity(this.potentialCustomer, 10.0F, (float) this.entity.getVerticalFaceSpeed());
-        if(this.entity.getDistance(this.potentialCustomer) >= 2.0D)
+        this.entity.getLookControl().setLookAt(this.potentialCustomer, 10.0F, (float) this.entity.getHeadRotSpeed());
+        if(this.entity.distanceTo(this.potentialCustomer) >= 2.0D)
         {
-            this.entity.getNavigator().tryMoveToEntityLiving(this.potentialCustomer, 0.4F);
+            this.entity.getNavigation().moveTo(this.potentialCustomer, 0.4F);
         }
         this.timeout--;
     }
 
     @Override
-    public boolean shouldContinueExecuting()
+    public boolean canContinueToUse()
     {
-        return this.potentialCustomer != null && this.potentialCustomer.isAlive() && this.entity.getCustomer() == null && !this.entity.isPreviousCustomer(this.potentialCustomer) && this.entity.getDistance(this.potentialCustomer) <= 10.0D && this.timeout > 0;
+        return this.potentialCustomer != null && this.potentialCustomer.isAlive() && this.entity.getTradingPlayer() == null && !this.entity.isPreviousCustomer(this.potentialCustomer) && this.entity.distanceTo(this.potentialCustomer) <= 10.0D && this.timeout > 0;
     }
 
     @Override
-    public void resetTask()
+    public void stop()
     {
-        this.entity.getNavigator().clearPath();
+        this.entity.getNavigation().stop();
         this.potentialCustomer = null;
         this.timeout = 600;
         this.coolDown = 300;
@@ -74,10 +74,10 @@ public class FollowPotentialCustomerGoal extends Goal
     @Nullable
     private void findCustomer()
     {
-        List<PlayerEntity> players = this.entity.world.getEntitiesWithinAABB(PlayerEntity.class, this.entity.getBoundingBox().grow(10), playerEntity -> !playerEntity.isCreative() && !playerEntity.isSpectator());
+        List<Player> players = this.entity.level.getEntitiesOfClass(Player.class, this.entity.getBoundingBox().inflate(10), playerEntity -> !playerEntity.isCreative() && !playerEntity.isSpectator());
         if(players.size() > 0)
         {
-            this.potentialCustomer = players.stream().min(Comparator.comparing(this.entity::getDistance)).get();
+            this.potentialCustomer = players.stream().min(Comparator.comparing(this.entity::distanceTo)).get();
         }
     }
 }

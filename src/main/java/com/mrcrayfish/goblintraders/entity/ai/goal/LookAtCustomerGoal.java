@@ -1,25 +1,26 @@
 package com.mrcrayfish.goblintraders.entity.ai.goal;
 
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.merchant.IMerchant;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.trading.Merchant;
 
 /**
  * Author: MrCrayfish
  */
-public class LookAtCustomerGoal extends LookAtGoal
+public class LookAtCustomerGoal extends LookAtPlayerGoal
 {
-    public <T extends MobEntity & IMerchant> LookAtCustomerGoal(T entityIn)
+    public <T extends Mob & Merchant> LookAtCustomerGoal(T entityIn)
     {
-        super(entityIn, PlayerEntity.class, 8.0F);
+        super(entityIn, Player.class, 8.0F);
     }
 
-    public boolean shouldExecute()
+    @Override
+    public boolean canUse()
     {
-        if(((IMerchant)this.entity).getCustomer() != null)
+        if(((Merchant) this.mob).getTradingPlayer() != null)
         {
-            this.closestEntity = ((IMerchant)this.entity).getCustomer();
+            this.lookAt = ((Merchant) this.mob).getTradingPlayer();
             return true;
         }
         return false;

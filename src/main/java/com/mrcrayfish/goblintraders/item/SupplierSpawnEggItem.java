@@ -2,13 +2,13 @@ package com.mrcrayfish.goblintraders.item;
 
 import com.google.common.collect.ImmutableList;
 import com.mrcrayfish.goblintraders.mixin.SpawnEggItemMixin;
-import net.minecraft.block.DispenserBlock;
-import net.minecraft.dispenser.IDispenseItemBehavior;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.item.SpawnEggItem;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.core.dispenser.DispenseItemBehavior;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.level.block.DispenserBlock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class SupplierSpawnEggItem extends SpawnEggItem
     }
 
     @Override
-    public EntityType<?> getType(CompoundNBT tag)
+    public EntityType<?> getType(CompoundTag tag)
     {
         return this.typeSupplier.get();
     }
@@ -39,16 +39,16 @@ public class SupplierSpawnEggItem extends SpawnEggItem
     public static void updateEggMap()
     {
         SpawnEggItemMixin.getEggMap().remove(null); //Removes null key since null was passed to super constructor
-        IDispenseItemBehavior eggDispenseBehaviour = (source, stack) -> {
-            Direction direction = source.getBlockState().get(DispenserBlock.FACING);
+        DispenseItemBehavior eggDispenseBehaviour = (source, stack) -> {
+            Direction direction = source.getBlockState().getValue(DispenserBlock.FACING);
             EntityType<?> type = ((SpawnEggItem) stack.getItem()).getType(stack.getTag());
-            type.spawn(source.getWorld(), stack, null, source.getBlockPos().offset(direction), SpawnReason.DISPENSER, direction != Direction.UP, false);
+            type.spawn(source.getLevel(), stack, null, source.getPos().relative(direction), MobSpawnType.DISPENSER, direction != Direction.UP, false);
             stack.shrink(1);
             return stack;
         };
         EGGS.forEach(spawnEggItem -> {
             SpawnEggItemMixin.getEggMap().put(spawnEggItem.typeSupplier.get(), spawnEggItem);
-            DispenserBlock.registerDispenseBehavior(spawnEggItem, eggDispenseBehaviour);
+            DispenserBlock.registerBehavior(spawnEggItem, eggDispenseBehaviour);
         });
     }
 

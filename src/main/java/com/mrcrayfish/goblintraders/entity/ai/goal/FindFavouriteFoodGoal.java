@@ -1,11 +1,12 @@
 package com.mrcrayfish.goblintraders.entity.ai.goal;
 
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.pathfinding.Path;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.level.pathfinder.Path;
 
 import javax.annotation.Nullable;
 import java.util.Comparator;
@@ -23,14 +24,14 @@ public class FindFavouriteFoodGoal extends Goal
     public FindFavouriteFoodGoal(AbstractGoblinEntity entity)
     {
         this.entity = entity;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Flag.LOOK));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Flag.LOOK));
     }
 
     @Override
-    public boolean shouldExecute()
+    public boolean canUse()
     {
         this.findFavouriteFood();
-        return this.itemEntity != null && this.itemEntity.isAlive() && this.entity.getNavigator().getPathToEntity(this.itemEntity, 0) != null && !this.entity.isStunned();
+        return this.itemEntity != null && this.itemEntity.isAlive() && this.entity.getNavigation().createPath(this.itemEntity, 0) != null && !this.entity.isStunned();
     }
 
     @Override
@@ -39,30 +40,30 @@ public class FindFavouriteFoodGoal extends Goal
         if(this.entity.isStunned())
             return;
 
-        this.entity.getLookController().setLookPositionWithEntity(this.itemEntity, 10.0F, (float) this.entity.getVerticalFaceSpeed());
-        this.entity.getNavigator().clearPath();
-        Path path = this.entity.getNavigator().getPathToEntity(this.itemEntity, 0);
-        if(path != null) this.entity.getNavigator().setPath(path, 0.4F);
-        if(this.entity.getDistance(this.itemEntity) <= 1.0D && this.itemEntity.isAlive())
+        this.entity.getLookControl().setLookAt(this.itemEntity, 10.0F, (float) this.entity.getHeadRotSpeed());
+        this.entity.getNavigation().stop();
+        Path path = this.entity.getNavigation().createPath(this.itemEntity, 0);
+        if(path != null) this.entity.getNavigation().moveTo(path, 0.4F);
+        if(this.entity.distanceTo(this.itemEntity) <= 1.0D && this.itemEntity.isAlive())
         {
-            this.itemEntity.remove();
-            this.entity.world.playSound(null, this.itemEntity.getPosX(), this.itemEntity.getPosY(), this.itemEntity.getPosZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.NEUTRAL, 1.0F, 0.75F);
+            this.itemEntity.remove(Entity.RemovalReason.KILLED);
+            this.entity.level.playSound(null, this.itemEntity.getX(), this.itemEntity.getY(), this.itemEntity.getZ(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1.0F, 0.75F);
         }
     }
 
     @Override
-    public boolean shouldContinueExecuting()
+    public boolean canContinueToUse()
     {
-        return this.itemEntity.isAlive() && this.entity.getNavigator().getPathToEntity(this.itemEntity, 0) != null;
+        return this.itemEntity.isAlive() && this.entity.getNavigation().createPath(this.itemEntity, 0) != null;
     }
 
     @Nullable
     private void findFavouriteFood()
     {
-        List<ItemEntity> players = this.entity.world.getEntitiesWithinAABB(ItemEntity.class, this.entity.getBoundingBox().grow(10), itemEntity -> itemEntity.getItem().getItem() == this.entity.getFavouriteFood().getItem());
+        List<ItemEntity> players = this.entity.level.getEntitiesOfClass(ItemEntity.class, this.entity.getBoundingBox().inflate(10), itemEntity -> itemEntity.getItem().getItem() == this.entity.getFavouriteFood().getItem());
         if(players.size() > 0)
         {
-            this.itemEntity = players.stream().min(Comparator.comparing(this.entity::getDistance)).get();
+            this.itemEntity = players.stream().min(Comparator.comparing(this.entity::distanceTo)).get();
         }
     }
 }

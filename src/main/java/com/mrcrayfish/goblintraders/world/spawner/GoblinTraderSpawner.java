@@ -1,32 +1,20 @@
 package com.mrcrayfish.goblintraders.world.spawner;
 
 import com.mrcrayfish.goblintraders.Config;
-import com.mrcrayfish.goblintraders.Reference;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
-import com.mrcrayfish.goblintraders.init.ModEntities;
-import net.minecraft.entity.EntitySpawnPlacementRegistry;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.spawner.ISpecialSpawner;
-import net.minecraft.world.spawner.WorldEntitySpawner;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
-import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.NaturalSpawner;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,9 +52,9 @@ public class GoblinTraderSpawner
         }
     }
 
-    public int tick(World world)
+    public int tick(Level level)
     {
-        if(world.getGameRules().getBoolean(GameRules.DO_TRADER_SPAWNING))
+        if(level.getGameRules().getBoolean(GameRules.RULE_DO_TRADER_SPAWNING))
         {
             if(--this.delayBeforeSpawnLogic <= 0)
             {
@@ -77,14 +65,14 @@ public class GoblinTraderSpawner
                 if(this.currentTraderSpawnDelay <= 0)
                 {
                     this.currentTraderSpawnDelay = this.traderSpawnDelay;
-                    if(world.getGameRules().getBoolean(GameRules.DO_MOB_SPAWNING))
+                    if(level.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING))
                     {
                         int spawnChance = this.currentTraderSpawnChance;
-                        this.currentTraderSpawnChance = MathHelper.clamp(this.currentTraderSpawnChance + this.traderSpawnChance, this.traderSpawnChance, 100);
+                        this.currentTraderSpawnChance = Mth.clamp(this.currentTraderSpawnChance + this.traderSpawnChance, this.traderSpawnChance, 100);
                         this.data.setGoblinTraderSpawnChance(this.currentTraderSpawnChance);
-                        if(world.rand.nextInt(100) <= spawnChance)
+                        if(level.getRandom().nextInt(100) <= spawnChance)
                         {
-                            if(this.spawnTrader(world))
+                            if(this.spawnTrader(level))
                             {
                                 this.currentTraderSpawnChance = this.traderSpawnChance;
                             }
@@ -96,33 +84,33 @@ public class GoblinTraderSpawner
         return 0;
     }
 
-    private boolean spawnTrader(World world)
+    private boolean spawnTrader(Level level)
     {
-        List<PlayerEntity> players = new ArrayList<>(world.getPlayers());
+        List<? extends Player> players = level.players();
         if(players.isEmpty())
         {
             return false;
         }
-        PlayerEntity randomPlayer = players.get(world.rand.nextInt(players.size()));
+        Player randomPlayer = players.get(level.getRandom().nextInt(players.size()));
         if(randomPlayer == null)
         {
             return true;
         }
         else
         {
-            BlockPos blockpos = randomPlayer.getPosition();
-            BlockPos safestPos = this.getSafePositionAroundPlayer(randomPlayer.world, blockpos, 10);
-            if(safestPos != null && this.isEmptyCollision(randomPlayer.world, safestPos))
+            BlockPos blockpos = randomPlayer.getOnPos();
+            BlockPos safestPos = this.getSafePositionAroundPlayer(randomPlayer.level, blockpos, 10);
+            if(safestPos != null && this.isEmptyCollision(randomPlayer.level, safestPos))
             {
                 if(safestPos.getY() < this.minLevel || safestPos.getY() >= this.maxLevel)
                 {
                     return false;
                 }
-                AbstractGoblinEntity goblin = this.entityType.spawn((ServerWorld) randomPlayer.world, null, null, null, safestPos, SpawnReason.EVENT, false, false);
+                AbstractGoblinEntity goblin = this.entityType.spawn((ServerLevel) randomPlayer.level, null, null, null, safestPos, MobSpawnType.EVENT, false, false);
                 if(goblin != null)
                 {
                     goblin.setDespawnDelay(this.traderSpawnDelay);
-                    goblin.setHomePosAndDistance(safestPos, 16);
+                    goblin.restrictTo(safestPos, 16);
                     return true;
                 }
             }
@@ -131,7 +119,7 @@ public class GoblinTraderSpawner
     }
 
     @Nullable
-    private BlockPos getSafePositionAroundPlayer(World world, BlockPos pos, int range)
+    private BlockPos getSafePositionAroundPlayer(Level level, BlockPos pos, int range)
     {
         if(range == 0)
         {
@@ -140,30 +128,30 @@ public class GoblinTraderSpawner
         BlockPos safestPos = null;
         for(int attempts = 0; attempts < 50; attempts++)
         {
-            int posX = pos.getX() + world.rand.nextInt(range * 2) - range;
-            int posY = pos.getY() + world.rand.nextInt(range) - range / 2;
-            int posZ = pos.getZ() + world.rand.nextInt(range * 2) - range;
-            BlockPos testPos = this.findGround(world, new BlockPos(posX, posY, posZ), range);
-            if(testPos != null && WorldEntitySpawner.canCreatureTypeSpawnAtLocation(EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, world, testPos, ModEntities.GOBLIN_TRADER.get()))
+            int posX = pos.getX() + level.getRandom().nextInt(range * 2) - range;
+            int posY = pos.getY() + level.getRandom().nextInt(range) - range / 2;
+            int posZ = pos.getZ() + level.getRandom().nextInt(range * 2) - range;
+            BlockPos testPos = this.findGround(level, new BlockPos(posX, posY, posZ), range);
+            if(testPos != null && NaturalSpawner.isSpawnPositionOk(SpawnPlacements.Type.ON_GROUND, level, testPos, this.entityType))
             {
                 safestPos = testPos;
                 break;
             }
         }
-        return safestPos != null ? safestPos : this.getSafePositionAroundPlayer(world, pos, range / 2);
+        return safestPos != null ? safestPos : this.getSafePositionAroundPlayer(level, pos, range / 2);
     }
 
     @Nullable
-    private BlockPos findGround(World world, BlockPos pos, int maxDistance)
+    private BlockPos findGround(Level level, BlockPos pos, int maxDistance)
     {
-        if(world.isAirBlock(pos))
+        if(level.getBlockState(pos).isAir())
         {
             BlockPos downPos = pos;
-            while(World.isValid(downPos.down()) && world.isAirBlock(downPos.down()) && downPos.down().withinDistance(pos, maxDistance))
+            while(Level.isInSpawnableBounds(downPos.below()) && level.getBlockState(downPos.below()).isAir() && downPos.below().closerThan(pos, maxDistance))
             {
-                downPos = downPos.down();
+                downPos = downPos.below();
             }
-            if(!world.isAirBlock(downPos.down()))
+            if(!level.getBlockState(downPos.below()).isAir())
             {
                 return downPos;
             }
@@ -171,11 +159,11 @@ public class GoblinTraderSpawner
         else
         {
             BlockPos upPos = pos;
-            while(World.isValid(upPos.up()) && !world.isAirBlock(upPos.up()) && upPos.up().withinDistance(pos, maxDistance))
+            while(Level.isInSpawnableBounds(upPos.above()) && !level.getBlockState(upPos.above()).isAir() && upPos.above().closerThan(pos, maxDistance))
             {
-                upPos = upPos.up();
+                upPos = upPos.above();
             }
-            if(!world.isAirBlock(upPos.down()))
+            if(!level.getBlockState(upPos.below()).isAir())
             {
                 return upPos;
             }
@@ -183,12 +171,8 @@ public class GoblinTraderSpawner
         return null;
     }
 
-    private boolean isEmptyCollision(World world, BlockPos pos)
+    private boolean isEmptyCollision(Level level, BlockPos pos)
     {
-        if(!world.getBlockState(pos).getCollisionShape(world, pos).isEmpty())
-        {
-            return false;
-        }
-        return true;
+        return level.getBlockState(pos).getCollisionShape(level, pos).isEmpty();
     }
 }

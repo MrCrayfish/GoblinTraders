@@ -1,12 +1,12 @@
 package com.mrcrayfish.goblintraders.trades.type;
 
 import com.google.gson.JsonObject;
-import net.minecraft.entity.merchant.villager.VillagerTrades;
+import net.minecraft.world.entity.npc.VillagerTrades;
 
 /**
  * Author: MrCrayfish
  */
-public interface ITradeType<T extends VillagerTrades.ITrade>
+public interface ITradeType<T extends VillagerTrades.ItemListing>
 {
     JsonObject serialize();
 

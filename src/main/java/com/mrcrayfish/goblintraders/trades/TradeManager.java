@@ -6,12 +6,12 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mrcrayfish.goblintraders.Reference;
 import com.mrcrayfish.goblintraders.entity.TraderCreatureEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.profiler.IProfiler;
-import net.minecraft.resources.IFutureReloadListener;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -25,7 +25,6 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -39,7 +38,7 @@ import java.util.concurrent.Executor;
  * Author: MrCrayfish
  */
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
-public class TradeManager implements IFutureReloadListener
+public class TradeManager implements PreparableReloadListener
 {
     private static final int FILE_TYPE_LENGTH_VALUE = ".json".length();
     private static final Gson GSON = new GsonBuilder().create();
@@ -90,7 +89,7 @@ public class TradeManager implements IFutureReloadListener
     }
 
     @Override
-    public CompletableFuture<Void> reload(IStage stage, IResourceManager manager, IProfiler preparationsProfiler, IProfiler reloadProfiler, Executor backgroundExecutor, Executor gameExecutor)
+    public CompletableFuture<Void> reload(PreparationBarrier stage, ResourceManager manager, ProfilerFiller preparationsProfiler, ProfilerFiller reloadProfiler, Executor backgroundExecutor, Executor gameExecutor)
     {
         Map<EntityType<?>, EntityTrades> entityToResourceList = new HashMap<>();
         return CompletableFuture.allOf(CompletableFuture.runAsync(() ->
@@ -98,7 +97,7 @@ public class TradeManager implements IFutureReloadListener
             this.traders.forEach(entityType ->
             {
                 String folder = String.format("trades/%s", Objects.requireNonNull(entityType.getRegistryName()).getPath());
-                List<ResourceLocation> resources = new ArrayList<>(manager.getAllResourceLocations(folder, (fileName) -> fileName.endsWith(".json")));
+                List<ResourceLocation> resources = new ArrayList<>(manager.listResources(folder, (fileName) -> fileName.endsWith(".json")));
                 resources.sort((r1, r2) -> {
                     if(r1.getNamespace().equals(r2.getNamespace())) return 0;
                     return r2.getNamespace().equals(Reference.MOD_ID) ? 1 : -1;
@@ -124,16 +123,16 @@ public class TradeManager implements IFutureReloadListener
                 entityToResourceList.put(entityType, builder.build());
                 this.tradeMap = ImmutableMap.copyOf(entityToResourceList);
             });
-        }, backgroundExecutor)).thenCompose(stage::markCompleteAwaitingOthers);
+        }, backgroundExecutor)).thenCompose(stage::wait);
     }
 
-    private void deserializeTrades(IResourceManager manager, EntityTrades.Builder builder, TradeRarity rarity, LinkedHashSet<ResourceLocation> resources)
+    private void deserializeTrades(ResourceManager manager, EntityTrades.Builder builder, TradeRarity rarity, LinkedHashSet<ResourceLocation> resources)
     {
         for(ResourceLocation resource : resources)
         {
             try(InputStream inputstream = manager.getResource(resource).getInputStream(); Reader reader = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8)))
             {
-                JsonObject object = JSONUtils.fromJson(GSON, reader, JsonObject.class);
+                JsonObject object = GsonHelper.fromJson(GSON, reader, JsonObject.class);
                 builder.deserialize(rarity, object);
             }
             catch(IOException e)
