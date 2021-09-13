@@ -4,13 +4,16 @@ import com.mrcrayfish.goblintraders.Config;
 import com.mrcrayfish.goblintraders.Reference;
 import com.mrcrayfish.goblintraders.init.ModEntities;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fmlserverevents.FMLServerStartedEvent;
+import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
 import net.minecraftforge.fmlserverevents.FMLServerStoppedEvent;
 
 import java.util.HashMap;
@@ -22,14 +25,14 @@ import java.util.Map;
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 public class SpawnHandler
 {
-    private static Map<ResourceKey<DimensionType>, GoblinTraderSpawner> spawners = new HashMap<>();
+    private static Map<ResourceLocation, GoblinTraderSpawner> spawners = new HashMap<>();
 
     @SubscribeEvent
-    public static void onServerStart(FMLServerStartedEvent event)
+    public static void onWorldLoad(FMLServerStartingEvent event)
     {
         MinecraftServer server = event.getServer();
-        spawners.put(DimensionType.OVERWORLD_LOCATION, new GoblinTraderSpawner(server, "GoblinTrader", ModEntities.GOBLIN_TRADER.get(), Config.COMMON.goblinTrader));
-        spawners.put(DimensionType.NETHER_LOCATION, new GoblinTraderSpawner(server, "VeinGoblinTrader", ModEntities.VEIN_GOBLIN_TRADER.get(), Config.COMMON.veinGoblinTrader));
+        spawners.put(DimensionType.OVERWORLD_LOCATION.location(), new GoblinTraderSpawner(server, "GoblinTrader", ModEntities.GOBLIN_TRADER.get(), Config.COMMON.goblinTrader));
+        spawners.put(DimensionType.NETHER_LOCATION.location(), new GoblinTraderSpawner(server, "VeinGoblinTrader", ModEntities.VEIN_GOBLIN_TRADER.get(), Config.COMMON.veinGoblinTrader));
     }
 
     @SubscribeEvent
@@ -47,7 +50,7 @@ public class SpawnHandler
         if(event.side != LogicalSide.SERVER)
             return;
 
-        GoblinTraderSpawner spawner = spawners.get(event.world.dimension());
+        GoblinTraderSpawner spawner = spawners.get(event.world.dimension().location());
         if(spawner != null)
         {
             spawner.tick(event.world);

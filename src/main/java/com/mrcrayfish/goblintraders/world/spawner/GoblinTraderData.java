@@ -21,17 +21,14 @@ public class GoblinTraderData extends SavedData
 
     private final Map<String, GoblinData> data = new HashMap<>();
 
-    public GoblinTraderData(CompoundTag tag)
-    {
-        this.read(tag);
-    }
+    public GoblinTraderData() {}
 
     public GoblinData getGoblinData(String key)
     {
         return this.data.computeIfAbsent(key, s -> new GoblinData(this));
     }
 
-    public void read(CompoundTag tag)
+    public GoblinTraderData read(CompoundTag tag)
     {
         if(tag.contains("GoblinTraderSpawnDelay", Constants.NBT.TAG_INT))
         {
@@ -53,6 +50,7 @@ public class GoblinTraderData extends SavedData
                 this.data.put(key, data);
             });
         }
+        return this;
     }
 
     @Override
@@ -72,6 +70,6 @@ public class GoblinTraderData extends SavedData
     public static GoblinTraderData get(MinecraftServer server)
     {
         ServerLevel level = server.getLevel(Level.OVERWORLD);
-        return level.getDataStorage().get(GoblinTraderData::new, DATA_NAME);
+        return level.getDataStorage().computeIfAbsent(tag -> new GoblinTraderData().read(tag), GoblinTraderData::new, DATA_NAME);
     }
 }
