@@ -70,7 +70,7 @@ public class GoblinTraderSpawner
         {
             if(--this.delayBeforeSpawnLogic <= 0)
             {
-                int delay = this.traderSpawnDelay / 20;
+                int delay = Math.max(this.traderSpawnDelay / 20, 1);
                 this.delayBeforeSpawnLogic = delay;
                 this.currentTraderSpawnDelay -= delay;
                 this.data.setGoblinTraderSpawnDelay(this.currentTraderSpawnDelay);
