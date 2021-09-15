@@ -169,7 +169,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         }
         if(!this.world.isRemote() && this.getMaxRestockDelay() != -1)
         {
-            if(++this.restockDelay == this.getMaxRestockDelay())
+            if(++this.restockDelay >= this.getMaxRestockDelay())
             {
                 this.getOffers().forEach(MerchantOffer::resetUses);
                 this.restockDelay = 0;
