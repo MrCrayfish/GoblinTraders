@@ -27,6 +27,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -240,6 +241,10 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         if(this.customer != null)
         {
             this.tradedCustomers.add(this.customer.getUUID());
+        }
+        if(this.level instanceof ServerLevel)
+        {
+            ExperienceOrb.award((ServerLevel) this.level, this.getPosition(1F), offer.getXp());
         }
     }
 
