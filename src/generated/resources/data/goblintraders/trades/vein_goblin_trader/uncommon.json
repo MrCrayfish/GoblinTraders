@@ -12,7 +12,7 @@
         "count": 2
       },
       "price_multiplier": 0.0,
-      "experience": 200
+      "experience": 10
     },
     {
       "type": "goblintraders:basic",
@@ -26,7 +26,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 20,
-      "experience": 100
+      "experience": 50
     },
     {
       "type": "goblintraders:basic",
@@ -44,7 +44,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 128,
-      "experience": 20
+      "experience": 4
     }
   ]
 }

@@ -13,7 +13,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 64,
-      "experience": 50
+      "experience": 10
     },
     {
       "type": "goblintraders:basic",
@@ -31,7 +31,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 2,
-      "experience": 40
+      "experience": 10
     },
     {
       "type": "goblintraders:basic",
@@ -45,7 +45,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 64,
-      "experience": 40
+      "experience": 10
     },
     {
       "type": "goblintraders:basic",
@@ -66,7 +66,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 2,
-      "experience": 100,
+      "experience": 30,
       "enchantments": [
         {
           "id": "minecraft:luck_of_the_sea",
@@ -93,7 +93,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 2,
-      "experience": 100,
+      "experience": 30,
       "enchantments": [
         {
           "id": "minecraft:lure",

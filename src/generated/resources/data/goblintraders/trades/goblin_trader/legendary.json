@@ -19,7 +19,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 500,
+      "experience": 1000,
       "enchantments": [
         {
           "id": "minecraft:fortune",
