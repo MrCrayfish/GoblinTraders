@@ -62,7 +62,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:3s,id:\"minecraft:luck_of_the_sea\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:luck_of_the_sea\",lvl:3s}]}"
       },
       "price_multiplier": 0.5,
       "max_trades": 2,
@@ -89,7 +89,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:3s,id:\"minecraft:lure\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:lure\",lvl:3s}]}"
       },
       "price_multiplier": 0.5,
       "max_trades": 2,
@@ -186,7 +186,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:5s,id:\"minecraft:efficiency\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:efficiency\",lvl:5s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -213,7 +213,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:3s,id:\"minecraft:unbreaking\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:unbreaking\",lvl:3s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -240,7 +240,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:3s,id:\"minecraft:fortune\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:fortune\",lvl:3s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -267,7 +267,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:5s,id:\"minecraft:efficiency\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:efficiency\",lvl:5s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -294,7 +294,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:3s,id:\"minecraft:unbreaking\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:unbreaking\",lvl:3s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -321,7 +321,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:5s,id:\"minecraft:efficiency\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:efficiency\",lvl:5s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -348,7 +348,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:3s,id:\"minecraft:unbreaking\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:unbreaking\",lvl:3s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,

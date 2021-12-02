@@ -122,6 +122,20 @@
       "price_multiplier": 0.0,
       "max_trades": 32,
       "experience": 20
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "payment_item": {
+        "item": "minecraft:amethyst_shard",
+        "count": 2
+      },
+      "price_multiplier": 0.0,
+      "max_trades": 20,
+      "experience": 20
     }
   ]
 }

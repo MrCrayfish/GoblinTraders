@@ -16,7 +16,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:5s,id:\"minecraft:sharpness\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:sharpness\",lvl:5s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -43,7 +43,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:3s,id:\"minecraft:looting\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:looting\",lvl:3s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -70,7 +70,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:3s,id:\"minecraft:sweeping\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:sweeping\",lvl:3s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -97,7 +97,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:2s,id:\"minecraft:fire_aspect\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:fire_aspect\",lvl:2s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -124,7 +124,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:2s,id:\"minecraft:knockback\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:knockback\",lvl:2s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -151,7 +151,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:5s,id:\"minecraft:bane_of_arthropods\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:bane_of_arthropods\",lvl:5s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -178,7 +178,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:5s,id:\"minecraft:smite\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:smite\",lvl:5s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -205,7 +205,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:4s,id:\"minecraft:blast_protection\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:blast_protection\",lvl:4s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -232,7 +232,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:4s,id:\"minecraft:fire_protection\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:fire_protection\",lvl:4s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -259,7 +259,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:4s,id:\"minecraft:projectile_protection\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:projectile_protection\",lvl:4s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -286,7 +286,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:4s,id:\"minecraft:protection\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:protection\",lvl:4s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -313,7 +313,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:3s,id:\"minecraft:unbreaking\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:unbreaking\",lvl:3s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -340,7 +340,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:4s,id:\"minecraft:blast_protection\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:blast_protection\",lvl:4s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -367,7 +367,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:4s,id:\"minecraft:fire_protection\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:fire_protection\",lvl:4s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -394,7 +394,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:4s,id:\"minecraft:projectile_protection\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:projectile_protection\",lvl:4s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -421,7 +421,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:4s,id:\"minecraft:protection\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:protection\",lvl:4s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -448,7 +448,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:3s,id:\"minecraft:unbreaking\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:unbreaking\",lvl:3s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -475,7 +475,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:4s,id:\"minecraft:blast_protection\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:blast_protection\",lvl:4s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -502,7 +502,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:4s,id:\"minecraft:fire_protection\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:fire_protection\",lvl:4s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -529,7 +529,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:4s,id:\"minecraft:projectile_protection\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:projectile_protection\",lvl:4s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -556,7 +556,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:4s,id:\"minecraft:protection\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:protection\",lvl:4s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -583,7 +583,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:3s,id:\"minecraft:unbreaking\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:unbreaking\",lvl:3s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -610,7 +610,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:4s,id:\"minecraft:blast_protection\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:blast_protection\",lvl:4s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -637,7 +637,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:4s,id:\"minecraft:fire_protection\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:fire_protection\",lvl:4s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -664,7 +664,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:4s,id:\"minecraft:projectile_protection\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:projectile_protection\",lvl:4s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -691,7 +691,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:4s,id:\"minecraft:protection\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:protection\",lvl:4s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
@@ -718,7 +718,7 @@
       "secondary_payment_item": {
         "item": "minecraft:enchanted_book",
         "count": 1,
-        "nbt": "{StoredEnchantments:[{lvl:3s,id:\"minecraft:unbreaking\"}]}"
+        "nbt": "{StoredEnchantments:[{id:\"minecraft:unbreaking\",lvl:3s}]}"
       },
       "price_multiplier": 0.0,
       "max_trades": 1,

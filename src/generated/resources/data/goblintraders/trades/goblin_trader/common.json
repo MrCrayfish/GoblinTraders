@@ -9,7 +9,7 @@
       },
       "payment_item": {
         "item": "minecraft:apple",
-        "count": 1
+        "count": 8
       },
       "price_multiplier": 0.0,
       "max_trades": 24,
@@ -22,7 +22,7 @@
         "count": 2
       },
       "payment_item": {
-        "item": "minecraft:iron_ore",
+        "item": "minecraft:raw_iron",
         "count": 1
       },
       "price_multiplier": 0.0,
@@ -36,8 +36,22 @@
         "count": 3
       },
       "payment_item": {
-        "item": "minecraft:gold_ore",
+        "item": "minecraft:raw_gold",
         "count": 2
+      },
+      "price_multiplier": 0.0,
+      "max_trades": 30,
+      "experience": 30
+    },
+    {
+      "type": "goblintraders:basic",
+      "offer_item": {
+        "item": "minecraft:copper_ingot",
+        "count": 2
+      },
+      "payment_item": {
+        "item": "minecraft:raw_copper",
+        "count": 1
       },
       "price_multiplier": 0.0,
       "max_trades": 30,
