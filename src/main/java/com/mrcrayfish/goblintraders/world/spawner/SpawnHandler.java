@@ -3,18 +3,15 @@ package com.mrcrayfish.goblintraders.world.spawner;
 import com.mrcrayfish.goblintraders.Config;
 import com.mrcrayfish.goblintraders.Reference;
 import com.mrcrayfish.goblintraders.init.ModEntities;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fmlserverevents.FMLServerStartedEvent;
-import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
-import net.minecraftforge.fmlserverevents.FMLServerStoppedEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +25,7 @@ public class SpawnHandler
     private static Map<ResourceLocation, GoblinTraderSpawner> spawners = new HashMap<>();
 
     @SubscribeEvent
-    public static void onWorldLoad(FMLServerStartingEvent event)
+    public static void onWorldLoad(ServerStartingEvent event)
     {
         MinecraftServer server = event.getServer();
         spawners.put(DimensionType.OVERWORLD_LOCATION.location(), new GoblinTraderSpawner(server, "GoblinTrader", ModEntities.GOBLIN_TRADER.get(), Config.COMMON.goblinTrader));
@@ -36,7 +33,7 @@ public class SpawnHandler
     }
 
     @SubscribeEvent
-    public static void onServerStart(FMLServerStoppedEvent event)
+    public static void onServerStart(ServerStoppedEvent event)
     {
         spawners.clear();
     }

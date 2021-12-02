@@ -12,6 +12,7 @@ import com.mrcrayfish.goblintraders.init.ModSounds;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -49,7 +50,6 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -256,16 +256,19 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     }
 
     @Override
+    public boolean isClientSide()
+    {
+        return this.getLevel().isClientSide;
+    }
+
+    @Override
     public int getVillagerXp()
     {
         return 0;
     }
 
     @Override
-    public void overrideXp(int xpIn)
-    {
-
-    }
+    public void overrideXp(int xpIn) {}
 
     @Override
     public boolean showProgressBar()
@@ -397,11 +400,11 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         {
             this.offers = new MerchantOffers(compound.getCompound("Offers"));
         }
-        if(compound.contains("DespawnDelay", Constants.NBT.TAG_INT))
+        if(compound.contains("DespawnDelay", Tag.TAG_INT))
         {
             this.despawnDelay = compound.getInt("DespawnDelay");
         }
-        if(compound.contains("RestockDelay", Constants.NBT.TAG_INT))
+        if(compound.contains("RestockDelay", Tag.TAG_INT))
         {
             this.restockDelay = compound.getInt("RestockDelay");
         }

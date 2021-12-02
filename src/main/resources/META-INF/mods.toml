@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[37,)"
+loaderVersion="[38,)"
 license="All rights reserved"
 
 issueTrackerURL="https://github.com/MrCrayfish/GoblinTraders/issues"
@@ -18,13 +18,13 @@ description='Adds goblins that have unique trades to improve your adventure!'
 [[dependencies.goblintraders]]
     modId="forge"
     mandatory=true
-    versionRange="[37.0.59,)"
+    versionRange="[38,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.goblintraders]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.17.1,1.18)"
+    versionRange="[1.18,1.19)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.goblintraders]]
