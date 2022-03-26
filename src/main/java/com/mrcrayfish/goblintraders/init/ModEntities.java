@@ -33,8 +33,7 @@ public class ModEntities
 
     private static <T extends Entity> RegistryObject<EntityType<T>> build(String id, Function<Level, T> function, float width, float height)
     {
-        EntityType<T> type = EntityType.Builder.<T>of((entityType, world) -> function.apply(world), MobCategory.CREATURE).sized(width, height).setCustomClientFactory((spawnEntity, world) -> function.apply(world)).build(id);
-        return REGISTER.register(id, () -> type);
+        return REGISTER.register(id, () -> EntityType.Builder.<T>of((entityType, world) -> function.apply(world), MobCategory.CREATURE).sized(width, height).setCustomClientFactory((spawnEntity, world) -> function.apply(world)).build(id));
     }
 
     @SubscribeEvent

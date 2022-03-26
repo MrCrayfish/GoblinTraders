@@ -14,7 +14,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'maven-publish'
 apply plugin: 'eclipse'
 
-version = '1.7.0-1.18.1'
+version = '1.7.0-1.18.2'
 group = 'com.mrcrayfish'
 archivesBaseName = 'goblintraders'
 
@@ -27,7 +27,7 @@ mixin {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 minecraft {
-    mappings channel: 'official', version: '1.18.1'
+    mappings channel: 'official', version: '1.18.2'
     runs {
         client {
             workingDirectory project.file('run')
@@ -75,7 +75,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.1-39.0.0'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.0.32'
     implementation fg.deobf('curse.maven:catalogue-459701:3543625')
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
