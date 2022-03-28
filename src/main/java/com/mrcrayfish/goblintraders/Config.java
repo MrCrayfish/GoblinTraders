@@ -17,7 +17,7 @@ public class Config
         Common(ForgeConfigSpec.Builder builder)
         {
             builder.comment("Common configuration settings").push("common");
-            this.goblinTrader = new Goblin(builder, "Goblin Trader", "goblin_trader", 25, 24000, 0, 63);
+            this.goblinTrader = new Goblin(builder, "Goblin Trader", "goblin_trader", 25, 24000, -64, 50);
             this.veinGoblinTrader = new Goblin(builder, "Vein Goblin Trader", "vein_goblin_trader", 25, 24000, 0, 128);
             this.preventDespawnIfNamed = builder.comment("If true, prevents the trader from despawning if named").define("preventDespawnIfNamed", true);
             builder.pop();
@@ -44,10 +44,10 @@ public class Config
                         .defineInRange("traderSpawnDelay", spawnDelay, 0, Integer.MAX_VALUE);
                 this.traderMinSpawnLevel = builder
                         .comment("The minimum level the trader can spawn")
-                        .defineInRange("traderMinSpawnLevel", minLevel, 0, 256);
+                        .defineInRange("traderMinSpawnLevel", minLevel, -64, 320);
                 this.traderMaxSpawnLevel = builder
                         .comment("The maximum level the trader can spawn")
-                        .defineInRange("traderMaxSpawnLevel", maxLevel, 0, 256);
+                        .defineInRange("traderMaxSpawnLevel", maxLevel, -64, 320);
                 this.restockDelay = builder
                         .comment("The amount of ticks before the trader will replenish it's trades. Set to -1 to disable restocking")
                         .defineInRange("restockDelay", 48000, -1, Integer.MAX_VALUE);
