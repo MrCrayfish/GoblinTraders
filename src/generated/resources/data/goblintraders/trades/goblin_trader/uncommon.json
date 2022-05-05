@@ -121,7 +121,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 32,
-      "experience": 20
+      "experience": 4
     }
   ]
 }
