@@ -24,6 +24,7 @@ import net.minecraft.entity.ai.goal.PrioritizedGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.TemptGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -239,6 +240,10 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         if(this.customer != null)
         {
             this.tradedCustomers.add(this.customer.getUniqueID());
+        }
+        if(this.world instanceof ServerWorld)
+        {
+            this.world.addEntity(new ExperienceOrbEntity(this.world, this.getPosX(), this.getPosY() + 0.5D, this.getPosZ(), offer.getGivenExp()));
         }
     }
 
