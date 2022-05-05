@@ -1,5 +1,6 @@
 package com.mrcrayfish.goblintraders.mixin;
 
+import com.mrcrayfish.goblintraders.Hooks;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.inventory.container.RepairContainer;
 import net.minecraft.item.ItemStack;
@@ -32,7 +33,7 @@ public class RepairContainerMixin
     @Inject(method = "updateRepairOutput", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/Enchantment;canApply(Lnet/minecraft/item/ItemStack;)Z", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
     private void beforeCanApply(CallbackInfo ci, ItemStack leftOriginal, int enchantCost, int repairCost, int renameCost, ItemStack leftCopy, ItemStack rightOriginal, Map leftEnchantments, boolean enchantingItem, Map rightEnchantments, boolean combinedEnchants, boolean invalidRepair, Iterator var12, Enchantment enchantment, int leftEnchantmentLevel, int combinedEnchantmentLevel)
     {
-        int maxLevel = this.getEnchantmentLevel(enchantment);
+        int maxLevel = Hooks.getEnchantmentLevel(enchantment);
         int leftLevel = (int) leftEnchantments.getOrDefault(enchantment, 0);
         int rightLevel = (int) rightEnchantments.get(enchantment);
         this.maxLevel = Math.max(rightLevel, leftLevel);
@@ -40,12 +41,6 @@ public class RepairContainerMixin
         {
             this.maxLevel = rightLevel + 1;
         }
-    }
-
-    // Prevents mixin from targeting getMaxLevel
-    private int getEnchantmentLevel(Enchantment enchantment)
-    {
-        return enchantment.getMaxLevel();
     }
 
     @ModifyArgs(method = "updateRepairOutput", at = @At(value = "INVOKE", target = "Ljava/util/Map;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;", ordinal = 0))
