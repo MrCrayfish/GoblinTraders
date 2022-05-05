@@ -20,7 +20,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:sharpness",
@@ -47,7 +47,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:looting",
@@ -74,7 +74,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:sweeping",
@@ -101,7 +101,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:fire_aspect",
@@ -128,7 +128,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:knockback",
@@ -155,7 +155,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:bane_of_arthropods",
@@ -182,7 +182,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:smite",
@@ -209,7 +209,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:blast_protection",
@@ -236,7 +236,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:fire_protection",
@@ -263,7 +263,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:projectile_protection",
@@ -290,7 +290,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:protection",
@@ -317,7 +317,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:unbreaking",
@@ -344,7 +344,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:blast_protection",
@@ -371,7 +371,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:fire_protection",
@@ -398,7 +398,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:projectile_protection",
@@ -425,7 +425,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:protection",
@@ -452,7 +452,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:unbreaking",
@@ -479,7 +479,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:blast_protection",
@@ -506,7 +506,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:fire_protection",
@@ -533,7 +533,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:projectile_protection",
@@ -560,7 +560,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:protection",
@@ -587,7 +587,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:unbreaking",
@@ -614,7 +614,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:blast_protection",
@@ -641,7 +641,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:fire_protection",
@@ -668,7 +668,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:projectile_protection",
@@ -695,7 +695,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:protection",
@@ -722,7 +722,7 @@
       },
       "price_multiplier": 0.0,
       "max_trades": 1,
-      "experience": 100,
+      "experience": 200,
       "enchantments": [
         {
           "id": "minecraft:unbreaking",
@@ -748,7 +748,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 8,
-      "experience": 1000
+      "experience": 100
     },
     {
       "type": "goblintraders:basic",
@@ -768,7 +768,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 8,
-      "experience": 1000
+      "experience": 100
     },
     {
       "type": "goblintraders:basic",
@@ -788,7 +788,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 8,
-      "experience": 1000
+      "experience": 100
     },
     {
       "type": "goblintraders:basic",
@@ -808,7 +808,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 8,
-      "experience": 1000
+      "experience": 100
     },
     {
       "type": "goblintraders:basic",
@@ -828,7 +828,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 8,
-      "experience": 1000
+      "experience": 100
     },
     {
       "type": "goblintraders:basic",
@@ -848,7 +848,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 8,
-      "experience": 1000
+      "experience": 100
     },
     {
       "type": "goblintraders:basic",
@@ -868,7 +868,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 8,
-      "experience": 1000
+      "experience": 100
     },
     {
       "type": "goblintraders:basic",
@@ -888,7 +888,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 8,
-      "experience": 1000
+      "experience": 100
     },
     {
       "type": "goblintraders:basic",
@@ -908,7 +908,7 @@
       },
       "price_multiplier": 0.5,
       "max_trades": 8,
-      "experience": 1000
+      "experience": 100
     }
   ]
 }
