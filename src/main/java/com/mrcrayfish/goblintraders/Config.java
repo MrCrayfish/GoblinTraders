@@ -31,6 +31,7 @@ public class Config
             public final ForgeConfigSpec.IntValue traderMaxSpawnLevel;
             public final ForgeConfigSpec.IntValue restockDelay;
             public final ForgeConfigSpec.BooleanValue canAttackBack;
+            public final ForgeConfigSpec.IntValue gruntNoiseInterval;
 
             Goblin(ForgeConfigSpec.Builder builder, String name, String key, int spawnChance, int spawnDelay, int minLevel, int maxLevel)
             {
@@ -53,6 +54,9 @@ public class Config
                 this.canAttackBack = builder
                         .comment("If true, the goblin will try to hit back a player or mob that hit them first")
                         .define("canAttackBack", true);
+                this.gruntNoiseInterval = builder
+                        .comment("Goblins will make a grunt noise while walking around. If you find it happening too often, you can increase the interval. Value is represented in ticks.")
+                        .defineInRange("gruntNoiseInterval", 80, 1, 1000);
                 builder.pop();
             }
         }

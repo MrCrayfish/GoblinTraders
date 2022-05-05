@@ -67,4 +67,10 @@ public class GoblinTraderEntity extends AbstractGoblinEntity
     {
         return Config.COMMON.goblinTrader.canAttackBack.get();
     }
+
+    @Override
+    public int getTalkInterval()
+    {
+        return Config.COMMON.goblinTrader.gruntNoiseInterval.get();
+    }
 }

@@ -88,4 +88,10 @@ public class VeinGoblinTraderEntity extends AbstractGoblinEntity
     {
         return Config.COMMON.veinGoblinTrader.canAttackBack.get();
     }
+
+    @Override
+    public int getTalkInterval()
+    {
+        return Config.COMMON.veinGoblinTrader.gruntNoiseInterval.get();
+    }
 }
