@@ -77,6 +77,7 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.18.2-40.1.0'
     implementation fg.deobf('curse.maven:catalogue-459701:3543625')
+    implementation fg.deobf('curse.maven:configured-457570:3721946')
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
