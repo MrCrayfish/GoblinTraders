@@ -5,6 +5,7 @@ import com.mrcrayfish.goblintraders.Reference;
 import com.mrcrayfish.goblintraders.init.ModEntities;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -28,8 +29,8 @@ public class SpawnHandler
     public static void onWorldLoad(ServerStartingEvent event)
     {
         MinecraftServer server = event.getServer();
-        spawners.put(DimensionType.OVERWORLD_LOCATION.location(), new GoblinTraderSpawner(server, "GoblinTrader", ModEntities.GOBLIN_TRADER.get(), Config.COMMON.goblinTrader));
-        spawners.put(DimensionType.NETHER_LOCATION.location(), new GoblinTraderSpawner(server, "VeinGoblinTrader", ModEntities.VEIN_GOBLIN_TRADER.get(), Config.COMMON.veinGoblinTrader));
+        spawners.put(BuiltinDimensionTypes.OVERWORLD.location(), new GoblinTraderSpawner(server, "GoblinTrader", ModEntities.GOBLIN_TRADER.get(), Config.COMMON.goblinTrader));
+        spawners.put(BuiltinDimensionTypes.NETHER.location(), new GoblinTraderSpawner(server, "VeinGoblinTrader", ModEntities.VEIN_GOBLIN_TRADER.get(), Config.COMMON.veinGoblinTrader));
     }
 
     @SubscribeEvent

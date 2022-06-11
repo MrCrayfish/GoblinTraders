@@ -18,7 +18,7 @@ public class GoblinTraderRenderer extends MobRenderer<AbstractGoblinEntity, Gobl
     public GoblinTraderRenderer(EntityRendererProvider.Context context)
     {
         super(context, new GoblinTraderModel(context.bakeLayer(GoblinModelLayers.GOBLIN_TRADER)), 0.5F);
-        this.addLayer(new ItemInHandLayer<>(this));
+        this.addLayer(new ItemInHandLayer<>(this, context.getItemInHandRenderer()));
     }
 
     @Override

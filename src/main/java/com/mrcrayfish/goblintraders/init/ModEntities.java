@@ -9,13 +9,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Function;
@@ -44,8 +44,11 @@ public class ModEntities
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void register(RegistryEvent.Register<EntityType<?>> event)
+    public static void register(RegisterEvent event)
     {
-        SupplierSpawnEggItem.updateEggMap();
+        if(ForgeRegistries.ENTITIES.equals(event.getForgeRegistry()))
+        {
+            SupplierSpawnEggItem.updateEggMap();
+        }
     }
 }

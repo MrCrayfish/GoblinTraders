@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.mrcrayfish.goblintraders.Reference;
 import com.mrcrayfish.goblintraders.trades.GoblinTrade;
 import com.mrcrayfish.goblintraders.trades.TradeSerializer;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.effect.MobEffect;
@@ -170,7 +171,7 @@ public class BasicTrade implements ITradeType<GoblinTrade>
         private JsonObject serializeItemStack(ItemStack stack)
         {
             JsonObject object = new JsonObject();
-            object.addProperty("item", Objects.requireNonNull(stack.getItem().getRegistryName()).toString());
+            object.addProperty("item", Registry.ITEM.getKey(stack.getItem()).toString());
             object.addProperty("count", stack.getCount());
             if(stack.hasTag())
             {
@@ -182,7 +183,7 @@ public class BasicTrade implements ITradeType<GoblinTrade>
         private JsonObject serializeEnchantment(EnchantmentInstance enchantment)
         {
             JsonObject object = new JsonObject();
-            object.addProperty("id", Objects.requireNonNull(enchantment.enchantment.getRegistryName()).toString());
+            object.addProperty("id", Objects.requireNonNull(Registry.ENCHANTMENT.getKey(enchantment.enchantment)).toString());
             object.addProperty("level", enchantment.level);
             return object;
         }
@@ -190,7 +191,7 @@ public class BasicTrade implements ITradeType<GoblinTrade>
         private JsonObject serializePotionEffect(MobEffectInstance effect)
         {
             JsonObject object = new JsonObject();
-            object.addProperty("id", Objects.requireNonNull(effect.getEffect().getRegistryName()).toString());
+            object.addProperty("id", Objects.requireNonNull(Registry.MOB_EFFECT.getKey(effect.getEffect())).toString());
             object.addProperty("duration", effect.getDuration());
             object.addProperty("amplifier", effect.getAmplifier());
             object.addProperty("show_particles", effect.isVisible());

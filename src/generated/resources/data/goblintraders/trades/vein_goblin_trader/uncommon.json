@@ -3,48 +3,48 @@
   "trades": [
     {
       "type": "goblintraders:basic",
+      "experience": 10,
       "offer_item": {
-        "item": "minecraft:totem_of_undying",
-        "count": 1
+        "count": 1,
+        "item": "minecraft:totem_of_undying"
       },
       "payment_item": {
-        "item": "minecraft:netherite_ingot",
-        "count": 2
+        "count": 2,
+        "item": "minecraft:netherite_ingot"
       },
-      "price_multiplier": 0.0,
-      "experience": 10
+      "price_multiplier": 0.0
     },
     {
       "type": "goblintraders:basic",
-      "offer_item": {
-        "item": "minecraft:netherite_scrap",
-        "count": 5
-      },
-      "payment_item": {
-        "item": "minecraft:ancient_debris",
-        "count": 4
-      },
-      "price_multiplier": 0.0,
+      "experience": 50,
       "max_trades": 20,
-      "experience": 50
+      "offer_item": {
+        "count": 5,
+        "item": "minecraft:netherite_scrap"
+      },
+      "payment_item": {
+        "count": 4,
+        "item": "minecraft:ancient_debris"
+      },
+      "price_multiplier": 0.0
     },
     {
       "type": "goblintraders:basic",
+      "experience": 4,
+      "max_trades": 128,
       "offer_item": {
-        "item": "minecraft:red_nether_bricks",
-        "count": 1
+        "count": 1,
+        "item": "minecraft:red_nether_bricks"
       },
       "payment_item": {
-        "item": "minecraft:nether_wart",
-        "count": 1
-      },
-      "secondary_payment_item": {
-        "item": "minecraft:nether_brick",
-        "count": 1
+        "count": 1,
+        "item": "minecraft:nether_wart"
       },
       "price_multiplier": 0.0,
-      "max_trades": 128,
-      "experience": 4
+      "secondary_payment_item": {
+        "count": 1,
+        "item": "minecraft:nether_brick"
+      }
     }
   ]
 }

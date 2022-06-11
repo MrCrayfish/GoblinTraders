@@ -1,5 +1,6 @@
 package com.mrcrayfish.goblintraders.trades;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.npc.VillagerTrades;
 
 import java.util.List;
@@ -18,11 +19,11 @@ public enum TradeRarity
     LEGENDARY("legendary", (trades, random) -> 0, (trades, random) -> random.nextInt(10) == 0 ? 1 : 0, true);
 
     private final String key;
-    private final BiFunction<List<VillagerTrades.ItemListing>, Random, Integer> minimum;
-    private final BiFunction<List<VillagerTrades.ItemListing>, Random, Integer> maximum;
+    private final BiFunction<List<VillagerTrades.ItemListing>, RandomSource, Integer> minimum;
+    private final BiFunction<List<VillagerTrades.ItemListing>, RandomSource, Integer> maximum;
     private final boolean shuffle;
 
-    TradeRarity(String key, BiFunction<List<VillagerTrades.ItemListing>, Random, Integer> minimum, BiFunction<List<VillagerTrades.ItemListing>, Random, Integer> maximum, boolean shuffle)
+    TradeRarity(String key, BiFunction<List<VillagerTrades.ItemListing>, RandomSource, Integer> minimum, BiFunction<List<VillagerTrades.ItemListing>, RandomSource, Integer> maximum, boolean shuffle)
     {
         this.key = key;
         this.minimum = minimum;
@@ -35,12 +36,12 @@ public enum TradeRarity
         return this.key;
     }
 
-    public BiFunction<List<VillagerTrades.ItemListing>, Random, Integer> getMinimum()
+    public BiFunction<List<VillagerTrades.ItemListing>, RandomSource, Integer> getMinimum()
     {
         return this.minimum;
     }
 
-    public BiFunction<List<VillagerTrades.ItemListing>, Random, Integer> getMaximum()
+    public BiFunction<List<VillagerTrades.ItemListing>, RandomSource, Integer> getMaximum()
     {
         return this.maximum;
     }

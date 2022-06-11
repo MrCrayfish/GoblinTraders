@@ -1,5 +1,6 @@
 package com.mrcrayfish.goblintraders.trades;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
@@ -13,9 +14,8 @@ import java.util.Random;
  */
 public record GoblinTrade(ItemStack offerStack, ItemStack paymentStack, ItemStack secondaryPaymentStack, int maxUses, int experience, float priceMultiplier) implements VillagerTrades.ItemListing
 {
-    @Nullable
     @Override
-    public MerchantOffer getOffer(Entity trader, Random rand)
+    public MerchantOffer getOffer(Entity trader, RandomSource rand)
     {
         return new MerchantOffer(this.paymentStack, this.secondaryPaymentStack, this.offerStack, this.maxUses, this.experience, this.priceMultiplier);
     }

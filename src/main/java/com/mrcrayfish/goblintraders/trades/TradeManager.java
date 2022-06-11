@@ -8,6 +8,7 @@ import com.mrcrayfish.goblintraders.Reference;
 import com.mrcrayfish.goblintraders.entity.TraderCreatureEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -96,8 +97,8 @@ public class TradeManager implements PreparableReloadListener
         {
             this.traders.forEach(entityType ->
             {
-                String folder = String.format("trades/%s", Objects.requireNonNull(entityType.getRegistryName()).getPath());
-                List<ResourceLocation> resources = new ArrayList<>(manager.listResources(folder, (fileName) -> fileName.endsWith(".json")));
+                String folder = String.format("trades/%s", EntityType.getKey(entityType).getPath());
+                List<ResourceLocation> resources = new ArrayList<>(manager.listResources(folder, (fileName) -> fileName.getPath().endsWith(".json")).keySet());
                 resources.sort((r1, r2) -> {
                     if(r1.getNamespace().equals(r2.getNamespace())) return 0;
                     return r2.getNamespace().equals(Reference.MOD_ID) ? 1 : -1;
@@ -128,17 +129,20 @@ public class TradeManager implements PreparableReloadListener
 
     private void deserializeTrades(ResourceManager manager, EntityTrades.Builder builder, TradeRarity rarity, LinkedHashSet<ResourceLocation> resources)
     {
-        for(ResourceLocation resource : resources)
+        for(ResourceLocation resourceLocation : resources)
         {
-            try(InputStream inputstream = manager.getResource(resource).getInputStream(); Reader reader = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8)))
+            manager.getResource(resourceLocation).ifPresent(resource ->
             {
-                JsonObject object = GsonHelper.fromJson(GSON, reader, JsonObject.class);
-                builder.deserialize(rarity, object);
-            }
-            catch(IOException e)
-            {
-                e.printStackTrace();
-            }
+                try(Reader reader = new BufferedReader(new InputStreamReader(resource.open(), StandardCharsets.UTF_8)))
+                {
+                    JsonObject object = GsonHelper.fromJson(GSON, reader, JsonObject.class);
+                    builder.deserialize(rarity, object);
+                }
+                catch(IOException e)
+                {
+                    e.printStackTrace();
+                }
+            });
         }
     }
 }

@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.mrcrayfish.goblintraders.Reference;
 import com.mrcrayfish.goblintraders.trades.TradeRarity;
 import com.mrcrayfish.goblintraders.trades.type.ITradeType;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
@@ -52,7 +53,7 @@ public abstract class TradeProvider implements DataProvider
     }
 
     @Override
-    public void run(HashCache cache)
+    public void run(CachedOutput output) throws IOException
     {
         this.trades.clear();
         this.registerTrades();
@@ -65,21 +66,11 @@ public abstract class TradeProvider implements DataProvider
                 JsonArray tradeArray = new JsonArray();
                 tradeList.forEach(trade -> tradeArray.add(trade.serialize()));
                 object.add("trades", tradeArray);
-                ResourceLocation id = Objects.requireNonNull(entityType.getRegistryName());
+                ResourceLocation id = EntityType.getKey(entityType);
                 Path path = this.generator.getOutputFolder().resolve("data/" + id.getNamespace() + "/trades/" + id.getPath() + "/" + tradeRarity.getKey() + ".json");
                 try
                 {
-                    String rawJson = GSON.toJson(object);
-                    String hash = SHA1.hashUnencodedChars(rawJson).toString();
-                    if(!Objects.equals(cache.getHash(path), hash) || !Files.exists(path))
-                    {
-                        Files.createDirectories(path.getParent());
-                        try(BufferedWriter writer = Files.newBufferedWriter(path))
-                        {
-                            writer.write(rawJson);
-                        }
-                    }
-                    cache.putNew(path, hash);
+                    DataProvider.saveStable(output, object, path);
                 }
                 catch(IOException e)
                 {

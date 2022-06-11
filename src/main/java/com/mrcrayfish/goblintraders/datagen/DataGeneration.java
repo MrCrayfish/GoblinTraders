@@ -15,12 +15,12 @@ public class DataGeneration
     @SubscribeEvent
     public static void onGatherData(GatherDataEvent event)
     {
-        registerCommonProviders(event.getGenerator());
+        registerCommonProviders(event.includeServer(), event.getGenerator());
     }
 
-    private static void registerCommonProviders(DataGenerator generator)
+    private static void registerCommonProviders(boolean server, DataGenerator generator)
     {
-        generator.addProvider(new GoblinTradeProvider(generator));
-        generator.addProvider(new GoblinLootTableProvider(generator));
+        generator.addProvider(server, new GoblinTradeProvider(generator));
+        generator.addProvider(server, new GoblinLootTableProvider(generator));
     }
 }
