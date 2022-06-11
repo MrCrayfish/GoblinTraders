@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.NaturalSpawner;
+import net.minecraft.world.level.biome.Biomes;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -102,6 +103,10 @@ public class GoblinTraderSpawner
             BlockPos safestPos = this.getSafePositionAroundPlayer(randomPlayer.level, blockpos, 10);
             if(safestPos != null && this.isEmptyCollision(randomPlayer.level, safestPos))
             {
+                if(level.getBiome(safestPos).is(Biomes.THE_VOID))
+                {
+                    return false;
+                }
                 if(safestPos.getY() < this.minLevel || safestPos.getY() >= this.maxLevel)
                 {
                     return false;
