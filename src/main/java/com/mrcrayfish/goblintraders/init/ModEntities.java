@@ -4,7 +4,6 @@ import com.mrcrayfish.goblintraders.Reference;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import com.mrcrayfish.goblintraders.entity.GoblinTraderEntity;
 import com.mrcrayfish.goblintraders.entity.VeinGoblinTraderEntity;
-import com.mrcrayfish.goblintraders.item.SupplierSpawnEggItem;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -26,7 +25,7 @@ import java.util.function.Function;
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEntities
 {
-    public static final DeferredRegister<EntityType<?>> REGISTER = DeferredRegister.create(ForgeRegistries.ENTITIES, Reference.MOD_ID);
+    public static final DeferredRegister<EntityType<?>> REGISTER = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Reference.MOD_ID);
 
     public static final RegistryObject<EntityType<GoblinTraderEntity>> GOBLIN_TRADER = build("goblin_trader", GoblinTraderEntity::new, 0.5F, 1.0F);
     public static final RegistryObject<EntityType<VeinGoblinTraderEntity>> VEIN_GOBLIN_TRADER = build("vein_goblin_trader", VeinGoblinTraderEntity::new, 0.5F, 1.0F);
@@ -41,14 +40,5 @@ public class ModEntities
     {
         event.put(GOBLIN_TRADER.get(), AbstractGoblinEntity.createAttributes().build());
         event.put(VEIN_GOBLIN_TRADER.get(), AbstractGoblinEntity.createAttributes().build());
-    }
-
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void register(RegisterEvent event)
-    {
-        if(ForgeRegistries.ENTITIES.equals(event.getForgeRegistry()))
-        {
-            SupplierSpawnEggItem.updateEggMap();
-        }
     }
 }

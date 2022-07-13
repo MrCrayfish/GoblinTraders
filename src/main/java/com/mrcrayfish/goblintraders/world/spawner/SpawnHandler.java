@@ -6,7 +6,6 @@ import com.mrcrayfish.goblintraders.init.ModEntities;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
-import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
@@ -40,7 +39,7 @@ public class SpawnHandler
     }
 
     @SubscribeEvent
-    public static void onWorldTick(TickEvent.WorldTickEvent event)
+    public static void onWorldTick(TickEvent.LevelTickEvent event)
     {
         if(event.phase != TickEvent.Phase.START)
             return;
@@ -48,10 +47,10 @@ public class SpawnHandler
         if(event.side != LogicalSide.SERVER)
             return;
 
-        GoblinTraderSpawner spawner = spawners.get(event.world.dimension().location());
+        GoblinTraderSpawner spawner = spawners.get(event.level.dimension().location());
         if(spawner != null)
         {
-            spawner.tick(event.world);
+            spawner.tick(event.level);
         }
     }
 }

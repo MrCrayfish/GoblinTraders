@@ -62,7 +62,7 @@ public class GoblinLootTableProvider extends LootTableProvider
         @Override
         protected Iterable<EntityType<?>> getKnownEntities()
         {
-            return ForgeRegistries.ENTITIES.getValues().stream().filter(entityType -> Reference.MOD_ID.equals(EntityType.getKey(entityType).getNamespace())).collect(Collectors.toSet());
+            return ForgeRegistries.ENTITY_TYPES.getValues().stream().filter(entityType -> Reference.MOD_ID.equals(EntityType.getKey(entityType).getNamespace())).collect(Collectors.toSet());
         }
     }
 }
