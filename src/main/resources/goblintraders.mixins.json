@@ -3,7 +3,6 @@
   "package": "com.mrcrayfish.goblintraders.mixin",
   "compatibilityLevel": "JAVA_8",
   "minVersion": "0.8",
-  "refmap": "goblintraders.refmap.json",
   "mixins": [
     "EnchantmentMixin",
     "MerchantMenuMixin",
