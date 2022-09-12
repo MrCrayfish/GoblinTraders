@@ -1,74 +1,69 @@
 package com.mrcrayfish.goblintraders;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import org.apache.commons.lang3.tuple.Pair;
+import com.mrcrayfish.configured.api.simple.BoolProperty;
+import com.mrcrayfish.configured.api.simple.IntProperty;
+import com.mrcrayfish.configured.api.simple.SimpleConfig;
+import com.mrcrayfish.configured.api.simple.SimpleProperty;
 
 /**
  * Author: MrCrayfish
  */
-public class Config
+public final class Config
 {
-    public static class Common
-    {
-        public final Goblin goblinTrader;
-        public final Goblin veinGoblinTrader;
-        public final ForgeConfigSpec.BooleanValue preventDespawnIfNamed;
+    @SimpleConfig(id = Reference.MOD_ID, name = "entities")
+    public static final Entities ENTITIES = new Entities();
 
-        Common(ForgeConfigSpec.Builder builder)
+    public static class Entities
+    {
+        @SimpleProperty(name = "goblinTrader")
+        public final Goblin goblinTrader;
+
+        @SimpleProperty(name = "veinGoblinTrader")
+        public final Goblin veinGoblinTrader;
+
+        @SimpleProperty(name = "preventDespawnIfNamed", comment = "If true, prevents the trader from despawning if named")
+        public final BoolProperty preventDespawnIfNamed = BoolProperty.create(true);
+
+        private Entities()
         {
-            builder.comment("Common configuration settings").push("common");
-            this.goblinTrader = new Goblin(builder, "Goblin Trader", "goblin_trader", 25, 24000, -64, 50);
-            this.veinGoblinTrader = new Goblin(builder, "Vein Goblin Trader", "vein_goblin_trader", 25, 24000, 0, 128);
-            this.preventDespawnIfNamed = builder.comment("If true, prevents the trader from despawning if named").define("preventDespawnIfNamed", true);
-            builder.pop();
+            this.goblinTrader = new Goblin(25, 24000, -64, 50);
+            this.veinGoblinTrader = new Goblin(25, 24000, 0, 128);
         }
 
         public static class Goblin
         {
-            public final ForgeConfigSpec.IntValue traderSpawnChance;
-            public final ForgeConfigSpec.IntValue traderSpawnDelay;
-            public final ForgeConfigSpec.IntValue traderMinSpawnLevel;
-            public final ForgeConfigSpec.IntValue traderMaxSpawnLevel;
-            public final ForgeConfigSpec.IntValue restockDelay;
-            public final ForgeConfigSpec.BooleanValue canAttackBack;
-            public final ForgeConfigSpec.IntValue gruntNoiseInterval;
+            @SimpleProperty(name = "traderSpawnChance", comment = "The chance out of one hundred that the trader will spawn in the over world")
+            public final IntProperty traderSpawnChance;
 
-            Goblin(ForgeConfigSpec.Builder builder, String name, String key, int spawnChance, int spawnDelay, int minLevel, int maxLevel)
+            //TODO look into issue where high delay will still be present even if this value is lowered
+            @SimpleProperty(name = "traderSpawnDelay", comment = "The amount of ticks before the trader will spawn again")
+            public final IntProperty traderSpawnDelay;
+
+            @SimpleProperty(name = "traderMinSpawnLevel", comment = "The minimum level the trader can spawn", worldRestart = true)
+            public final IntProperty traderMinSpawnLevel;
+
+            @SimpleProperty(name = "traderMaxSpawnLevel", comment = "The maximum level the trader can spawn", worldRestart = true)
+            public final IntProperty traderMaxSpawnLevel;
+
+            @SimpleProperty(name = "restockDelay", comment = "The amount of ticks before the trader will replenish it's trades. Set to -1 to disable restocking")
+            public final IntProperty restockDelay;
+
+            @SimpleProperty(name = "canAttackBack", comment = "If true, the goblin will try to hit back a player or mob that hit them")
+            public final BoolProperty canAttackBack;
+
+            @SimpleProperty(name = "gruntNoiseInterval", comment = "Goblins will make a grunt noise while walking around. If you find it happening too often, you can increase the interval. Value is represented in ticks.")
+            public final IntProperty gruntNoiseInterval;
+
+            private Goblin(int spawnChance, int spawnDelay, int minLevel, int maxLevel)
             {
-                builder.comment(name + " settings").push(key);
-                this.traderSpawnChance = builder
-                        .comment("The chance out of one hundred that the trader will spawn in the over world")
-                        .defineInRange("traderSpawnChance", spawnChance, 1, 100);
-                this.traderSpawnDelay = builder
-                        .comment("The amount of ticks before the trader will spawn again")
-                        .defineInRange("traderSpawnDelay", spawnDelay, 0, Integer.MAX_VALUE);
-                this.traderMinSpawnLevel = builder
-                        .comment("The minimum level the trader can spawn")
-                        .defineInRange("traderMinSpawnLevel", minLevel, -64, 320);
-                this.traderMaxSpawnLevel = builder
-                        .comment("The maximum level the trader can spawn")
-                        .defineInRange("traderMaxSpawnLevel", maxLevel, -64, 320);
-                this.restockDelay = builder
-                        .comment("The amount of ticks before the trader will replenish it's trades. Set to -1 to disable restocking")
-                        .defineInRange("restockDelay", 48000, -1, Integer.MAX_VALUE);
-                this.canAttackBack = builder
-                        .comment("If true, the goblin will try to hit back a player or mob that hit them first")
-                        .define("canAttackBack", true);
-                this.gruntNoiseInterval = builder
-                        .comment("Goblins will make a grunt noise while walking around. If you find it happening too often, you can increase the interval. Value is represented in ticks.")
-                        .defineInRange("gruntNoiseInterval", 80, 1, 1000);
-                builder.pop();
+                this.traderSpawnChance = IntProperty.create(spawnChance, 1, 100);
+                this.traderSpawnDelay = IntProperty.create(spawnDelay, 0, Integer.MAX_VALUE);
+                this.traderMinSpawnLevel = IntProperty.create(minLevel, -64, 320);
+                this.traderMaxSpawnLevel = IntProperty.create(maxLevel, -64, 320);
+                this.restockDelay = IntProperty.create(48000, -1, Integer.MAX_VALUE);
+                this.canAttackBack = BoolProperty.create(true);
+                this.gruntNoiseInterval = IntProperty.create(80, 1, 1000);
             }
         }
-    }
-
-    static final ForgeConfigSpec commonSpec;
-    public static final Config.Common COMMON;
-
-    static
-    {
-        final Pair<Common, ForgeConfigSpec> commonPair = new ForgeConfigSpec.Builder().configure(Config.Common::new);
-        commonSpec = commonPair.getRight();
-        COMMON = commonPair.getLeft();
     }
 }

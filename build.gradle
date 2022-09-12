@@ -1,108 +1,109 @@
 plugins {
-    id 'eclipse'
-    id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '5.+'
-    id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
+	id 'fabric-loom' version '1.0-SNAPSHOT'
+	id 'maven-publish'
 }
 
-version = '1.7.3-1.19'
-group = 'com.mrcrayfish'
-archivesBaseName = 'goblintraders'
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+archivesBaseName = "${project.mod_id}-fabric"
+version = "${project.mod_version}-${project.minecraft_version}"
+group = project.maven_group
 
-mixin {
-    add sourceSets.main, "goblintraders.refmap.json"
+loom {
+	runs {
+		client {
+			configName = "Client"
+			runDir = "run"
+			source = sourceSets.main
+			ideConfigGenerated = true
+			client()
+		}
+
+		server {
+			configName = "Server"
+			runDir = "run"
+			source = sourceSets.main
+			ideConfigGenerated = true
+			server()
+		}
+
+		datagenClient {
+			inherit client
+			name "Data Generation"
+			vmArg "-Dfabric-api.datagen"
+			vmArg "-Dfabric-api.datagen.output-dir=${file("src/generated/resources")}"
+			vmArg "-Dfabric-api.datagen.strict-validation"
+			runDir "build/datagen"
+		}
+	}
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
-minecraft {
-    mappings channel: 'official', version: '1.19'
-    runs {
-        client {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'goblintraders'
-            arg '-mixin.config=goblintraders.mixins.json'
-            mods {
-                goblintraders {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        server {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'goblintraders'
-            arg '-mixin.config=goblintraders.mixins.json'
-            mods {
-                goblintraders {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        gameTestServer {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'goblintraders'
-            mods {
-                goblintraders {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            args '--mod', 'goblintraders', '--all', '--output', file('src/generated/resources/')
-            arg '-mixin.config=goblintraders.mixins.json'
-            mods {
-                goblintraders {
-                    source sourceSets.main
-                }
-            }
-        }
-    }
+sourceSets {
+	main {
+		resources {
+			srcDirs += [ 'src/generated/resources' ]
+		}
+	}
 }
 
 repositories {
-    maven {
-        url = "https://www.cursemaven.com"
-    }
+	maven {
+		url "file:///X:/localmaven/mcmods"
+	}
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19-41.0.94'
-    implementation fg.deobf('curse.maven:configured-457570:3872190')
-    implementation fg.deobf('curse.maven:catalogue-459701:3873264')
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+
+	mappings loom.officialMojangMappings()
+
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "com.google.code.findbugs:annotations:3.0.1"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modImplementation("com.mrcrayfish:catalogue-fabric:1.6.3-1.19.2")
+	modImplementation("com.mrcrayfish:configured-fabric:1.6.3-1.19.2") {
+		exclude group: 'com.terraformersmc', module: 'modmenu'
+	}
+}
+
+processResources {
+	inputs.property "version", project.mod_version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": project.mod_version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 17
+}
+
+java {
+	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+	// if it is present.
+	// If you remove this line, sources will not be generated.
+	withSourcesJar()
 }
 
 jar {
-    manifest {
-        attributes([
-            "Specification-Title": "Goblin Traders",
-            "Specification-Vendor": "MrCrayfish",
-            "Specification-Version": "1", // We are version 1 of ourselves
-            "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
-            "Implementation-Vendor" : "MrCrayfish",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-            "MixinConfigs": "goblintraders.mixins.json"
-        ])
-    }
+	from("MOD-LICENSE") {
+		rename { "LICENSE_${project.mod_id}"}
+	}
+	from("FORGE-LICENSE") {
+		rename { "LICENSE_forge"}
+	}
 }
 
-jar.finalizedBy('reobfJar')
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+	repositories {
+		maven {
+			url "file:///X:/localmaven/mcmods"
+		}
+	}
 }

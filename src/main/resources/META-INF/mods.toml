@@ -10,7 +10,7 @@ version="1.7.3"
 displayName="Goblin Traders"
 updateJSONURL="https://mrcrayfish.com/modupdatejson?id=goblintraders"
 displayURL="https://mrcrayfish.com/mods?id=goblintraders"
-logoFile="goblintraders_logo.png"
+logoFile= "../assets/banner/goblintraders_logo.png"
 credits="@ItsNahteTV on Twitter for idea. Thank you to @MCVinnyq for creating goblin model"
 authors="MrCrayfish"
 description='Adds goblins that have unique trades to improve your adventure!'

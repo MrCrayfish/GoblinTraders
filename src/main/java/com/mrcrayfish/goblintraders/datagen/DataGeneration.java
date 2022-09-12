@@ -1,26 +1,17 @@
 package com.mrcrayfish.goblintraders.datagen;
 
-import com.mrcrayfish.goblintraders.Reference;
-import net.minecraft.data.DataGenerator;
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
 /**
  * Author: MrCrayfish
  */
-@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class DataGeneration
+public class DataGeneration implements DataGeneratorEntrypoint
 {
-    @SubscribeEvent
-    public static void onGatherData(GatherDataEvent event)
+    @Override
+    public void onInitializeDataGenerator(FabricDataGenerator generator)
     {
-        registerCommonProviders(event.includeServer(), event.getGenerator());
-    }
-
-    private static void registerCommonProviders(boolean server, DataGenerator generator)
-    {
-        generator.addProvider(server, new GoblinTradeProvider(generator));
-        generator.addProvider(server, new GoblinLootTableProvider(generator));
+        generator.addProvider(new GoblinTradeProvider(generator));
+        generator.addProvider(new GoblinLootTableProvider(generator));
     }
 }

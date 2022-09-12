@@ -17,5 +17,6 @@
     "item.minecraft.splash_potion.effect.dolphins_grace": "Splash Potion of Dolphins Grace",
     "item.minecraft.lingering_potion.effect.haste": "Lingering Potion of Haste",
     "item.minecraft.lingering_potion.effect.absorption": "Lingering Potion of Absorption",
-    "item.minecraft.lingering_potion.effect.dolphins_grace": "Lingering Potion of Dolphins Grace"
+    "item.minecraft.lingering_potion.effect.dolphins_grace": "Lingering Potion of Dolphins Grace",
+    "simpleconfig.goblintraders.entities": "Entities"
 }

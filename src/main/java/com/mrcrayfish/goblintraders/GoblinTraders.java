@@ -1,42 +1,25 @@
 package com.mrcrayfish.goblintraders;
 
 import com.mrcrayfish.goblintraders.init.ModEntities;
-import com.mrcrayfish.goblintraders.init.ModItems;
-import com.mrcrayfish.goblintraders.init.ModPotions;
-import com.mrcrayfish.goblintraders.init.ModSounds;
 import com.mrcrayfish.goblintraders.init.ModStats;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
 import com.mrcrayfish.goblintraders.trades.type.BasicTrade;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.server.packs.PackType;
 
 /**
  * Author: MrCrayfish
  */
-@Mod(Reference.MOD_ID)
-public class GoblinTraders
+public class GoblinTraders implements ModInitializer
 {
-    public GoblinTraders()
+    @Override
+    public void onInitialize()
     {
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.commonSpec);
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        ModEntities.REGISTER.register(bus);
-        ModItems.REGISTER.register(bus);
-        ModPotions.REGISTER.register(bus);
-        ModSounds.REGISTER.register(bus);
-        bus.addListener(this::onCommonSetup);
-    }
-
-    private void onCommonSetup(FMLCommonSetupEvent event)
-    {
-        ModStats.init();
         TradeManager manager = TradeManager.instance();
-        manager.registerTrader(ModEntities.GOBLIN_TRADER.get());
-        manager.registerTrader(ModEntities.VEIN_GOBLIN_TRADER.get());
+        ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(manager);
+        manager.registerTrader(ModEntities.GOBLIN_TRADER);
+        manager.registerTrader(ModEntities.VEIN_GOBLIN_TRADER);
         manager.registerTypeSerializer(BasicTrade.SERIALIZER);
     }
 }

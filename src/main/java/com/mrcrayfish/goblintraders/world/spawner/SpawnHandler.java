@@ -1,17 +1,12 @@
 package com.mrcrayfish.goblintraders.world.spawner;
 
 import com.mrcrayfish.goblintraders.Config;
-import com.mrcrayfish.goblintraders.Reference;
 import com.mrcrayfish.goblintraders.init.ModEntities;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.event.server.ServerStoppedEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,38 +14,31 @@ import java.util.Map;
 /**
  * Author: MrCrayfish
  */
-@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
-public class SpawnHandler
+public class SpawnHandler implements ModInitializer
 {
-    private static Map<ResourceLocation, GoblinTraderSpawner> spawners = new HashMap<>();
+    private static final Map<ResourceLocation, GoblinTraderSpawner> SPAWNERS = new HashMap<>();
 
-    @SubscribeEvent
-    public static void onWorldLoad(ServerStartingEvent event)
+    @Override
+    public void onInitialize()
     {
-        MinecraftServer server = event.getServer();
-        spawners.put(BuiltinDimensionTypes.OVERWORLD.location(), new GoblinTraderSpawner(server, "GoblinTrader", ModEntities.GOBLIN_TRADER.get(), Config.COMMON.goblinTrader));
-        spawners.put(BuiltinDimensionTypes.NETHER.location(), new GoblinTraderSpawner(server, "VeinGoblinTrader", ModEntities.VEIN_GOBLIN_TRADER.get(), Config.COMMON.veinGoblinTrader));
-    }
-
-    @SubscribeEvent
-    public static void onServerStart(ServerStoppedEvent event)
-    {
-        spawners.clear();
-    }
-
-    @SubscribeEvent
-    public static void onWorldTick(TickEvent.LevelTickEvent event)
-    {
-        if(event.phase != TickEvent.Phase.START)
-            return;
-
-        if(event.side != LogicalSide.SERVER)
-            return;
-
-        GoblinTraderSpawner spawner = spawners.get(event.level.dimension().location());
-        if(spawner != null)
+        ServerLifecycleEvents.SERVER_STARTING.register(server ->
         {
-            spawner.tick(event.level);
-        }
+            SPAWNERS.put(BuiltinDimensionTypes.OVERWORLD.location(), new GoblinTraderSpawner(server, "GoblinTrader", ModEntities.GOBLIN_TRADER, Config.ENTITIES.goblinTrader));
+            SPAWNERS.put(BuiltinDimensionTypes.NETHER.location(), new GoblinTraderSpawner(server, "VeinGoblinTrader", ModEntities.VEIN_GOBLIN_TRADER, Config.ENTITIES.veinGoblinTrader));
+        });
+
+        ServerLifecycleEvents.SERVER_STOPPED.register(server ->
+        {
+            SPAWNERS.clear();
+        });
+
+        ServerTickEvents.START_WORLD_TICK.register(world ->
+        {
+            GoblinTraderSpawner spawner = SPAWNERS.get(world.dimension().location());
+            if(spawner != null)
+            {
+                spawner.tick(world);
+            }
+        });
     }
 }

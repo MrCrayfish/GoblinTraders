@@ -7,6 +7,8 @@ import com.mrcrayfish.goblintraders.trades.EntityTrades;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
 import com.mrcrayfish.goblintraders.trades.TradeRarity;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -23,7 +25,12 @@ public class GoblinTraderEntity extends AbstractGoblinEntity
 {
     public GoblinTraderEntity(Level level)
     {
-        super(ModEntities.GOBLIN_TRADER.get(), level);
+        this(ModEntities.GOBLIN_TRADER, level);
+    }
+
+    public GoblinTraderEntity(EntityType<? extends AbstractGoblinEntity> type, Level level)
+    {
+        super(type, level);
     }
 
     @Override
@@ -36,7 +43,7 @@ public class GoblinTraderEntity extends AbstractGoblinEntity
     protected void populateTradeData()
     {
         MerchantOffers offers = this.getOffers();
-        EntityTrades entityTrades = TradeManager.instance().getTrades(ModEntities.GOBLIN_TRADER.get());
+        EntityTrades entityTrades = TradeManager.instance().getTrades(ModEntities.GOBLIN_TRADER);
         if(entityTrades != null)
         {
             Map<TradeRarity, List<VillagerTrades.ItemListing>> tradeMap = entityTrades.getTradeMap();
@@ -59,18 +66,18 @@ public class GoblinTraderEntity extends AbstractGoblinEntity
     @Override
     protected int getMaxRestockDelay()
     {
-        return Config.COMMON.goblinTrader.restockDelay.get();
+        return Config.ENTITIES.goblinTrader.restockDelay.get();
     }
 
     @Override
     public boolean canAttackBack()
     {
-        return Config.COMMON.goblinTrader.canAttackBack.get();
+        return Config.ENTITIES.goblinTrader.canAttackBack.get();
     }
 
     @Override
     public int getAmbientSoundInterval()
     {
-        return Config.COMMON.goblinTrader.gruntNoiseInterval.get();
+        return Config.ENTITIES.goblinTrader.gruntNoiseInterval.get();
     }
 }

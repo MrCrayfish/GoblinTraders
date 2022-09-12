@@ -1,6 +1,7 @@
 package com.mrcrayfish.goblintraders.init;
 
 import com.mrcrayfish.goblintraders.Reference;
+import net.fabricmc.api.ModInitializer;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.StatFormatter;
@@ -9,13 +10,14 @@ import net.minecraft.stats.Stats;
 /**
  * Author: MrCrayfish
  */
-public class ModStats
+public class ModStats implements ModInitializer
 {
     public static final ResourceLocation TRADE_WITH_GOBLIN = registerCustom("trade_with_goblin", StatFormatter.DEFAULT);
 
-    public static void init()
+    @Override
+    public void onInitialize()
     {
-        //Does nothing, just triggers java to load static fields
+
     }
 
     private static ResourceLocation registerCustom(String name, StatFormatter formatter)

@@ -151,10 +151,10 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
             if(this.stunDelay == 0)
             {
                 this.entityData.set(STUNNED, false);
-                this.level.playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT.get(), SoundSource.NEUTRAL, 1.0F, 0.9F + this.getRandom().nextFloat() * 0.2F);
+                this.level.playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT, SoundSource.NEUTRAL, 1.0F, 0.9F + this.getRandom().nextFloat() * 0.2F);
             }
         }
-        if(!this.level.isClientSide() && (!Config.COMMON.preventDespawnIfNamed.get() || !this.isPersistenceRequired()))
+        if(!this.level.isClientSide() && (!Config.ENTITIES.preventDespawnIfNamed.get() || !this.isPersistenceRequired()))
         {
             this.handleDespawn();
         }
@@ -440,14 +440,14 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return ModSounds.ENTITY_GOBLIN_TRADER_IDLE_GRUNT.get();
+        return ModSounds.ENTITY_GOBLIN_TRADER_IDLE_GRUNT;
     }
 
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource)
     {
-        return ModSounds.ENTITY_GOBLIN_TRADER_IDLE_GRUNT.get();
+        return ModSounds.ENTITY_GOBLIN_TRADER_IDLE_GRUNT;
     }
 
     public abstract ItemStack getFavouriteFood();

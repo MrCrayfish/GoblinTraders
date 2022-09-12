@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "id": "goblintraders",
+  "version": "${version}",
+  "name": "Goblin Traders",
+  "description": "Adds goblins that have unique trades to improve your adventure!",
+  "authors": [
+    "MrCrayfish"
+  ],
+  "contributors": [
+    "MCVinnyq"
+  ],
+  "contact": {
+    "homepage": "https://mrcrayfish.com/mods?id=goblintraders",
+    "sources": "https://github.com/MrCrayfish/GoblinTraders",
+    "issues": "https://github.com/MrCrayfish/GoblinTraders/issues"
+  },
+  "license": "GPLv3",
+  "icon": "assets/goblintraders/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.mrcrayfish.goblintraders.GoblinTraders",
+      "com.mrcrayfish.goblintraders.init.ModEntities",
+      "com.mrcrayfish.goblintraders.init.ModItems",
+      "com.mrcrayfish.goblintraders.init.ModPotions",
+      "com.mrcrayfish.goblintraders.init.ModSounds",
+      "com.mrcrayfish.goblintraders.init.ModStats"
+    ],
+    "client": [
+      "com.mrcrayfish.goblintraders.client.ClientHandler"
+    ],
+    "fabric-datagen": [
+      "com.mrcrayfish.goblintraders.datagen.DataGeneration"
+    ]
+  },
+  "mixins": [
+    "goblintraders.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric-api": "*",
+    "minecraft": "~1.19",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  },
+  "custom": {
+    "configured": {
+      "configs": [
+        "com.mrcrayfish.goblintraders.Config"
+      ],
+      "background": "minecraft:textures/block/stone.png"
+    }
+  }
+}

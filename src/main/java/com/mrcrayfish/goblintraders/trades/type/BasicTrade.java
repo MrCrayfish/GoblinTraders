@@ -1,24 +1,30 @@
 package com.mrcrayfish.goblintraders.trades.type;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mrcrayfish.goblintraders.Reference;
+import com.mrcrayfish.goblintraders.trades.CraftingHelper;
 import com.mrcrayfish.goblintraders.trades.GoblinTrade;
 import com.mrcrayfish.goblintraders.trades.TradeSerializer;
 import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagParser;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -205,7 +211,7 @@ public class BasicTrade implements ITradeType<GoblinTrade>
             {
                 JsonObject enchantmentObject = enchantmentElement.getAsJsonObject();
                 String id = GsonHelper.getAsString(enchantmentObject, "id");
-                Enchantment enchantment = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(id));
+                Enchantment enchantment = Registry.ENCHANTMENT.get(new ResourceLocation(id));
                 if(enchantment != null)
                 {
                     int level = GsonHelper.getAsInt(enchantmentObject, "level", 1);
@@ -222,7 +228,7 @@ public class BasicTrade implements ITradeType<GoblinTrade>
             {
                 JsonObject effectObject = effectElement.getAsJsonObject();
                 String id = GsonHelper.getAsString(effectObject, "id");
-                MobEffect effect = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(id));
+                MobEffect effect = Registry.MOB_EFFECT.get(new ResourceLocation(id));
                 if(effect != null)
                 {
                     int duration = GsonHelper.getAsInt(effectObject, "duration", 1);
@@ -233,6 +239,8 @@ public class BasicTrade implements ITradeType<GoblinTrade>
             }
             return effects;
         }
+
+
     }
 
     public static class Builder

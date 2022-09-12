@@ -30,10 +30,10 @@ public class GoblinTraderSpawner
     private final int traderSpawnChance;
     private int currentTraderSpawnDelay;
     private int currentTraderSpawnChance;
-    private int minLevel;
-    private int maxLevel;
+    private final int minLevel;
+    private final int maxLevel;
 
-    public GoblinTraderSpawner(MinecraftServer server, String key, EntityType<? extends AbstractGoblinEntity> entityType, Config.Common.Goblin goblin)
+    public GoblinTraderSpawner(MinecraftServer server, String key, EntityType<? extends AbstractGoblinEntity> entityType, Config.Entities.Goblin goblin)
     {
         this.data = GoblinTraderData.get(server).getGoblinData(key);
         this.entityType = entityType;

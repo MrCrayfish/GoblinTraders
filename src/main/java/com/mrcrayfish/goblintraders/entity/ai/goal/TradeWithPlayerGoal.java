@@ -11,7 +11,7 @@ import java.util.EnumSet;
  */
 public class TradeWithPlayerGoal extends Goal
 {
-    private AbstractGoblinEntity entity;
+    private final AbstractGoblinEntity entity;
 
     public TradeWithPlayerGoal(AbstractGoblinEntity entity)
     {
