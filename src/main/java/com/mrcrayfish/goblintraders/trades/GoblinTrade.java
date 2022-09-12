@@ -17,6 +17,6 @@ public record GoblinTrade(ItemStack offerStack, ItemStack paymentStack, ItemStac
     @Override
     public MerchantOffer getOffer(Entity trader, RandomSource rand)
     {
-        return new MerchantOffer(this.paymentStack, this.secondaryPaymentStack, this.offerStack, this.maxUses, this.experience, this.priceMultiplier);
+        return new GoblinMerchantOffer(this.paymentStack, this.secondaryPaymentStack, this.offerStack, this.maxUses, this.experience, this.priceMultiplier);
     }
 }

@@ -6,6 +6,7 @@
   "refmap": "goblintraders.refmap.json",
   "mixins": [
     "EnchantmentMixin",
+    "MerchantMenuMixin",
     "MerchantResultSlotMixin",
     "RepairContainerMixin",
     "SpawnEggItemMixin"
