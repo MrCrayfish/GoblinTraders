@@ -9,6 +9,7 @@ import com.mrcrayfish.goblintraders.entity.ai.goal.FollowPotentialCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.LookAtCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.TradeWithPlayerGoal;
 import com.mrcrayfish.goblintraders.init.ModSounds;
+import com.mrcrayfish.goblintraders.trades.GoblinOffers;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -202,7 +203,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     {
         if(this.offers == null)
         {
-            this.offers = new MerchantOffers();
+            this.offers = new GoblinOffers();
             this.populateTradeData();
         }
         return this.offers;
@@ -403,7 +404,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         super.readAdditionalSaveData(compound);
         if(compound.contains("Offers", 10))
         {
-            this.offers = new MerchantOffers(compound.getCompound("Offers"));
+            this.offers = new GoblinOffers(compound.getCompound("Offers"));
         }
         if(compound.contains("DespawnDelay", Tag.TAG_INT))
         {
