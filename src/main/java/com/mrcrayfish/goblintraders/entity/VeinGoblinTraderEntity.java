@@ -4,8 +4,10 @@ import com.mrcrayfish.goblintraders.Config;
 import com.mrcrayfish.goblintraders.Reference;
 import com.mrcrayfish.goblintraders.init.ModEntities;
 import com.mrcrayfish.goblintraders.trades.EntityTrades;
+import com.mrcrayfish.goblintraders.trades.IRaritySettings;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
 import com.mrcrayfish.goblintraders.trades.TradeRarity;
+import net.minecraft.Util;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.npc.VillagerTrades;
@@ -14,8 +16,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
 
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Author: MrCrayfish
@@ -43,10 +47,16 @@ public class VeinGoblinTraderEntity extends AbstractGoblinEntity
             Map<TradeRarity, List<VillagerTrades.ItemListing>> tradeMap = entityTrades.getTradeMap();
             for(TradeRarity rarity : TradeRarity.values())
             {
+                IRaritySettings settings = Config.COMMON.veinGoblinTrader.trades.getSettings(rarity);
+                if(settings.includeChance() <= 0.0)
+                    continue;
+                if(settings.includeChance() < 1.0 && this.getRandom().nextDouble() > settings.includeChance())
+                    continue;
                 List<VillagerTrades.ItemListing> trades = tradeMap.get(rarity);
-                int min = rarity.getMaximum().apply(trades, this.getRandom());
-                int max = rarity.getMaximum().apply(trades, this.getRandom());
-                this.addTrades(offers, trades, Math.max(min, max), rarity.shouldShuffle());
+                int min = Math.min(settings.getMinValue(), settings.getMaxValue());
+                int max = Math.max(settings.getMinValue(), settings.getMaxValue());
+                int count = min + this.getRandom().nextInt(max - min + 1);
+                this.addTrades(offers, trades, count, rarity.shouldShuffle());
             }
         }
     }
