@@ -1,0 +1,9 @@
+{
+    "entity.goblintraders.goblin_trader": "ゴブリン行商人",
+    "entity.goblintraders.vein_goblin_trader": "溶岩ゴブリン行商人",
+    "subtitle.goblintraders.goblin_trader.annoyed_grunt": "ゴブリンのうめき声",
+    "subtitle.goblintraders.goblin_trader.idle_grunt": "ゴブリンの声",
+    "item.goblintraders.goblin_trader_spawn_egg": "ゴブリン行商人のスポーンエッグ",
+    "item.goblintraders.vein_goblin_trader_spawn_egg": "溶岩ゴブリン行商人のスポーンエッグ",
+    "stat.goblintraders.trade_with_goblin": "ゴブリンと取引した回数",
+}
