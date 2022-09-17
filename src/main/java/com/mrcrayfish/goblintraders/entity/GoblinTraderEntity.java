@@ -4,6 +4,7 @@ import com.mrcrayfish.goblintraders.Config;
 import com.mrcrayfish.goblintraders.Reference;
 import com.mrcrayfish.goblintraders.init.ModEntities;
 import com.mrcrayfish.goblintraders.trades.EntityTrades;
+import com.mrcrayfish.goblintraders.trades.IRaritySettings;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
 import com.mrcrayfish.goblintraders.trades.TradeRarity;
 import net.minecraft.resources.ResourceLocation;
@@ -42,10 +43,16 @@ public class GoblinTraderEntity extends AbstractGoblinEntity
             Map<TradeRarity, List<VillagerTrades.ItemListing>> tradeMap = entityTrades.getTradeMap();
             for(TradeRarity rarity : TradeRarity.values())
             {
+                IRaritySettings settings = Config.COMMON.goblinTrader.trades.getSettings(rarity);
+                if(settings.includeChance() <= 0.0)
+                    continue;
+                if(settings.includeChance() < 1.0 && this.getRandom().nextDouble() > settings.includeChance())
+                    continue;
                 List<VillagerTrades.ItemListing> trades = tradeMap.get(rarity);
-                int min = rarity.getMaximum().apply(trades, this.getRandom());
-                int max = rarity.getMaximum().apply(trades, this.getRandom());
-                this.addTrades(offers, trades, Math.max(min, max), rarity.shouldShuffle());
+                int min = Math.min(settings.getMinValue(), settings.getMaxValue());
+                int max = Math.max(settings.getMinValue(), settings.getMaxValue());
+                int count = min + this.getRandom().nextInt(max - min + 1);
+                this.addTrades(offers, trades, count, rarity.shouldShuffle());
             }
         }
     }
