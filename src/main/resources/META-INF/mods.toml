@@ -18,13 +18,13 @@ description='Adds goblins that have unique trades to improve your adventure!'
 [[dependencies.goblintraders]]
     modId="forge"
     mandatory=true
-    versionRange="[41.0.94,)"
+    versionRange="[43.1.1,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.goblintraders]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19,1.20)"
+    versionRange="[1.19.2,1.20)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.goblintraders]]
