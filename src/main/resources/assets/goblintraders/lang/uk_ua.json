@@ -1,0 +1,21 @@
+{
+    "entity.goblintraders.goblin_trader": "Ґоблін-торговець",
+    "entity.goblintraders.vein_goblin_trader": "Ґоблін-торговець Незеру",
+    "subtitle.goblintraders.goblin_trader.annoyed_grunt": "Роздратоване бурчання",
+    "subtitle.goblintraders.goblin_trader.idle_grunt": "Звичайне бурчання",
+    "item.goblintraders.goblin_trader_spawn_egg": "Яйце виклику ґобліна-торговця",
+    "item.goblintraders.vein_goblin_trader_spawn_egg": "Яйце виклику ґобліна-торговця Незеру",
+    "stat.goblintraders.trade_with_goblin": "Торгувався з ґоблінами",
+    "mob_spawner.type.zombie": "Зомбі",
+    "mob_spawner.type.skeleton": "Скелет",
+    "mob_spawner.type.creeper": "Кріпер",
+    "item.minecraft.potion.effect.haste": "Зілля квапливості",
+    "item.minecraft.potion.effect.absorption": "Зілля поглинання",
+    "item.minecraft.potion.effect.dolphins_grace": "Зілля грації дельфіна'",
+    "item.minecraft.splash_potion.effect.haste": "Вибухове зілля квапливості",
+    "item.minecraft.splash_potion.effect.absorption": "Вибухове зілля поглинання",
+    "item.minecraft.splash_potion.effect.dolphins_grace": "Вибухове зілля грації дельфіна",
+    "item.minecraft.lingering_potion.effect.haste": "Осідаюче зілля квапливості",
+    "item.minecraft.lingering_potion.effect.absorption": "Осідаюче зілля поглинання",
+    "item.minecraft.lingering_potion.effect.dolphins_grace": "Осідаюче зілля грації дельфіна"
+}
