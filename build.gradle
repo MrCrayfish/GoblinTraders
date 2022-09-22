@@ -98,9 +98,11 @@ jar {
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
+			artifactId = "${project.mod_id}-fabric"
 			from components.java
 		}
 	}
+
 	repositories {
 		maven {
 			url "file:///X:/localmaven/mcmods"
