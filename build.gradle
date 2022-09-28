@@ -62,7 +62,7 @@ dependencies {
 	modImplementation "com.google.code.findbugs:annotations:3.0.1"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modImplementation("com.mrcrayfish:catalogue-fabric:1.6.3-1.19.2")
-	modImplementation("com.mrcrayfish:configured-fabric:1.6.3-1.19.2") {
+	modImplementation("com.mrcrayfish:configured-fabric:2.0.0-1.19.2") {
 		exclude group: 'com.terraformersmc', module: 'modmenu'
 	}
 }
