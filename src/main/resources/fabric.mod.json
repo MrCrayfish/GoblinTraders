@@ -44,9 +44,6 @@
     "java": ">=17",
     "configured": "^2.0"
   },
-  "suggests": {
-    "catalogue": "*"
-  },
   "custom": {
     "configured": {
       "configs": [
