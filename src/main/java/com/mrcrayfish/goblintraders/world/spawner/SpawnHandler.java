@@ -21,7 +21,7 @@ public class SpawnHandler implements ModInitializer
     @Override
     public void onInitialize()
     {
-        ServerLifecycleEvents.SERVER_STARTING.register(server ->
+        ServerLifecycleEvents.SERVER_STARTED.register(server ->
         {
             SPAWNERS.put(BuiltinDimensionTypes.OVERWORLD.location(), new GoblinTraderSpawner(server, "GoblinTrader", ModEntities.GOBLIN_TRADER, Config.ENTITIES.goblinTrader));
             SPAWNERS.put(BuiltinDimensionTypes.NETHER.location(), new GoblinTraderSpawner(server, "VeinGoblinTrader", ModEntities.VEIN_GOBLIN_TRADER, Config.ENTITIES.veinGoblinTrader));

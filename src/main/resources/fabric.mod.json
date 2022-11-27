@@ -25,7 +25,8 @@
       "com.mrcrayfish.goblintraders.init.ModItems",
       "com.mrcrayfish.goblintraders.init.ModPotions",
       "com.mrcrayfish.goblintraders.init.ModSounds",
-      "com.mrcrayfish.goblintraders.init.ModStats"
+      "com.mrcrayfish.goblintraders.init.ModStats",
+      "com.mrcrayfish.goblintraders.world.spawner.SpawnHandler"
     ],
     "client": [
       "com.mrcrayfish.goblintraders.client.ClientHandler"
