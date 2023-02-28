@@ -171,7 +171,7 @@ public class BasicTrade implements ITradeType<GoblinTrade>
         private JsonObject serializeItemStack(ItemStack stack)
         {
             JsonObject object = new JsonObject();
-            object.addProperty("item", Registry.ITEM.getKey(stack.getItem()).toString());
+            object.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(stack.getItem())).toString());
             object.addProperty("count", stack.getCount());
             if(stack.hasTag())
             {
@@ -183,7 +183,7 @@ public class BasicTrade implements ITradeType<GoblinTrade>
         private JsonObject serializeEnchantment(EnchantmentInstance enchantment)
         {
             JsonObject object = new JsonObject();
-            object.addProperty("id", Objects.requireNonNull(Registry.ENCHANTMENT.getKey(enchantment.enchantment)).toString());
+            object.addProperty("id", Objects.requireNonNull(ForgeRegistries.ENCHANTMENTS.getKey(enchantment.enchantment)).toString());
             object.addProperty("level", enchantment.level);
             return object;
         }
@@ -191,7 +191,7 @@ public class BasicTrade implements ITradeType<GoblinTrade>
         private JsonObject serializePotionEffect(MobEffectInstance effect)
         {
             JsonObject object = new JsonObject();
-            object.addProperty("id", Objects.requireNonNull(Registry.MOB_EFFECT.getKey(effect.getEffect())).toString());
+            object.addProperty("id", Objects.requireNonNull(ForgeRegistries.MOB_EFFECTS.getKey(effect.getEffect())).toString());
             object.addProperty("duration", effect.getDuration());
             object.addProperty("amplifier", effect.getAmplifier());
             object.addProperty("show_particles", effect.isVisible());

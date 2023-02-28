@@ -5,11 +5,15 @@ import com.mrcrayfish.goblintraders.client.renderer.entity.GoblinModelLayers;
 import com.mrcrayfish.goblintraders.client.renderer.entity.GoblinTraderRenderer;
 import com.mrcrayfish.goblintraders.client.renderer.entity.model.GoblinTraderModel;
 import com.mrcrayfish.goblintraders.init.ModEntities;
+import com.mrcrayfish.goblintraders.init.ModItems;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -32,5 +36,15 @@ public class ClientHandler
     {
         event.registerLayerDefinition(GoblinModelLayers.GOBLIN_TRADER, GoblinTraderModel::createBodyLayer);
         event.registerLayerDefinition(GoblinModelLayers.VEIN_GOBLIN_TRADER, GoblinTraderModel::createBodyLayer);
+    }
+
+    @SubscribeEvent
+    public static void onRegisterCreativeTab(CreativeModeTabEvent.BuildContents event)
+    {
+        if(event.getTab().equals(CreativeModeTabs.SPAWN_EGGS))
+        {
+            event.accept(ModItems.GOBLIN_TRADER_SPAWN_EGG);
+            event.accept(ModItems.VEIN_GOBLIN_TRADER_SPAWN_EGG);
+        }
     }
 }
