@@ -1,7 +1,8 @@
 {
     "pack": {
-        "description": "goblintraders resources",
-        "pack_format": 8,
-        "_comment": "A pack_format of 6 requires json lang files and some texture changes from 1.16.3. Note: we require v6 pack meta for all mods."
+        "description": "Goblin Traders resources",
+        "pack_format": 12,
+        "forge:resource_pack_format": 12,
+        "forge:data_pack_format": 10
     }
 }
