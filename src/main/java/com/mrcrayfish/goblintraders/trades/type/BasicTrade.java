@@ -1,24 +1,18 @@
 package com.mrcrayfish.goblintraders.trades.type;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mrcrayfish.goblintraders.Reference;
 import com.mrcrayfish.goblintraders.trades.CraftingHelper;
 import com.mrcrayfish.goblintraders.trades.GoblinTrade;
 import com.mrcrayfish.goblintraders.trades.TradeSerializer;
 import net.minecraft.core.Registry;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.TagParser;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
@@ -177,7 +171,7 @@ public class BasicTrade implements ITradeType<GoblinTrade>
         private JsonObject serializeItemStack(ItemStack stack)
         {
             JsonObject object = new JsonObject();
-            object.addProperty("item", Registry.ITEM.getKey(stack.getItem()).toString());
+            object.addProperty("item", Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(stack.getItem())).toString());
             object.addProperty("count", stack.getCount());
             if(stack.hasTag())
             {
@@ -189,7 +183,7 @@ public class BasicTrade implements ITradeType<GoblinTrade>
         private JsonObject serializeEnchantment(EnchantmentInstance enchantment)
         {
             JsonObject object = new JsonObject();
-            object.addProperty("id", Objects.requireNonNull(Registry.ENCHANTMENT.getKey(enchantment.enchantment)).toString());
+            object.addProperty("id", Objects.requireNonNull(BuiltInRegistries.ENCHANTMENT.getKey(enchantment.enchantment)).toString());
             object.addProperty("level", enchantment.level);
             return object;
         }
@@ -197,7 +191,7 @@ public class BasicTrade implements ITradeType<GoblinTrade>
         private JsonObject serializePotionEffect(MobEffectInstance effect)
         {
             JsonObject object = new JsonObject();
-            object.addProperty("id", Objects.requireNonNull(Registry.MOB_EFFECT.getKey(effect.getEffect())).toString());
+            object.addProperty("id", Objects.requireNonNull(BuiltInRegistries.MOB_EFFECT.getKey(effect.getEffect())).toString());
             object.addProperty("duration", effect.getDuration());
             object.addProperty("amplifier", effect.getAmplifier());
             object.addProperty("show_particles", effect.isVisible());
@@ -211,7 +205,7 @@ public class BasicTrade implements ITradeType<GoblinTrade>
             {
                 JsonObject enchantmentObject = enchantmentElement.getAsJsonObject();
                 String id = GsonHelper.getAsString(enchantmentObject, "id");
-                Enchantment enchantment = Registry.ENCHANTMENT.get(new ResourceLocation(id));
+                Enchantment enchantment = BuiltInRegistries.ENCHANTMENT.get(new ResourceLocation(id));
                 if(enchantment != null)
                 {
                     int level = GsonHelper.getAsInt(enchantmentObject, "level", 1);
@@ -228,7 +222,7 @@ public class BasicTrade implements ITradeType<GoblinTrade>
             {
                 JsonObject effectObject = effectElement.getAsJsonObject();
                 String id = GsonHelper.getAsString(effectObject, "id");
-                MobEffect effect = Registry.MOB_EFFECT.get(new ResourceLocation(id));
+                MobEffect effect = BuiltInRegistries.MOB_EFFECT.get(new ResourceLocation(id));
                 if(effect != null)
                 {
                     int duration = GsonHelper.getAsInt(effectObject, "duration", 1);

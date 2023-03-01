@@ -3,6 +3,7 @@ package com.mrcrayfish.goblintraders.init;
 import com.mrcrayfish.goblintraders.Reference;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
@@ -16,7 +17,7 @@ public class ModSounds implements ModInitializer
 
     private static SoundEvent register(ResourceLocation id)
     {
-        return Registry.register(Registry.SOUND_EVENT, id, new SoundEvent(id));
+        return Registry.register(BuiltInRegistries.SOUND_EVENT, id, SoundEvent.createVariableRangeEvent(id));
     }
 
     @Override

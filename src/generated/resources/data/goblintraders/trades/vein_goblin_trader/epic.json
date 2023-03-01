@@ -68,7 +68,7 @@
       "offer_item": {
         "count": 1,
         "item": "minecraft:potion",
-        "nbt": "{Potion:\"goblintraders:luck\"}"
+        "nbt": "{Potion:\"minecraft:luck\"}"
       },
       "payment_item": {
         "count": 25,

@@ -7,21 +7,17 @@ import com.mrcrayfish.goblintraders.trades.EntityTrades;
 import com.mrcrayfish.goblintraders.trades.IRaritySettings;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
 import com.mrcrayfish.goblintraders.trades.TradeRarity;
-import net.minecraft.Util;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
 
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 /**
  * Author: MrCrayfish

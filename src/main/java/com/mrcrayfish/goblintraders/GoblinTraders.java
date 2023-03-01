@@ -1,7 +1,6 @@
 package com.mrcrayfish.goblintraders;
 
 import com.mrcrayfish.goblintraders.init.ModEntities;
-import com.mrcrayfish.goblintraders.init.ModStats;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
 import com.mrcrayfish.goblintraders.trades.type.BasicTrade;
 import net.fabricmc.api.ModInitializer;

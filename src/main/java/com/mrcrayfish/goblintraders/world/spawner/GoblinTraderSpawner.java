@@ -10,6 +10,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.NaturalSpawner;
@@ -111,7 +112,7 @@ public class GoblinTraderSpawner
                 {
                     return false;
                 }
-                AbstractGoblinEntity goblin = this.entityType.spawn((ServerLevel) randomPlayer.level, null, null, null, safestPos, MobSpawnType.EVENT, false, false);
+                AbstractGoblinEntity goblin = this.entityType.spawn((ServerLevel) randomPlayer.level, (ItemStack) null, (Player) null, safestPos, MobSpawnType.EVENT, false, false);
                 if(goblin != null)
                 {
                     goblin.setDespawnDelay(this.traderSpawnDelay);

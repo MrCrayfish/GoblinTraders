@@ -1,7 +1,10 @@
 package com.mrcrayfish.goblintraders.init;
 
+import com.mrcrayfish.goblintraders.Reference;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.alchemy.Potion;
@@ -28,7 +31,7 @@ public class ModPotions implements ModInitializer
 
     private static Potion register(String id, Potion potion)
     {
-        return Registry.register(Registry.POTION, id, potion);
+        return Registry.register(BuiltInRegistries.POTION, new ResourceLocation(Reference.MOD_ID, id), potion);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.mrcrayfish.goblintraders.datagen;
 
 import com.mrcrayfish.goblintraders.init.ModEntities;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -22,15 +22,21 @@ import java.util.function.BiConsumer;
  */
 public class GoblinLootTableProvider extends SimpleFabricLootTableProvider
 {
-    public GoblinLootTableProvider(FabricDataGenerator dataGenerator)
+    public GoblinLootTableProvider(FabricDataOutput output)
     {
-        super(dataGenerator, LootContextParamSets.ENTITY);
+        super(output, LootContextParamSets.ENTITY);
     }
 
     @Override
     public void accept(BiConsumer<ResourceLocation, LootTable.Builder> consumer)
     {
-        consumer.accept(EntityType.getKey(ModEntities.GOBLIN_TRADER), LootTable.lootTable().withPool(new LootPool.Builder().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.APPLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 3))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1))))));
-        consumer.accept(EntityType.getKey(ModEntities.VEIN_GOBLIN_TRADER), LootTable.lootTable().withPool(new LootPool.Builder().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.CARROT).apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 3))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1))))));
+        consumer.accept(this.createKey(ModEntities.GOBLIN_TRADER), LootTable.lootTable().withPool(new LootPool.Builder().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.APPLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 3))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1))))));
+        consumer.accept(this.createKey(ModEntities.VEIN_GOBLIN_TRADER), LootTable.lootTable().withPool(new LootPool.Builder().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.CARROT).apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 3))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1))))));
+    }
+
+    private ResourceLocation createKey(EntityType<?> type)
+    {
+        ResourceLocation id = EntityType.getKey(type);
+        return new ResourceLocation(id.getNamespace(), "entities/" + id.getPath());
     }
 }

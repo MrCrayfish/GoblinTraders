@@ -8,7 +8,6 @@ import com.mrcrayfish.goblintraders.trades.IRaritySettings;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
 import com.mrcrayfish.goblintraders.trades.TradeRarity;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;

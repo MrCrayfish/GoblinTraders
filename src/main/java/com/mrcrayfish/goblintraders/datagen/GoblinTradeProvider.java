@@ -5,8 +5,8 @@ import com.mrcrayfish.goblintraders.init.ModEntities;
 import com.mrcrayfish.goblintraders.init.ModPotions;
 import com.mrcrayfish.goblintraders.trades.TradeRarity;
 import com.mrcrayfish.goblintraders.trades.type.BasicTrade;
-import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -17,16 +17,16 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 
-import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Author: MrCrayfish
  */
 public class GoblinTradeProvider extends TradeProvider
 {
-    public GoblinTradeProvider(DataGenerator generator)
+    public GoblinTradeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider)
     {
-        super(generator);
+        super(output, lookupProvider);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.mrcrayfish.goblintraders.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import com.mrcrayfish.goblintraders.client.renderer.entity.model.GoblinTraderModel;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -37,9 +37,9 @@ public class GoblinTraderRenderer extends MobRenderer<AbstractGoblinEntity, Gobl
         if(entity.isStunned() && entity.isAlive())
         {
             float progress = Math.min(10F, entity.getFallCounter() + partialTicks) / 10F;
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(-entity.getStunRotation()));
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(90F * progress));
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(entity.getStunRotation()));
+            poseStack.mulPose(Axis.YP.rotationDegrees(-entity.getStunRotation()));
+            poseStack.mulPose(Axis.XP.rotationDegrees(90F * progress));
+            poseStack.mulPose(Axis.YP.rotationDegrees(entity.getStunRotation()));
         }
         super.render(entity, 0F, partialTicks, poseStack, source, light);
         poseStack.popPose();
