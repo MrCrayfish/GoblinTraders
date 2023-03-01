@@ -72,7 +72,7 @@ public abstract class TradeProvider implements DataProvider
                     e2.getValue().forEach(trade -> tradeArray.add(trade.serialize()));
                     object.add("trades", tradeArray);
                     ResourceLocation id = EntityType.getKey(type);
-                    Path path = this.pathProvider.json(new ResourceLocation(id.getNamespace(), id.getPath() + "/" + e2.getKey()));
+                    Path path = this.pathProvider.json(new ResourceLocation(id.getNamespace(), id.getPath() + "/" + e2.getKey().getKey()));
                     return DataProvider.saveStable(output, object, path);
                 }).toArray(CompletableFuture[]::new));
             }).toArray(CompletableFuture[]::new));
