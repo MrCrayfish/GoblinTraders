@@ -1,0 +1,21 @@
+{
+    "entity.goblintraders.goblin_trader": "Goblin Handlare",
+    "entity.goblintraders.vein_goblin_trader": "Vein Goblin Handlare",
+    "subtitle.goblintraders.goblin_trader.annoyed_grunt": "Irriterad Grymta",
+    "subtitle.goblintraders.goblin_trader.idle_grunt": "Vanlig Grymt",
+    "item.goblintraders.goblin_trader_spawn_egg": "Skapelseägg för Goblin Handlare",
+    "item.goblintraders.vein_goblin_trader_spawn_egg": "Skapelseägg för Vein Goblin Handlare",
+    "stat.goblintraders.trade_with_goblin": "Handlat med Goblins",
+    "mob_spawner.type.zombie": "Zombie",
+    "mob_spawner.type.skeleton": "Skelet",
+    "mob_spawner.type.creeper": "Creeper",
+    "item.minecraft.potion.effect.haste": "Skyndsamhetbrygd",
+    "item.minecraft.potion.effect.absorption": "Absorberingbrygd",
+    "item.minecraft.potion.effect.dolphins_grace": "Delfingåvabrygd",
+    "item.minecraft.splash_potion.effect.haste": "Kastbara skyndsamhetbrygd",
+    "item.minecraft.splash_potion.effect.absorption": "Kastbara absorberingbrygd",
+    "item.minecraft.splash_potion.effect.dolphins_grace": "Kastbara delfingåvabrygd",
+    "item.minecraft.lingering_potion.effect.haste": "Kvardröjande skyndsamhetbrygd",
+    "item.minecraft.lingering_potion.effect.absorption": "Kvardröjande absorberingbrygd",
+    "item.minecraft.lingering_potion.effect.dolphins_grace": "Kvardröjande delfingåvabrygd"
+}
