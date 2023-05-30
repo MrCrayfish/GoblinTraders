@@ -14,7 +14,7 @@ import java.util.EnumSet;
  */
 public class AttackRevengeTargetGoal extends Goal
 {
-    private AbstractGoblinEntity entity;
+    private final AbstractGoblinEntity entity;
 
     public AttackRevengeTargetGoal(AbstractGoblinEntity entity)
     {
@@ -41,7 +41,7 @@ public class AttackRevengeTargetGoal extends Goal
             }
             else
             {
-                revengeTarget.hurt(DamageSource.mobAttack(this.entity), 1.0F);
+                revengeTarget.hurt(this.entity.damageSources().mobAttack(this.entity), 1.0F);
                 this.entity.swing(InteractionHand.MAIN_HAND);
                 this.entity.setLastHurtByMob(null);
             }

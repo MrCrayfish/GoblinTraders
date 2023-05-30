@@ -5,7 +5,7 @@ plugins {
     id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
 }
 
-version = '1.8.0-1.19.3'
+version = '1.8.0-1.19.4'
 group = 'com.mrcrayfish'
 archivesBaseName = 'goblintraders'
 
@@ -18,7 +18,7 @@ mixin {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 minecraft {
-    mappings channel: 'official', version: '1.19.3'
+    mappings channel: 'official', version: '1.19.4'
     runs {
         client {
             workingDirectory project.file('run')
@@ -80,9 +80,9 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.3-44.1.0'
-    implementation fg.deobf('curse.maven:configured-457570:4166861')
-    implementation fg.deobf('curse.maven:catalogue-459701:4171025')
+    minecraft 'net.minecraftforge:forge:1.19.4-45.0.66'
+    implementation fg.deobf('curse.maven:configured-457570:4462894')
+    implementation fg.deobf('curse.maven:catalogue-459701:4496718')
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
