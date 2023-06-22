@@ -95,9 +95,6 @@ jar {
 	from("MOD-LICENSE") {
 		rename { "LICENSE_${project.mod_id}"}
 	}
-	from("FORGE-LICENSE") {
-		rename { "LICENSE_forge"}
-	}
 }
 
 publishing {
