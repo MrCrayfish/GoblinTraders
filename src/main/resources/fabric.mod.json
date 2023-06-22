@@ -41,12 +41,12 @@
   "depends": {
     "fabricloader": ">=0.14.14",
     "fabric-api": "*",
-    "minecraft": "~1.19.3",
+    "minecraft": "~1.19.4",
     "java": ">=17",
-    "configured": "^2.0"
+    "framework": "^0.6.4"
   },
   "custom": {
-    "configured": {
+    "framework": {
       "configs": [
         "com.mrcrayfish.goblintraders.Config"
       ],

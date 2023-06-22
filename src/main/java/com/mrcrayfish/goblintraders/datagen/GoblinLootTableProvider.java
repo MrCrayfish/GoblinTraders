@@ -28,7 +28,7 @@ public class GoblinLootTableProvider extends SimpleFabricLootTableProvider
     }
 
     @Override
-    public void accept(BiConsumer<ResourceLocation, LootTable.Builder> consumer)
+    public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer)
     {
         consumer.accept(this.createKey(ModEntities.GOBLIN_TRADER), LootTable.lootTable().withPool(new LootPool.Builder().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.APPLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 3))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1))))));
         consumer.accept(this.createKey(ModEntities.VEIN_GOBLIN_TRADER), LootTable.lootTable().withPool(new LootPool.Builder().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.CARROT).apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 3))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1))))));

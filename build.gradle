@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.0-SNAPSHOT'
+	id 'fabric-loom' version '1.1-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -49,7 +49,15 @@ sourceSets {
 
 repositories {
 	maven {
-		url "file:///X:/localmaven/mcmods"
+		name = "MrCrayfish (GitHub)"
+		url = "https://maven.pkg.github.com/MrCrayfish/Maven"
+		credentials {
+			username = project.findProperty("gpr.user") ?: System.getenv("GPR_USER")
+			password = project.findProperty("gpr.key") ?: System.getenv("GPR_KEY")
+		}
+		content {
+			includeGroup "com.mrcrayfish"
+		}
 	}
 }
 
@@ -61,10 +69,7 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "com.google.code.findbugs:annotations:3.0.1"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modImplementation("com.mrcrayfish:catalogue-fabric:1.7.0-1.19.3")
-	modImplementation("com.mrcrayfish:configured-fabric:2.0.2-1.19.3") {
-		exclude group: 'com.terraformersmc', module: 'modmenu'
-	}
+	modImplementation "com.mrcrayfish:framework-fabric:${minecraft_version}-0.6.4"
 }
 
 processResources {
