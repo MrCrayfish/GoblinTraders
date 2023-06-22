@@ -26,29 +26,30 @@ public class MerchantMenuMixin
     private MerchantContainer tradeContainer;
 
     @Inject(method = "moveFromInventoryToPaymentSlot", at = @At(value = "HEAD"), cancellable = true)
-    private void headMoveFromInventoryToPaymentSlot(int tradeIndex, ItemStack itemStack, CallbackInfo ci)
+    private void headMoveFromInventoryToPaymentSlot(int tradeIndex, ItemStack payment, CallbackInfo ci)
     {
-        if(itemStack.isEmpty())
-            return;
-
-        MerchantMenu menu = (MerchantMenu) (Object) this;
-        for(int i = 3; i < menu.slots.size(); i++)
+        // We are providing custom handling for enchanted payments
+        if(!EnchantmentHelper.getEnchantments(payment).isEmpty())
         {
-            ItemStack slotStack = menu.slots.get(i).getItem();
-            if(slotStack.isEmpty() || !isMatching(itemStack, slotStack))
-                continue;
-
-            ItemStack stack = this.tradeContainer.getItem(tradeIndex);
-            int count = stack.isEmpty() ? 0 : stack.getCount();
-            int addCount = Math.min(itemStack.getMaxStackSize() - count, slotStack.getCount());
-            ItemStack copy = slotStack.copy();
-            int newCount = count + addCount;
-            slotStack.shrink(addCount);
-            copy.setCount(newCount);
-            this.tradeContainer.setItem(tradeIndex, copy);
-            if(newCount >= itemStack.getMaxStackSize())
+            ci.cancel();
+            MerchantMenu menu = (MerchantMenu) (Object) this;
+            for(int i = 3; i < menu.slots.size(); i++)
             {
-                ci.cancel();
+                ItemStack slotStack = menu.slots.get(i).getItem();
+                if(slotStack.isEmpty() || !isMatching(payment, slotStack))
+                    continue;
+                ItemStack stack = this.tradeContainer.getItem(tradeIndex);
+                int count = stack.isEmpty() ? 0 : stack.getCount();
+                int addCount = Math.min(payment.getMaxStackSize() - count, slotStack.getCount());
+                ItemStack copy = slotStack.copy();
+                int newCount = count + addCount;
+                slotStack.shrink(addCount);
+                copy.setCount(newCount);
+                this.tradeContainer.setItem(tradeIndex, copy);
+                if(newCount >= payment.getMaxStackSize())
+                {
+                    break;
+                }
             }
         }
     }
