@@ -1,7 +1,6 @@
 package com.mrcrayfish.goblintraders.spawner;
 
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
-import com.mrcrayfish.goblintraders.entity.GoblinTrader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;

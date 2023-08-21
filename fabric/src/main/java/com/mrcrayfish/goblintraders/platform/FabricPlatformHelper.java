@@ -4,24 +4,19 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import com.mrcrayfish.goblintraders.item.GoblinSpawnEggItem;
 import com.mrcrayfish.goblintraders.platform.services.IPlatformHelper;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.function.Supplier;
 

@@ -1,7 +1,7 @@
 package com.mrcrayfish.goblintraders.mixin;
 
-import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import com.mrcrayfish.goblintraders.core.ModStats;
+import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MerchantResultSlot;
 import net.minecraft.world.item.trading.Merchant;

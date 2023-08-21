@@ -3,7 +3,6 @@ package com.mrcrayfish.goblintraders.item;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.SpawnEggItem;
 import org.jetbrains.annotations.Nullable;

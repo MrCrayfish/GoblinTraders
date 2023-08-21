@@ -1,10 +1,8 @@
 package com.mrcrayfish.goblintraders.platform.services;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;

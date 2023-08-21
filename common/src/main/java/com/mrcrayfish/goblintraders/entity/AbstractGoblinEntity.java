@@ -1,6 +1,7 @@
 package com.mrcrayfish.goblintraders.entity;
 
 import com.mrcrayfish.goblintraders.Config;
+import com.mrcrayfish.goblintraders.core.ModSounds;
 import com.mrcrayfish.goblintraders.entity.ai.goal.AttackRevengeTargetGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.EatFavouriteFoodGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.FindFavouriteFoodGoal;
@@ -8,7 +9,6 @@ import com.mrcrayfish.goblintraders.entity.ai.goal.FirePanicGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.FollowPotentialCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.LookAtCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.TradeWithPlayerGoal;
-import com.mrcrayfish.goblintraders.core.ModSounds;
 import com.mrcrayfish.goblintraders.trades.GoblinOffers;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
