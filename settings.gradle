@@ -1,14 +1,26 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        maven { url = 'https://maven.minecraftforge.net/' }
-        maven { url = 'https://repo.spongepowered.org/maven' }
-    }
-    resolutionStrategy {
-        eachPlugin {
-            if (it.requested.id.namespace == 'org.spongepowered') {
-                it.useModule('org.spongepowered:mixingradle:0.7-SNAPSHOT')
-            }
+        maven {
+            name = 'Forge'
+            url = 'https://maven.minecraftforge.net/'
+        }
+        maven {
+            name = 'Fabric'
+            url = 'https://maven.fabricmc.net/'
+        }
+        maven {
+            name = 'Sponge Snapshots'
+            url = 'https://repo.spongepowered.org/repository/maven-public/'
         }
     }
 }
+
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.5.0'
+}
+
+rootProject.name = 'GoblinTraders'
+include("common")
+include("fabric")
+include("forge")
