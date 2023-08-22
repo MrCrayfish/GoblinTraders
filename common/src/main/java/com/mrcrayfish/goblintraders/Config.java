@@ -15,7 +15,7 @@ import com.mrcrayfish.goblintraders.trades.TradeRarity;
  */
 public final class Config
 {
-    @FrameworkConfig(id = Constants.MOD_ID, name = "entities", separator = '-', type = ConfigType.SERVER)
+    @FrameworkConfig(id = Constants.MOD_ID, name = "entities", separator = '-')
     public static final Entities ENTITIES = new Entities();
 
     public static class Entities
