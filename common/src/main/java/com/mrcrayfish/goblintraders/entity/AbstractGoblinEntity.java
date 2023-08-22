@@ -152,10 +152,10 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
             if(this.stunDelay == 0)
             {
                 this.entityData.set(STUNNED, false);
-                this.level.playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT.get(), SoundSource.NEUTRAL, 1.0F, 0.9F + this.getRandom().nextFloat() * 0.2F);
+                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT.get(), SoundSource.NEUTRAL, 1.0F, 0.9F + this.getRandom().nextFloat() * 0.2F);
             }
         }
-        if(!this.level.isClientSide() && (!Config.ENTITIES.preventDespawnIfNamed.get() || !this.isPersistenceRequired()))
+        if(!this.level().isClientSide() && (!Config.ENTITIES.preventDespawnIfNamed.get() || !this.isPersistenceRequired()))
         {
             this.handleDespawn();
         }
@@ -170,7 +170,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         {
             this.fallCounter = 0;
         }
-        if(!this.level.isClientSide() && this.getMaxRestockDelay() != -1)
+        if(!this.level().isClientSide() && this.getMaxRestockDelay() != -1)
         {
             if(++this.restockDelay >= this.getMaxRestockDelay())
             {
@@ -243,9 +243,9 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         {
             this.tradedCustomers.add(this.customer.getUUID());
         }
-        if(this.level instanceof ServerLevel)
+        if(this.level() instanceof ServerLevel serverLevel)
         {
-            ExperienceOrb.award((ServerLevel) this.level, this.getPosition(1F), offer.getXp());
+            ExperienceOrb.award(serverLevel, this.getPosition(1F), offer.getXp());
         }
     }
 
@@ -256,15 +256,9 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     }
 
     @Override
-    public Level getLevel()
-    {
-        return this.level;
-    }
-
-    @Override
     public boolean isClientSide()
     {
-        return this.getLevel().isClientSide;
+        return this.level().isClientSide();
     }
 
     @Override
@@ -307,14 +301,14 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         {
             if(this.getOffers().isEmpty())
             {
-                return InteractionResult.sidedSuccess(this.level.isClientSide());
+                return InteractionResult.sidedSuccess(this.isClientSide());
             }
-            else if(!this.level.isClientSide() && (this.getLastHurtByMob() == null || this.getLastHurtByMob() != player))
+            else if(!this.isClientSide() && (this.getLastHurtByMob() == null || this.getLastHurtByMob() != player))
             {
                 this.setTradingPlayer(player);
                 this.openTradingScreen(player, this.getDisplayName(), 1);
             }
-            return InteractionResult.sidedSuccess(this.level.isClientSide());
+            return InteractionResult.sidedSuccess(this.isClientSide());
         }
         return super.mobInteract(player, hand);
     }
@@ -326,7 +320,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         {
             if(stack.getUseAnimation() == UseAnim.DRINK)
             {
-                this.playSound(this.getDrinkingSound(stack), 0.5F, this.level.getRandom().nextFloat() * 0.1F + 0.9F);
+                this.playSound(this.getDrinkingSound(stack), 0.5F, this.level().getRandom().nextFloat() * 0.1F + 0.9F);
             }
             if(stack.getUseAnimation() == UseAnim.EAT)
             {
@@ -347,13 +341,13 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
             frontPosition = frontPosition.add(0, 0.35, 0);
             frontPosition = frontPosition.add(this.position());
             Vec3 motion = new Vec3(this.getRandom().nextDouble() * 0.2 - 0.1, 0.1, this.getRandom().nextDouble() * 0.2 - 0.1);
-            if(this.level instanceof ServerLevel)
+            if(this.level() instanceof ServerLevel serverLevel)
             {
-                ((ServerLevel) this.level).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), frontPosition.x, frontPosition.y, frontPosition.z, 1, motion.x, motion.y + 0.05D, motion.z, 0.0D);
+                serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), frontPosition.x, frontPosition.y, frontPosition.z, 1, motion.x, motion.y + 0.05D, motion.z, 0.0D);
             }
             else
             {
-                this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), frontPosition.x, frontPosition.y, frontPosition.z, motion.x, motion.y + 0.05D, motion.z);
+                this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), frontPosition.x, frontPosition.y, frontPosition.z, motion.x, motion.y + 0.05D, motion.z);
             }
         }
     }

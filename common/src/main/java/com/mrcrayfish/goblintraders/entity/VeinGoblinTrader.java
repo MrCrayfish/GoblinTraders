@@ -67,9 +67,9 @@ public class VeinGoblinTrader extends AbstractGoblinEntity
     @Override
     public void aiStep()
     {
-        if(this.level.isClientSide() && this.tickCount % 2 == 0)
+        if(this.isClientSide() && this.tickCount % 2 == 0)
         {
-            this.level.addParticle(ParticleTypes.FLAME, this.getX() - 0.5 + this.getRandom().nextDouble(), this.getY() + 0.5 - 0.5 + this.getRandom().nextDouble(), this.getZ() - 0.5 + this.getRandom().nextDouble(), 0, 0, 0);
+            this.level().addParticle(ParticleTypes.FLAME, this.getX() - 0.5 + this.getRandom().nextDouble(), this.getY() + 0.5 - 0.5 + this.getRandom().nextDouble(), this.getZ() - 0.5 + this.getRandom().nextDouble(), 0, 0, 0);
         }
         super.aiStep();
     }

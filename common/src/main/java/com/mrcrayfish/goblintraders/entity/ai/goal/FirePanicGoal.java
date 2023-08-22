@@ -35,7 +35,7 @@ public class FirePanicGoal extends Goal
     {
         if(this.goblin.isOnFire() && !this.goblin.isStunned())
         {
-            BlockPos blockpos = this.getClosestWaterPos(this.goblin.level, this.goblin, 5, 4);
+            BlockPos blockpos = this.getClosestWaterPos(this.goblin.level(), this.goblin, 5, 4);
             if(blockpos != null)
             {
                 this.randPosX = (double) blockpos.getX();

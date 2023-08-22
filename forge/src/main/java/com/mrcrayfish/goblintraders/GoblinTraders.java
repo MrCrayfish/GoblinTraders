@@ -30,8 +30,9 @@ public class GoblinTraders
     {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::onCommonSetup);
+        bus.addListener(this::onClientSetup);
         bus.addListener(this::onGatherData);
-        MinecraftForge.EVENT_BUS.addListener(this::onEntityAttributeCreation);
+        bus.addListener(this::onEntityAttributeCreation);
         MinecraftForge.EVENT_BUS.addListener(this::addReloadListener);
     }
 

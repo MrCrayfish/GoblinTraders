@@ -42,7 +42,7 @@ public class GoblinMerchantOffer extends MerchantOffer
             givenCopy.setDamageValue(givenCopy.getDamageValue());
         }
 
-        if(!ItemStack.isSame(givenCopy, payment))
+        if(!ItemStack.isSameItem(givenCopy, payment))
             return false;
 
         if(!payment.hasTag())

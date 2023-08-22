@@ -74,7 +74,7 @@ public class FollowPotentialCustomerGoal extends Goal
     @Nullable
     private void findCustomer()
     {
-        List<Player> players = this.entity.level.getEntitiesOfClass(Player.class, this.entity.getBoundingBox().inflate(10), playerEntity -> !playerEntity.isCreative() && !playerEntity.isSpectator());
+        List<Player> players = this.entity.level().getEntitiesOfClass(Player.class, this.entity.getBoundingBox().inflate(10), playerEntity -> !playerEntity.isCreative() && !playerEntity.isSpectator());
         if(players.size() > 0)
         {
             this.potentialCustomer = players.stream().min(Comparator.comparing(this.entity::distanceTo)).get();

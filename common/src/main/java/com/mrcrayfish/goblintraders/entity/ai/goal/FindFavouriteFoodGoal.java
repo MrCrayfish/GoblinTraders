@@ -47,7 +47,7 @@ public class FindFavouriteFoodGoal extends Goal
         if(this.entity.distanceTo(this.itemEntity) <= 1.0D && this.itemEntity.isAlive())
         {
             this.itemEntity.remove(Entity.RemovalReason.KILLED);
-            this.entity.level.playSound(null, this.itemEntity.getX(), this.itemEntity.getY(), this.itemEntity.getZ(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1.0F, 0.75F);
+            this.entity.level().playSound(null, this.itemEntity.getX(), this.itemEntity.getY(), this.itemEntity.getZ(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1.0F, 0.75F);
         }
     }
 
@@ -60,7 +60,7 @@ public class FindFavouriteFoodGoal extends Goal
     @Nullable
     private void findFavouriteFood()
     {
-        List<ItemEntity> players = this.entity.level.getEntitiesOfClass(ItemEntity.class, this.entity.getBoundingBox().inflate(10), itemEntity -> itemEntity.getItem().getItem() == this.entity.getFavouriteFood().getItem());
+        List<ItemEntity> players = this.entity.level().getEntitiesOfClass(ItemEntity.class, this.entity.getBoundingBox().inflate(10), itemEntity -> itemEntity.getItem().getItem() == this.entity.getFavouriteFood().getItem());
         if(players.size() > 0)
         {
             this.itemEntity = players.stream().min(Comparator.comparing(this.entity::distanceTo)).get();

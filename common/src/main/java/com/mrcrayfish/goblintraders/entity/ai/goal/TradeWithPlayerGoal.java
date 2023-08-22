@@ -30,7 +30,7 @@ public class TradeWithPlayerGoal extends Goal
         {
             return false;
         }
-        else if(!this.entity.isOnGround())
+        else if(!this.entity.onGround())
         {
             return false;
         }

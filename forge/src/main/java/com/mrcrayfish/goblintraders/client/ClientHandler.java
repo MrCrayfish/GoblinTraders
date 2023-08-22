@@ -9,7 +9,7 @@ import com.mrcrayfish.goblintraders.core.ModItems;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.event.CreativeModeTabEvent;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -34,9 +34,9 @@ public class ClientHandler
     }
 
     @SubscribeEvent
-    public static void onRegisterCreativeTab(CreativeModeTabEvent.BuildContents event)
+    public static void onRegisterCreativeTab(BuildCreativeModeTabContentsEvent event)
     {
-        if(event.getTab().equals(CreativeModeTabs.SPAWN_EGGS))
+        if(event.getTabKey().equals(CreativeModeTabs.SPAWN_EGGS))
         {
             event.accept(ModItems.GOBLIN_TRADER_SPAWN_EGG.get());
             event.accept(ModItems.VEIN_GOBLIN_TRADER_SPAWN_EGG.get());
