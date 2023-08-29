@@ -2,7 +2,6 @@ package com.mrcrayfish.goblintraders;
 
 import com.mrcrayfish.framework.api.config.BoolProperty;
 import com.mrcrayfish.framework.api.config.ConfigProperty;
-import com.mrcrayfish.framework.api.config.ConfigType;
 import com.mrcrayfish.framework.api.config.DoubleProperty;
 import com.mrcrayfish.framework.api.config.FrameworkConfig;
 import com.mrcrayfish.framework.api.config.IntProperty;
@@ -31,8 +30,8 @@ public final class Config
 
         private Entities()
         {
-            this.goblinTrader = new Goblin(25, 6000, 24000, -64, 50);
-            this.veinGoblinTrader = new Goblin(25, 6000, 24000, 0, 128);
+            this.goblinTrader = new Goblin(25, 6000, 24000, 24000, -64, 50);
+            this.veinGoblinTrader = new Goblin(25, 6000, 24000, 24000, 0, 128);
         }
 
         public static class Goblin implements IGoblinData
@@ -44,8 +43,11 @@ public final class Config
             public final IntProperty spawnInterval;
 
             //TODO look into issue where high delay will still be present even if this value is lowered
-            @ConfigProperty(name = "traderSpawnDelay", comment = "The amount of ticks before the trader will spawn again")
+            @ConfigProperty(name = "traderSpawnDelay", comment = "The amount of ticks before the trader will start spawning in a new world")
             public final IntProperty spawnDelay;
+
+            @ConfigProperty(name = "traderDespawnDelay", comment = "The amount of ticks before the trader will despawn")
+            public final IntProperty despawnDelay;
 
             @ConfigProperty(name = "traderMinSpawnLevel", comment = "The minimum level the trader can spawn", worldRestart = true)
             public final IntProperty minSpawnYLevel;
@@ -65,11 +67,12 @@ public final class Config
             @ConfigProperty(name = "trades")
             public final Trades trades = new Trades();
 
-            private Goblin(int spawnChance, int spawnInterval, int spawnDelay, int minLevel, int maxLevel)
+            private Goblin(int spawnChance, int spawnInterval, int spawnDelay, int despawnDelay, int minLevel, int maxLevel)
             {
                 this.spawnChance = IntProperty.create(spawnChance, 1, 100);
                 this.spawnInterval = IntProperty.create(spawnInterval, 1, Integer.MAX_VALUE);
                 this.spawnDelay = IntProperty.create(spawnDelay, 1, Integer.MAX_VALUE);
+                this.despawnDelay = IntProperty.create(despawnDelay, 1, Integer.MAX_VALUE);
                 this.minSpawnYLevel = IntProperty.create(minLevel, -64, 320);
                 this.maxSpawnYLevel = IntProperty.create(maxLevel, -64, 320);
                 this.restockDelay = IntProperty.create(48000, -1, Integer.MAX_VALUE);
@@ -87,6 +90,12 @@ public final class Config
             public int getSpawnInterval()
             {
                 return this.spawnInterval.get();
+            }
+
+            @Override
+            public int getDespawnDelay()
+            {
+                return this.despawnDelay.get();
             }
 
             @Override

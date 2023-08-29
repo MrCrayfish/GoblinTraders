@@ -11,6 +11,8 @@ public interface IGoblinData
 
     int getSpawnInterval();
 
+    int getDespawnDelay();
+
     int getMinSpawnYLevel();
 
     int getMaxSpawnYLevel();
