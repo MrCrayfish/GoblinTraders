@@ -43,7 +43,7 @@ public final class Config
             public final IntProperty spawnInterval;
 
             //TODO look into issue where high delay will still be present even if this value is lowered
-            @ConfigProperty(name = "traderSpawnDelay", comment = "The amount of ticks before the trader will start spawning in a new world")
+            @ConfigProperty(name = "traderSpawnDelay", comment = "The amount of ticks before a new trader will spawn")
             public final IntProperty spawnDelay;
 
             @ConfigProperty(name = "traderDespawnDelay", comment = "The amount of ticks before the trader will despawn")
