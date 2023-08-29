@@ -30,8 +30,8 @@ public final class Config
 
         private Entities()
         {
-            this.goblinTrader = new Goblin(25, 6000, 24000, 24000, -64, 50);
-            this.veinGoblinTrader = new Goblin(25, 6000, 24000, 24000, 0, 128);
+            this.goblinTrader = new Goblin(25, 12000, 24000, 24000, -64, 50);
+            this.veinGoblinTrader = new Goblin(25, 12000, 24000, 24000, 0, 128);
         }
 
         public static class Goblin implements IGoblinData
