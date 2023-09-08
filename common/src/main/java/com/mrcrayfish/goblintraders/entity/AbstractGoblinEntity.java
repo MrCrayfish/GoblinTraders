@@ -77,7 +77,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     private MerchantOffers offers;
 
     private int stunDelay;
-    private int despawnDelay;
+    private int despawnDelay = 24000;
     private int fallCounter;
     private int restockDelay;
 
