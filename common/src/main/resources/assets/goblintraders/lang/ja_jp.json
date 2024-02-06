@@ -1,10 +1,10 @@
 {
     "entity.goblintraders.goblin_trader": "ゴブリン商人",
-    "entity.goblintraders.vein_goblin_trader": "鉱脈ゴブリン商人",
+    "entity.goblintraders.vein_goblin_trader": "溶岩ゴブリン商人",
     "subtitle.goblintraders.goblin_trader.annoyed_grunt": "ゴブリン商人がうなる",
     "subtitle.goblintraders.goblin_trader.idle_grunt": "ゴブリン商人がうめく",
     "item.goblintraders.goblin_trader_spawn_egg": "ゴブリン商人のスポーンエッグ",
-    "item.goblintraders.vein_goblin_trader_spawn_egg": "鉱脈ゴブリン商人のスポーンエッグ",
+    "item.goblintraders.vein_goblin_trader_spawn_egg": "溶岩ゴブリン商人のスポーンエッグ",
     "stat.goblintraders.trade_with_goblin": "ゴブリン商人と取引した回数",
     "mob_spawner.type.zombie": "ゾンビ",
     "mob_spawner.type.skeleton": "スケルトン",
