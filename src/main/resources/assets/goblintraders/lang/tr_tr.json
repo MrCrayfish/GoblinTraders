@@ -1,0 +1,21 @@
+{
+    "entity.goblintraders.goblin_trader": "Goblin Tüccarı",
+    "entity.goblintraders.vein_goblin_trader": "Vein Goblin Tüccarı",
+    "subtitle.goblintraders.goblin_trader.annoyed_grunt": "Rahatsız Homurtu",
+    "subtitle.goblintraders.goblin_trader.idle_grunt": "Boşken Homurtu",
+    "item.goblintraders.goblin_trader_spawn_egg": "Goblin Tüccarı Çağırma Yumurtası",
+    "item.goblintraders.vein_goblin_trader_spawn_egg": "Vein Goblin Tüccarı Çağırma Yumurtası",
+    "stat.goblintraders.trade_with_goblin": "Goblinlerle takas edildi",
+    "mob_spawner.type.zombie": "Zombi",
+    "mob_spawner.type.skeleton": "İskelet",
+    "mob_spawner.type.creeper": "Creeper",
+    "item.minecraft.potion.effect.haste": "Acele İksiri",
+    "item.minecraft.potion.effect.absorption": "Emilim İksiri",
+    "item.minecraft.potion.effect.dolphins_grace": "Yunusun Lütfu İksiri",
+    "item.minecraft.splash_potion.effect.haste": "Patlayıcı Acele İksiri",
+    "item.minecraft.splash_potion.effect.absorption": "Patlayıcı Emilim İksiri",
+    "item.minecraft.splash_potion.effect.dolphins_grace": "Patlayıcı Yunusun Lütfu İksiri",
+    "item.minecraft.lingering_potion.effect.haste": "Kalıcı Acele İksiri",
+    "item.minecraft.lingering_potion.effect.absorption": "Kalıcı Emilim İksiri",
+    "item.minecraft.lingering_potion.effect.dolphins_grace": "Kalıcı Yunusun Lütfu İksiri"
+}
