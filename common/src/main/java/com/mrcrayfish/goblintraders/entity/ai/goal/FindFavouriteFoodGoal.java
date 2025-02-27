@@ -4,6 +4,7 @@ import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.pathfinder.Path;
@@ -19,11 +20,11 @@ import java.util.List;
 public class FindFavouriteFoodGoal extends Goal
 {
     private ItemEntity itemEntity;
-    private final AbstractGoblinEntity entity;
+    private final AbstractGoblinEntity goblin;
 
-    public FindFavouriteFoodGoal(AbstractGoblinEntity entity)
+    public FindFavouriteFoodGoal(AbstractGoblinEntity goblin)
     {
-        this.entity = entity;
+        this.goblin = goblin;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Flag.LOOK));
     }
 
@@ -35,42 +36,43 @@ public class FindFavouriteFoodGoal extends Goal
         if(this.itemEntity == null || !this.itemEntity.isAlive())
             return false;
 
-        Path path = this.entity.getNavigation().createPath(this.itemEntity, 0);
+        Path path = this.goblin.getNavigation().createPath(this.itemEntity, 0);
         if(path == null || !path.canReach())
             return false;
 
-        return !this.entity.isStunned();
+        return !this.goblin.isStunned();
     }
 
     @Override
     public void tick()
     {
-        if(this.entity.isStunned())
+        if(this.goblin.isStunned())
             return;
 
-        this.entity.getLookControl().setLookAt(this.itemEntity, 10.0F, (float) this.entity.getHeadRotSpeed());
-        this.entity.getNavigation().stop();
-        Path path = this.entity.getNavigation().createPath(this.itemEntity, 0);
-        if(path != null) this.entity.getNavigation().moveTo(path, 0.4F);
-        if(this.entity.distanceTo(this.itemEntity) <= 1.0D && this.itemEntity.isAlive())
+        this.goblin.getLookControl().setLookAt(this.itemEntity, 10.0F, (float) this.goblin.getHeadRotSpeed());
+        this.goblin.getNavigation().stop();
+        Path path = this.goblin.getNavigation().createPath(this.itemEntity, 0);
+        if(path != null) this.goblin.getNavigation().moveTo(path, 0.4F);
+        if(this.goblin.distanceTo(this.itemEntity) <= 1.0D && this.itemEntity.isAlive())
         {
             this.itemEntity.remove(Entity.RemovalReason.KILLED);
-            this.entity.level().playSound(null, this.itemEntity.getX(), this.itemEntity.getY(), this.itemEntity.getZ(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1.0F, 0.75F);
+            this.goblin.level().playSound(null, this.itemEntity.getX(), this.itemEntity.getY(), this.itemEntity.getZ(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1.0F, 0.75F);
+            this.goblin.setItemSlot(EquipmentSlot.MAINHAND, this.goblin.getFavouriteFood().copy());
         }
     }
 
     @Override
     public boolean canContinueToUse()
     {
-        return this.itemEntity.isAlive() && this.entity.getNavigation().createPath(this.itemEntity, 0) != null;
+        return this.itemEntity.isAlive() && this.goblin.getNavigation().createPath(this.itemEntity, 0) != null && this.goblin.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty();
     }
 
     private void findFavouriteFood()
     {
-        List<ItemEntity> players = this.entity.level().getEntitiesOfClass(ItemEntity.class, this.entity.getBoundingBox().inflate(10), itemEntity -> itemEntity.getItem().getItem() == this.entity.getFavouriteFood().getItem());
+        List<ItemEntity> players = this.goblin.level().getEntitiesOfClass(ItemEntity.class, this.goblin.getBoundingBox().inflate(10), itemEntity -> itemEntity.getItem().getItem() == this.goblin.getFavouriteFood().getItem());
         if(!players.isEmpty())
         {
-            this.itemEntity = players.stream().min(Comparator.comparing(this.entity::distanceTo)).get();
+            this.itemEntity = players.stream().min(Comparator.comparing(this.goblin::distanceTo)).get();
         }
     }
 }
