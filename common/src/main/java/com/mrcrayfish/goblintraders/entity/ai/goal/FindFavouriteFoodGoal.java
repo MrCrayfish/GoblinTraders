@@ -19,7 +19,7 @@ import java.util.List;
 public class FindFavouriteFoodGoal extends Goal
 {
     private ItemEntity itemEntity;
-    private AbstractGoblinEntity entity;
+    private final AbstractGoblinEntity entity;
 
     public FindFavouriteFoodGoal(AbstractGoblinEntity entity)
     {
@@ -31,7 +31,15 @@ public class FindFavouriteFoodGoal extends Goal
     public boolean canUse()
     {
         this.findFavouriteFood();
-        return this.itemEntity != null && this.itemEntity.isAlive() && this.entity.getNavigation().createPath(this.itemEntity, 0) != null && !this.entity.isStunned();
+
+        if(this.itemEntity == null || !this.itemEntity.isAlive())
+            return false;
+
+        Path path = this.entity.getNavigation().createPath(this.itemEntity, 0);
+        if(path == null || !path.canReach())
+            return false;
+
+        return !this.entity.isStunned();
     }
 
     @Override
@@ -57,11 +65,10 @@ public class FindFavouriteFoodGoal extends Goal
         return this.itemEntity.isAlive() && this.entity.getNavigation().createPath(this.itemEntity, 0) != null;
     }
 
-    @Nullable
     private void findFavouriteFood()
     {
         List<ItemEntity> players = this.entity.level().getEntitiesOfClass(ItemEntity.class, this.entity.getBoundingBox().inflate(10), itemEntity -> itemEntity.getItem().getItem() == this.entity.getFavouriteFood().getItem());
-        if(players.size() > 0)
+        if(!players.isEmpty())
         {
             this.itemEntity = players.stream().min(Comparator.comparing(this.entity::distanceTo)).get();
         }
