@@ -10,29 +10,8 @@ import com.mrcrayfish.goblintraders.trades.TradeRarity;
  */
 public final class Config
 {
-    @FrameworkConfig(id = Constants.MOD_ID, name = "server", separator = '-', type = ConfigType.SERVER_SYNC)
-    public static final Server SERVER = new Server();
-
     @FrameworkConfig(id = Constants.MOD_ID, name = "entities", separator = '-')
     public static final Entities ENTITIES = new Entities();
-
-    public static class Server
-    {
-        @ConfigProperty(name = "ancientEnchantments")
-        public final AncientEnchantments ancientEnchantments = new AncientEnchantments();
-
-        public static class AncientEnchantments
-        {
-            @ConfigProperty(name = "bonusLevels", comment = "The amount of extra levels to apply on top of the max level of a non-ancient enchantment")
-            public final IntProperty bonusLevels = IntProperty.create(2, 1, 64);
-
-            @ConfigProperty(name = "goblinsOnly", comment = "If true, ancient enchantments are only available from goblin trades. Prevents enchantment table, villager trades, and treasure chests.")
-            public final BoolProperty goblinsOnly = BoolProperty.create(true);
-
-            @ConfigProperty(name = "treasureOnly", comment = "If true, only allows ancient enchantments to only appear in treasure chests. goblinsOnly must be disabled for this property to have any effect")
-            public final BoolProperty treasureOnly = BoolProperty.create(true);
-        }
-    }
 
     public static class Entities
     {
