@@ -27,12 +27,20 @@ public class GoblinTraderRenderer extends MobRenderer<AbstractGoblinEntity, Gobl
         return entity.getTexture();
     }
 
+    @Override
+    protected void setupRotations(AbstractGoblinEntity entity, PoseStack pose, float ageInTicks, float rotationYaw, float partialTicks)
+    {
+        super.setupRotations(entity, pose, ageInTicks, rotationYaw, partialTicks);
+        this.model.headTilt = entity.getHeadTilt(partialTicks);
+        this.model.armAngle = entity.getArmAngle(partialTicks);
+    }
+
     public void render(AbstractGoblinEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource source, int light)
     {
         poseStack.pushPose();
-        if(entity.isUsingItem())
+        if(entity.isUsingItem() || entity.isSitting())
         {
-            poseStack.translate(0, -0.15, 0);
+            poseStack.translate(0, -0.17, 0);
         }
         if(entity.isStunned() && entity.isAlive())
         {
