@@ -21,6 +21,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
@@ -28,10 +29,10 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Npc;
-import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
@@ -55,6 +56,8 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
 {
     public static final EntityDataAccessor<Boolean> STUNNED = SynchedEntityData.defineId(AbstractGoblinEntity.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Float> STUN_ROTATION = SynchedEntityData.defineId(AbstractGoblinEntity.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(AbstractGoblinEntity.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Boolean> CURIOUS = SynchedEntityData.defineId(AbstractGoblinEntity.class, EntityDataSerializers.BOOLEAN);
 
     private @Nullable Player customer;
     private @Nullable MerchantOffers offers;
@@ -64,6 +67,11 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     private int despawnDelay = 24000;
     private int fallCounter;
     private int restockDelay;
+    private float headTilt;
+    private float headTiltO;
+    private float armAngle;
+    private float armAngleO;
+    private int curiousTime;
 
     protected AbstractGoblinEntity(EntityType<? extends TraderCreatureEntity> type, Level level)
     {
@@ -79,13 +87,14 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         this.goalSelector.addGoal(3, new LookAtCustomerGoal(this));
         this.goalSelector.addGoal(4, new AttackRevengeTargetGoal(this));
         this.goalSelector.addGoal(5, new FollowPotentialCustomerGoal(this));
-        this.goalSelector.addGoal(6, new FindFavouriteFoodGoal(this));
-        this.goalSelector.addGoal(7, new TemptGoal(this, 0.4D, Ingredient.of(this.getFavouriteFood()), false));
-        this.goalSelector.addGoal(8, new EatFavouriteFoodGoal(this));
-        this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 0.4D));
-        this.goalSelector.addGoal(9, new MoveTowardsRestrictionGoal(this, 0.4D));
-        this.goalSelector.addGoal(10, new InteractGoal(this, Player.class, 4.0F, 1.0F));
-        this.goalSelector.addGoal(11, new LookAtPlayerGoal(this, Mob.class, 8.0F));
+        this.goalSelector.addGoal(6, new EatFavouriteFoodGoal(this));
+        this.goalSelector.addGoal(7, new FindFavouriteFoodGoal(this));
+        this.goalSelector.addGoal(8, new GoblinTemptGoal(this, 0.4D, Ingredient.of(this.getFavouriteFood()), false));
+        this.goalSelector.addGoal(9, new WaterAvoidingRandomStrollGoal(this, 0.4D));
+        this.goalSelector.addGoal(10, new SitAndLookGoal(this));
+        this.goalSelector.addGoal(11, new MoveTowardsRestrictionGoal(this, 0.4D));
+        this.goalSelector.addGoal(12, new InteractGoal(this, Player.class, 4.0F, 1.0F));
+        this.goalSelector.addGoal(13, new LookAtPlayerGoal(this, Mob.class, 8.0F));
     }
 
     @Override
@@ -106,6 +115,8 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         super.defineSynchedData(builder);
         builder.define(STUNNED, false);
         builder.define(STUN_ROTATION, 0F);
+        builder.define(SITTING, false);
+        builder.define(CURIOUS, false);
     }
 
     public abstract ResourceLocation getTexture();
@@ -128,6 +139,9 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     @Override
     public void baseTick()
     {
+        this.headTiltO = this.headTilt;
+        this.armAngleO = this.armAngle;
+
         super.baseTick();
         this.updateSwingTime(); //TODO test
         if(this.stunDelay > 0)
@@ -163,6 +177,17 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
                 this.resendOffers();
             }
         }
+
+        if(!this.level().isClientSide() && --this.curiousTime <= 0)
+        {
+            this.setCurious(false);
+        }
+
+        float targetTilt = this.isCurious() ? 20 : 0;
+        this.headTilt = Mth.lerp(0.35F, this.headTilt, targetTilt);
+
+        float targetAngle = this.isCurious() ? 110 : 0;
+        this.armAngle = Mth.lerp(0.35F, this.armAngle, targetAngle);
     }
 
     private void resendOffers()
@@ -311,6 +336,10 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
             heldItem.interactLivingEntity(player, this, hand);
             return InteractionResult.SUCCESS;
         }
+        else if(this.getFavouriteFood().is(heldItem.getItem()))
+        {
+            this.setItemInHand();
+        }
         else if(this.isAlive() && !this.hasCustomer() && !this.isBaby() && (this.fireImmune() || !this.isOnFire()) && !this.isStunned()) //TODO check for egg
         {
             if(this.getOffers().isEmpty())
@@ -378,6 +407,8 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         if(attacked && source.getEntity() instanceof Player)
         {
             this.getNavigation().stop();
+            this.setCurious(false);
+            this.setSitting(false);
             this.entityData.set(STUNNED, true);
             this.entityData.set(STUN_ROTATION, this.getStunRotation(source.getEntity()));
             this.goalSelector.getAvailableGoals().forEach(WrappedGoal::stop);
@@ -489,5 +520,60 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob)
     {
         return null;
+    }
+
+    public void setSitting(boolean sitting)
+    {
+        this.entityData.set(SITTING, sitting);
+    }
+
+    public boolean isSitting()
+    {
+        return this.entityData.get(SITTING);
+    }
+
+    public void setCurious(boolean curious)
+    {
+        this.entityData.set(CURIOUS, curious);
+        this.curiousTime = curious ? 100 : 0;
+    }
+
+    public void resetCurious()
+    {
+        this.entityData.set(CURIOUS, false);
+        this.curiousTime = 0;
+    }
+
+    public boolean isCurious()
+    {
+        return this.entityData.get(CURIOUS);
+    }
+
+    @Override
+    protected float getMaxHeadRotationRelativeToBody()
+    {
+        return 90F;
+    }
+
+    @Override
+    protected BodyRotationControl createBodyControl()
+    {
+        return new GoblinRotationControl(this);
+    }
+
+    public float getHeadTilt(float partial)
+    {
+        return Mth.lerp(partial, this.headTiltO, this.headTilt);
+    }
+
+    @Override
+    public double getEyeY()
+    {
+        return !this.isSitting() ? super.getEyeY() : super.getEyeY() - 0.17;
+    }
+
+    public float getArmAngle(float partial)
+    {
+        return Mth.lerp(partial, this.armAngleO, this.armAngle);
     }
 }

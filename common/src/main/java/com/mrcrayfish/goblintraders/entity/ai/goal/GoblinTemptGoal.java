@@ -1,0 +1,40 @@
+package com.mrcrayfish.goblintraders.entity.ai.goal;
+
+import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
+import net.minecraft.world.item.ItemStack;
+
+import java.util.function.Predicate;
+
+public class GoblinTemptGoal extends TemptGoal
+{
+    private final AbstractGoblinEntity goblin;
+
+    public GoblinTemptGoal(AbstractGoblinEntity goblin, double speedModifier, Predicate<ItemStack> predicate, boolean canScare)
+    {
+        super(goblin, speedModifier, predicate, canScare);
+        this.goblin = goblin;
+    }
+
+    @Override
+    public void tick()
+    {
+        super.tick();
+
+        if(this.goblin.getNavigation().isDone())
+        {
+            this.goblin.setCurious(true);
+        }
+        else
+        {
+            this.goblin.setCurious(false);
+        }
+    }
+
+    @Override
+    public void stop()
+    {
+        super.stop();
+        this.goblin.setCurious(false);
+    }
+}

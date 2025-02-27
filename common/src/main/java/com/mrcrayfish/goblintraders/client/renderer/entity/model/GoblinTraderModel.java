@@ -10,6 +10,8 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 /**
  * Author: MrCrayfish
@@ -28,6 +30,8 @@ public class GoblinTraderModel extends HierarchicalModel<AbstractGoblinEntity> i
     public final ModelPart rightEar;
     public final ModelPart leftEar;
     public final ModelPart bag;
+    public float headTilt;
+    public float armAngle;
 
     public GoblinTraderModel(ModelPart part)
     {
@@ -88,8 +92,22 @@ public class GoblinTraderModel extends HierarchicalModel<AbstractGoblinEntity> i
         this.leftArm.zRot = 0.0F;
         this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount / rotateFactor;
         this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount / rotateFactor;
-        this.head.yRot = headYaw * ((float) Math.PI / 180F);
-        this.head.xRot = headPitch * ((float) Math.PI / 180F);
+
+        if(!entity.isSitting())
+        {
+            this.rightArm.xRot -= (float) Math.toRadians(this.armAngle);
+            this.leftArm.xRot -= (float) Math.toRadians(this.armAngle);
+        }
+
+        Quaternionf quaternionYaw = new Quaternionf().rotationY(org.joml.Math.toRadians(headYaw));
+        Quaternionf quaternionPitch = new Quaternionf().rotationX(org.joml.Math.toRadians(headPitch));
+        Quaternionf quaternionRoll = new Quaternionf().rotationZ(org.joml.Math.toRadians(this.headTilt));
+        Quaternionf finalRotation = new Quaternionf(quaternionPitch).mul(quaternionYaw).mul(quaternionRoll);
+        Vector3f euler = new Vector3f();
+        finalRotation.getEulerAnglesZXY(euler);
+        this.head.xRot = euler.x;
+        this.head.yRot = euler.y;
+        this.head.zRot = euler.z;
         this.hood.copyFrom(this.head);
 
         if(this.attackTime > 0.0F)
@@ -111,15 +129,19 @@ public class GoblinTraderModel extends HierarchicalModel<AbstractGoblinEntity> i
             arm.zRot += Mth.sin(this.attackTime * (float) Math.PI) * -0.4F;
         }
 
-        if(entity.isUsingItem())
+        if(entity.isSitting() || entity.isUsingItem())
         {
-            double rotateX = Math.toRadians(-90F + 5F * Math.sin(ageInTicks));
-            this.rightArm.xRot = (float) rotateX;
-            this.leftArm.xRot = (float) rotateX;
             this.rightLeg.xRot = (float) Math.toRadians(-90F);
-            this.rightLeg.yRot = (float) Math.toRadians(25F);
+            this.rightLeg.yRot = (float) Math.toRadians(30F);
             this.leftLeg.xRot = (float) Math.toRadians(-90F);
-            this.leftLeg.yRot = (float) Math.toRadians(-25F);
+            this.leftLeg.yRot = (float) Math.toRadians(-30F);
+
+            if(entity.isUsingItem())
+            {
+                double rotateX = Math.toRadians(-90F + 5F * Math.sin(ageInTicks));
+                this.rightArm.xRot = (float) rotateX;
+                this.leftArm.xRot = (float) rotateX;
+            }
         }
         else
         {
