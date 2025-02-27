@@ -4,7 +4,6 @@ import com.mrcrayfish.framework.api.event.TickEvents;
 import com.mrcrayfish.goblintraders.core.ModEntities;
 import com.mrcrayfish.goblintraders.spawner.GoblinTraderSpawner;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
-import com.mrcrayfish.goblintraders.trades.type.BasicTrade;
 import net.minecraft.world.level.Level;
 
 /**

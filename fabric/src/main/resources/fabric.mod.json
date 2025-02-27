@@ -35,9 +35,6 @@
         "java": ">=21",
         "framework": ">=${framework_version}"
     },
-    "recommends ": {
-        "catalogue": ">=${catalogue_version}"
-    },
     "custom": {
         "catalogue": {
             "banner": "assets/${mod_id}/banner.png",

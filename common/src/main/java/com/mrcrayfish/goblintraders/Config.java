@@ -1,11 +1,6 @@
 package com.mrcrayfish.goblintraders;
 
-import com.mrcrayfish.framework.api.config.BoolProperty;
-import com.mrcrayfish.framework.api.config.ConfigProperty;
-import com.mrcrayfish.framework.api.config.ConfigType;
-import com.mrcrayfish.framework.api.config.DoubleProperty;
-import com.mrcrayfish.framework.api.config.FrameworkConfig;
-import com.mrcrayfish.framework.api.config.IntProperty;
+import com.mrcrayfish.framework.api.config.*;
 import com.mrcrayfish.goblintraders.spawner.IGoblinData;
 import com.mrcrayfish.goblintraders.trades.IRaritySettings;
 import com.mrcrayfish.goblintraders.trades.TradeRarity;

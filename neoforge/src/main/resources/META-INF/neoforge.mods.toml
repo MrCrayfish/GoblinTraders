@@ -36,13 +36,6 @@ versionRange = "[${framework_version},)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.${mod_id}]]
-modId = "catalogue"
-type = "optional"
-versionRange = "[${catalogue_version},)"
-ordering = "NONE"
-side = "CLIENT"
-
 [modproperties.${mod_id}]
 catalogueImageIcon = "assets/${mod_id}/icon.png"
 catalogueBackground = "assets/${mod_id}/background.png"

@@ -6,7 +6,7 @@ import com.mojang.serialization.JsonOps;
 import com.mrcrayfish.goblintraders.Constants;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
 import com.mrcrayfish.goblintraders.trades.TradeRarity;
-import com.mrcrayfish.goblintraders.trades.type.ITradeType;
+import com.mrcrayfish.goblintraders.trades.type.BaseTrade;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
@@ -15,11 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -29,7 +25,7 @@ public abstract class TradeProvider implements DataProvider
 {
     private final PackOutput.PathProvider pathProvider;
     private final CompletableFuture<HolderLookup.Provider> lookupProvider;
-    private final Map<EntityType<?>, EnumMap<TradeRarity, List<ITradeType>>> trades = new HashMap<>();
+    private final Map<EntityType<?>, EnumMap<TradeRarity, List<BaseTrade>>> trades = new HashMap<>();
 
     protected TradeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider)
     {
@@ -37,9 +33,9 @@ public abstract class TradeProvider implements DataProvider
         this.lookupProvider = lookupProvider;
     }
 
-    protected abstract void registerTrades();
+    protected abstract void registerTrades(HolderLookup.Provider provider);
 
-    protected final void addTrade(EntityType<?> type, TradeRarity rarity, ITradeType trade)
+    protected final void addTrade(EntityType<?> type, TradeRarity rarity, BaseTrade trade)
     {
         this.trades.putIfAbsent(type, new EnumMap<>(TradeRarity.class));
         this.trades.get(type).putIfAbsent(rarity, new ArrayList<>());
@@ -51,7 +47,7 @@ public abstract class TradeProvider implements DataProvider
     {
         return this.lookupProvider.thenCompose((provider) -> {
             this.trades.clear();
-            this.registerTrades();
+            this.registerTrades(provider);
             return CompletableFuture.allOf(this.trades.entrySet().stream().map(e1 -> {
                 EntityType<?> type = e1.getKey();
                 return CompletableFuture.allOf(e1.getValue().entrySet().stream().map(e2 -> {
@@ -59,11 +55,11 @@ public abstract class TradeProvider implements DataProvider
                     object.addProperty("replace", false);
                     JsonArray tradeArray = new JsonArray();
                     e2.getValue().forEach(trade -> {
-                        ITradeType.CODEC.encodeStart(JsonOps.INSTANCE, trade).result().ifPresent(tradeArray::add);
+                        BaseTrade.CODEC.encodeStart(JsonOps.INSTANCE, trade).result().ifPresent(tradeArray::add);
                     });
                     object.add("trades", tradeArray);
                     ResourceLocation id = EntityType.getKey(type);
-                    Path path = this.pathProvider.json(new ResourceLocation(id.getNamespace(), id.getPath() + "/" + e2.getKey().getKey()));
+                    Path path = this.pathProvider.json(ResourceLocation.fromNamespaceAndPath(id.getNamespace(), id.getPath() + "/" + e2.getKey().getKey()));
                     return DataProvider.saveStable(output, object, path);
                 }).toArray(CompletableFuture[]::new));
             }).toArray(CompletableFuture[]::new));

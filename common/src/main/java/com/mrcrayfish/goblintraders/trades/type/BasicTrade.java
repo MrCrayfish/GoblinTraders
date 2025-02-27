@@ -3,31 +3,30 @@ package com.mrcrayfish.goblintraders.trades.type;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.mrcrayfish.goblintraders.Constants;
-import com.mrcrayfish.goblintraders.CustomCodecs;
-import com.mrcrayfish.goblintraders.trades.GoblinTrade;
+import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
+import com.mrcrayfish.goblintraders.trades.GoblinMerchantOffer;
+import com.mrcrayfish.goblintraders.trades.TradeCost;
+import com.mrcrayfish.goblintraders.util.Utils;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.trading.ItemCost;
+import net.minecraft.world.item.trading.MerchantOffer;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 /**
  * Author: MrCrayfish
  */
-public class BasicTrade implements ITradeType
+public class BasicTrade implements BaseTrade
 {
-    public static final ResourceLocation ID = new ResourceLocation(Constants.MOD_ID, "basic");
+    public static final ResourceLocation ID = Utils.resource( "basic");
     public static final MapCodec<BasicTrade> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
         ItemStack.CODEC.fieldOf("offer_item")
             .forGetter(trade -> trade.offerStack),
-        ItemCost.CODEC.fieldOf("payment_item")
+        TradeCost.CODEC.fieldOf("payment_item")
             .forGetter(trade -> trade.primaryPayment),
-        ItemCost.CODEC.lenientOptionalFieldOf("secondary_payment_item")
+        TradeCost.CODEC.lenientOptionalFieldOf("secondary_payment_item")
             .forGetter(trade -> trade.secondaryPayment),
         Codec.FLOAT.optionalFieldOf("price_multiplier", 0F)
             .forGetter(trade -> trade.priceMultiplier),
@@ -39,13 +38,13 @@ public class BasicTrade implements ITradeType
     );
 
     private final ItemStack offerStack;
-    private final ItemCost primaryPayment;
-    private final Optional<ItemCost> secondaryPayment;
+    private final TradeCost primaryPayment;
+    private final Optional<TradeCost> secondaryPayment;
     private final float priceMultiplier;
     private final int maxTrades;
     private final int experience;
 
-    public BasicTrade(ItemStack offerStack, ItemCost primaryPayment, Optional<ItemCost> secondaryPayment, float priceMultiplier, int maxTrades, int experience)
+    public BasicTrade(ItemStack offerStack, TradeCost primaryPayment, Optional<TradeCost> secondaryPayment, float priceMultiplier, int maxTrades, int experience)
     {
         this.offerStack = offerStack;
         this.primaryPayment = primaryPayment;
@@ -56,22 +55,24 @@ public class BasicTrade implements ITradeType
     }
 
     @Override
-    public ResourceLocation getTypeId()
+    public ResourceLocation getId()
     {
         return ID;
     }
 
     @Override
-    public GoblinTrade createVillagerTrade()
+    public MerchantOffer createVanillaOffer(AbstractGoblinEntity goblin, RandomSource random)
     {
-        return new GoblinTrade(this.offerStack.copy(), this.primaryPayment, this.secondaryPayment, this.maxTrades, this.experience, this.priceMultiplier);
+        ItemCost primaryCost = this.primaryPayment.createVanillaCost(random);
+        Optional<ItemCost> secondaryCost = this.secondaryPayment.map(cost -> cost.createVanillaCost(random));
+        return new GoblinMerchantOffer(primaryCost, secondaryCost, this.offerStack, this.maxTrades, this.experience, this.priceMultiplier);
     }
 
     public static class Builder
     {
         private ItemStack offerStack;
-        private ItemCost paymentStack;
-        private ItemCost secondaryPaymentStack;
+        private TradeCost paymentStack;
+        private TradeCost secondaryPaymentStack;
         private float priceMultiplier = 0.0F;
         private int maxTrades = 12;
         private int experience = 10;
@@ -94,13 +95,13 @@ public class BasicTrade implements ITradeType
             return this;
         }
 
-        public Builder setPaymentStack(ItemCost paymentStack)
+        public Builder setPaymentStack(TradeCost paymentStack)
         {
             this.paymentStack = paymentStack;
             return this;
         }
 
-        public Builder setSecondaryPaymentStack(ItemCost secondaryPaymentStack)
+        public Builder setSecondaryPaymentStack(TradeCost secondaryPaymentStack)
         {
             this.secondaryPaymentStack = secondaryPaymentStack;
             return this;

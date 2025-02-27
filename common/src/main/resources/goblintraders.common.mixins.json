@@ -6,10 +6,7 @@
     "refmap": "${mod_id}.refmap.json",
     "mixins": [
         "AbstractContainerMenuMixin",
-        "ItemEnchantmentsMixin",
-        "MerchantMenuMixin",
-        "MerchantResultSlotMixin",
-        "RepairContainerMixin"
+        "MerchantResultSlotMixin"
     ],
     "injectors": {
         "defaultRequire": 1

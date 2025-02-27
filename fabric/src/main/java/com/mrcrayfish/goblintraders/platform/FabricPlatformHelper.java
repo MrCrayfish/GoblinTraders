@@ -1,8 +1,6 @@
 package com.mrcrayfish.goblintraders.platform;
 
-import com.mrcrayfish.framework.FrameworkSetup;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
-import com.mrcrayfish.goblintraders.item.GoblinSpawnEggItem;
 import com.mrcrayfish.goblintraders.platform.services.IPlatformHelper;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;

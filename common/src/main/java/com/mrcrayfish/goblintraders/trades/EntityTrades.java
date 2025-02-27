@@ -4,27 +4,20 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
-import com.mrcrayfish.goblintraders.trades.type.ITradeType;
+import com.mrcrayfish.goblintraders.trades.type.BaseTrade;
 import net.minecraft.Util;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.npc.VillagerTrades;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Author: MrCrayfish
  */
-public record EntityTrades(Map<TradeRarity, List<VillagerTrades.ItemListing>> map)
+public record EntityTrades(Map<TradeRarity, List<BaseTrade>> map)
 {
-    public EntityTrades(Map<TradeRarity, List<VillagerTrades.ItemListing>> map)
+    public EntityTrades(Map<TradeRarity, List<BaseTrade>> map)
     {
         this.map = ImmutableMap.copyOf(map);
     }
@@ -36,8 +29,8 @@ public record EntityTrades(Map<TradeRarity, List<VillagerTrades.ItemListing>> ma
 
     public static class Builder
     {
-        private final Map<TradeRarity, List<VillagerTrades.ItemListing>> tradeMap = Util.make(() -> {
-            Map<TradeRarity, List<VillagerTrades.ItemListing>> map = new EnumMap<>(TradeRarity.class);
+        private final Map<TradeRarity, List<BaseTrade>> tradeMap = Util.make(() -> {
+            Map<TradeRarity, List<BaseTrade>> map = new EnumMap<>(TradeRarity.class);
             Arrays.stream(TradeRarity.values()).forEach(rarity -> map.put(rarity, new ArrayList<>()));
             return map;
         });
@@ -46,7 +39,7 @@ public record EntityTrades(Map<TradeRarity, List<VillagerTrades.ItemListing>> ma
 
         public void deserialize(TradeRarity rarity, JsonObject object)
         {
-            List<VillagerTrades.ItemListing> trades = this.tradeMap.get(rarity);
+            List<BaseTrade> trades = this.tradeMap.get(rarity);
             if(GsonHelper.getAsBoolean(object, "replace", false))
             {
                 trades.clear();
@@ -55,9 +48,7 @@ public record EntityTrades(Map<TradeRarity, List<VillagerTrades.ItemListing>> ma
             for(JsonElement tradeElement : tradeArray)
             {
                 JsonObject tradeObject = tradeElement.getAsJsonObject();
-                ITradeType.CODEC.parse(JsonOps.INSTANCE, tradeObject).result().ifPresent(trade -> {
-                    trades.add(trade.createVillagerTrade());
-                });
+                BaseTrade.CODEC.parse(JsonOps.INSTANCE, tradeObject).result().ifPresent(trades::add);
             }
         }
 

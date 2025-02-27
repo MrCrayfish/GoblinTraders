@@ -1,11 +1,6 @@
 package com.mrcrayfish.goblintraders.core;
 
 import com.mrcrayfish.framework.api.registry.RegistryContainer;
-import com.mrcrayfish.framework.api.registry.RegistryEntry;
-import com.mrcrayfish.goblintraders.util.Utils;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.item.alchemy.Potion;
 
 /**
  * Author: MrCrayfish

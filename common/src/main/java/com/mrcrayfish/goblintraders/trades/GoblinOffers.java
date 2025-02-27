@@ -2,7 +2,6 @@ package com.mrcrayfish.goblintraders.trades;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.trading.MerchantOffers;
 
 /**

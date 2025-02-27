@@ -1,23 +1,10 @@
+import org.apache.commons.io.FilenameUtils
+
 plugins {
     id 'multiloader-loader'
-    id 'fabric-loom' version '1.6-SNAPSHOT'
+    id 'fabric-loom'
 }
 
-sourceSets {
-    main {
-        resources {
-            srcDirs += [
-                    'src/generated'
-            ]
-        }
-    }
-}
-
-fabricApi {
-    configureDataGeneration {
-        outputDirectory.set(file("src/generated"))
-    }
-}
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
@@ -26,11 +13,19 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     modImplementation "com.mrcrayfish:framework-fabric:${minecraft_version}-${framework_version}"
     modRuntimeOnly "com.mrcrayfish:catalogue-fabric:${minecraft_version}-${catalogue_version}"
-    implementation "com.google.code.findbugs:jsr305:3.0.2"
+}
+
+sourceSets.main.resources.srcDir 'src/generated/resources'
+
+fabricApi {
+    configureDataGeneration {
+        client = true
+        outputDirectory.set(file("src/generated"))
+    }
 }
 
 loom {
-    def aw = project(":common").file("src/main/resources/${mod_id}.accesswidener")
+    def aw = file("src/main/resources/${mod_id}.accesswidener")
     if (aw.exists()) {
         accessWidenerPath.set(aw)
     }
@@ -38,3 +33,25 @@ loom {
         defaultRefmapName.set("${mod_id}.refmap.json")
     }
 }
+
+tasks.register("signJar") {
+    dependsOn remapJar
+    onlyIf {
+        findProperty('keyStore') || System.getenv("KEYSTORE")
+    }
+    doLast {
+        def unsignedJar = tasks.remapJar.archiveFile.get()
+        def name = FilenameUtils.removeExtension(unsignedJar.getAsFile().getName());
+        def signedJar  = layout.buildDirectory.file("libs/%s-signed.jar".formatted(name)).get();
+        def options = [:]
+        options['jar'] = unsignedJar.getAsFile().getAbsolutePath()
+        options['signedJar'] = signedJar.getAsFile().getAbsolutePath()
+        options['alias'] = findProperty('keyStoreAlias') ?: System.getenv("KEYSTORE_ALIAS")
+        options['keyStore'] = findProperty('keyStore') ?: System.getenv("KEYSTORE")
+        options['storePass'] = findProperty('keyStorePass') ?: System.getenv("KEYSTORE_PASS")
+        options['storetype'] = "jks"
+        this.getAnt().invokeMethod("signjar", options);
+    }
+}
+
+build.dependsOn signJar

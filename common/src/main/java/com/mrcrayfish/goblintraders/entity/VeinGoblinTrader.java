@@ -1,12 +1,13 @@
 package com.mrcrayfish.goblintraders.entity;
 
 import com.mrcrayfish.goblintraders.Config;
-import com.mrcrayfish.goblintraders.Constants;
 import com.mrcrayfish.goblintraders.core.ModEntities;
 import com.mrcrayfish.goblintraders.trades.EntityTrades;
 import com.mrcrayfish.goblintraders.trades.IRaritySettings;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
 import com.mrcrayfish.goblintraders.trades.TradeRarity;
+import com.mrcrayfish.goblintraders.trades.type.BaseTrade;
+import com.mrcrayfish.goblintraders.util.Utils;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.npc.VillagerTrades;
@@ -31,7 +32,7 @@ public class VeinGoblinTrader extends AbstractGoblinEntity
     @Override
     public ResourceLocation getTexture()
     {
-        return new ResourceLocation(Constants.MOD_ID, "textures/entity/vein_goblin_trader.png");
+        return Utils.resource( "textures/entity/vein_goblin_trader.png");
     }
 
     @Override
@@ -41,7 +42,7 @@ public class VeinGoblinTrader extends AbstractGoblinEntity
         EntityTrades entityTrades = TradeManager.instance().getTrades(ModEntities.VEIN_GOBLIN_TRADER.get());
         if(entityTrades != null)
         {
-            Map<TradeRarity, List<VillagerTrades.ItemListing>> tradeMap = entityTrades.map();
+            Map<TradeRarity, List<BaseTrade>> tradeMap = entityTrades.map();
             for(TradeRarity rarity : TradeRarity.values())
             {
                 IRaritySettings settings = Config.ENTITIES.veinGoblinTrader.trades.getSettings(rarity);
@@ -49,7 +50,7 @@ public class VeinGoblinTrader extends AbstractGoblinEntity
                     continue;
                 if(settings.includeChance() < 1.0 && this.getRandom().nextDouble() > settings.includeChance())
                     continue;
-                List<VillagerTrades.ItemListing> trades = tradeMap.get(rarity);
+                List<BaseTrade> trades = tradeMap.get(rarity);
                 int min = Math.min(settings.getMinValue(), settings.getMaxValue());
                 int max = Math.max(settings.getMinValue(), settings.getMaxValue());
                 int count = min + this.getRandom().nextInt(max - min + 1);

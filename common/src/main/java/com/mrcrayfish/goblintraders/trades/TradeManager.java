@@ -8,7 +8,7 @@ import com.mojang.serialization.MapCodec;
 import com.mrcrayfish.goblintraders.Constants;
 import com.mrcrayfish.goblintraders.entity.TraderCreatureEntity;
 import com.mrcrayfish.goblintraders.trades.type.BasicTrade;
-import com.mrcrayfish.goblintraders.trades.type.ITradeType;
+import com.mrcrayfish.goblintraders.trades.type.BaseTrade;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
@@ -16,17 +16,11 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -50,7 +44,7 @@ public class TradeManager implements PreparableReloadListener
     }
 
     private final List<EntityType<?>> traders = new ArrayList<>();
-    private final Map<ResourceLocation, MapCodec<? extends ITradeType>> codecs = new HashMap<>();
+    private final Map<ResourceLocation, MapCodec<? extends BaseTrade>> codecs = new HashMap<>();
     private Map<EntityType<?>, EntityTrades> entityToTrades = new HashMap<>();
 
     public TradeManager()
@@ -73,13 +67,13 @@ public class TradeManager implements PreparableReloadListener
         return this.entityToTrades.get(type);
     }
 
-    public void registerTradeCodec(ResourceLocation id, MapCodec<? extends ITradeType> codec)
+    public void registerTradeCodec(ResourceLocation id, MapCodec<? extends BaseTrade> codec)
     {
         this.codecs.putIfAbsent(id, codec);
     }
 
     @Nullable
-    public MapCodec<? extends ITradeType> getTradeCodec(ResourceLocation id)
+    public MapCodec<? extends BaseTrade> getTradeCodec(ResourceLocation id)
     {
         return this.codecs.get(id);
     }

@@ -2,16 +2,11 @@ package com.mrcrayfish.goblintraders.entity;
 
 import com.mrcrayfish.goblintraders.Config;
 import com.mrcrayfish.goblintraders.core.ModSounds;
-import com.mrcrayfish.goblintraders.entity.ai.goal.AttackRevengeTargetGoal;
-import com.mrcrayfish.goblintraders.entity.ai.goal.EatFavouriteFoodGoal;
-import com.mrcrayfish.goblintraders.entity.ai.goal.FindFavouriteFoodGoal;
-import com.mrcrayfish.goblintraders.entity.ai.goal.FirePanicGoal;
-import com.mrcrayfish.goblintraders.entity.ai.goal.FollowPotentialCustomerGoal;
-import com.mrcrayfish.goblintraders.entity.ai.goal.LookAtCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.TradeWithPlayerGoal;
+import com.mrcrayfish.goblintraders.entity.ai.goal.*;
 import com.mrcrayfish.goblintraders.inventory.GoblinMerchantMenu;
 import com.mrcrayfish.goblintraders.trades.GoblinOffers;
-import net.minecraft.core.component.DataComponents;
+import com.mrcrayfish.goblintraders.trades.type.BaseTrade;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -30,21 +25,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ExperienceOrb;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.InteractGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MoveTowardsRestrictionGoal;
-import net.minecraft.world.entity.ai.goal.TemptGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.WrappedGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Npc;
 import net.minecraft.world.entity.npc.VillagerTrades;
@@ -58,15 +42,9 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.OptionalInt;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -78,11 +56,9 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     public static final EntityDataAccessor<Boolean> STUNNED = SynchedEntityData.defineId(AbstractGoblinEntity.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Float> STUN_ROTATION = SynchedEntityData.defineId(AbstractGoblinEntity.class, EntityDataSerializers.FLOAT);
 
-    @Nullable
-    private Player customer;
-    private Set<UUID> tradedCustomers = new HashSet<>();
-    @Nullable
-    private MerchantOffers offers;
+    private @Nullable Player customer;
+    private @Nullable MerchantOffers offers;
+    private final Set<UUID> tradedCustomers = new HashSet<>();
 
     private int stunDelay;
     private int despawnDelay = 24000;
@@ -140,14 +116,13 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     }
 
     @Override
-    public ItemStack eat(Level level, ItemStack stack)
+    public ItemStack eat(Level level, ItemStack stack, FoodProperties properties)
     {
-        FoodProperties food = stack.get(DataComponents.FOOD);
-        if(stack.getItem() == this.getFavouriteFood().getItem() && food != null)
+        if(stack.getItem() == this.getFavouriteFood().getItem())
         {
-            this.setHealth(this.getHealth() + food.nutrition());
+            this.setHealth(this.getHealth() + properties.nutrition());
         }
-        return super.eat(level, stack);
+        return super.eat(level, stack, properties);
     }
 
     @Override
@@ -231,7 +206,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
 
     protected abstract void populateTradeData();
 
-    protected void addTrades(MerchantOffers offers, @Nullable List<VillagerTrades.ItemListing> trades, int max, boolean shuffle)
+    protected void addTrades(MerchantOffers offers, @Nullable List<BaseTrade> trades, int max, boolean shuffle)
     {
         if(trades == null)
             return;
@@ -240,8 +215,8 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         randomIndexes = randomIndexes.subList(0, Math.min(trades.size(), max));
         for(Integer index : randomIndexes)
         {
-            VillagerTrades.ItemListing trade = trades.get(index);
-            MerchantOffer offer = trade.getOffer(this, this.getRandom());
+            BaseTrade trade = trades.get(index);
+            MerchantOffer offer = trade.createVanillaOffer(this, this.getRandom());
             if(offer != null)
             {
                 offers.add(offer);
