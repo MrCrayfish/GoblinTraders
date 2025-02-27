@@ -139,7 +139,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT.get(), SoundSource.NEUTRAL, 1.0F, 0.9F + this.getRandom().nextFloat() * 0.2F);
             }
         }
-        if(!this.level().isClientSide() && (!Config.ENTITIES.preventDespawnIfNamed.get() || !this.isPersistenceRequired()))
+        if(!this.level().isClientSide() && !Config.ENTITIES.preventDespawnIfNamed.get() && !this.isPersistenceRequired())
         {
             this.handleDespawn();
         }
