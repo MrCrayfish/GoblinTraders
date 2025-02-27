@@ -1,6 +1,7 @@
 package com.mrcrayfish.goblintraders.entity.ai.goal;
 
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.item.ItemStack;
 
@@ -14,6 +15,12 @@ public class GoblinTemptGoal extends TemptGoal
     {
         super(goblin, speedModifier, predicate, canScare);
         this.goblin = goblin;
+    }
+
+    @Override
+    public boolean canContinueToUse()
+    {
+        return super.canContinueToUse() && this.goblin.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty();
     }
 
     @Override

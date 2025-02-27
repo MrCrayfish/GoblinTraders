@@ -86,9 +86,9 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         this.goalSelector.addGoal(2, new TradeWithPlayerGoal(this));
         this.goalSelector.addGoal(3, new LookAtCustomerGoal(this));
         this.goalSelector.addGoal(4, new AttackRevengeTargetGoal(this));
-        this.goalSelector.addGoal(5, new FollowPotentialCustomerGoal(this));
-        this.goalSelector.addGoal(6, new EatFavouriteFoodGoal(this));
-        this.goalSelector.addGoal(7, new FindFavouriteFoodGoal(this));
+        this.goalSelector.addGoal(5, new EatFavouriteFoodGoal(this));
+        this.goalSelector.addGoal(6, new FindFavouriteFoodGoal(this));
+        this.goalSelector.addGoal(7, new FollowPotentialCustomerGoal(this));
         this.goalSelector.addGoal(8, new GoblinTemptGoal(this, 0.4D, Ingredient.of(this.getFavouriteFood()), false));
         this.goalSelector.addGoal(9, new WaterAvoidingRandomStrollGoal(this, 0.4D));
         this.goalSelector.addGoal(10, new SitAndLookGoal(this));
@@ -186,7 +186,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         float targetTilt = this.isCurious() ? 20 : 0;
         this.headTilt = Mth.lerp(0.35F, this.headTilt, targetTilt);
 
-        float targetAngle = this.isCurious() ? 110 : 0;
+        float targetAngle = this.getTargetArmAngle();
         this.armAngle = Mth.lerp(0.35F, this.armAngle, targetAngle);
     }
 
@@ -338,7 +338,12 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         }
         else if(this.getFavouriteFood().is(heldItem.getItem()))
         {
-            this.setItemInHand();
+            if(this.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty())
+            {
+                this.setItemSlot(EquipmentSlot.MAINHAND, heldItem.copyWithCount(1));
+                heldItem.shrink(1);
+            }
+            return InteractionResult.sidedSuccess(this.isClientSide());
         }
         else if(this.isAlive() && !this.hasCustomer() && !this.isBaby() && (this.fireImmune() || !this.isOnFire()) && !this.isStunned()) //TODO check for egg
         {
@@ -574,5 +579,16 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     public float getArmAngle(float partial)
     {
         return Mth.lerp(partial, this.armAngleO, this.armAngle);
+    }
+
+    private float getTargetArmAngle()
+    {
+        if(this.isCurious() && !this.isSitting())
+            return 110;
+
+        if(!this.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty())
+            return 80;
+
+        return 0;
     }
 }

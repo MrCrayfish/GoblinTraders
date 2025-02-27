@@ -9,6 +9,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -84,20 +85,26 @@ public class GoblinTraderModel extends HierarchicalModel<AbstractGoblinEntity> i
         {
             rotateFactor = 1.0F;
         }
-        this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F / rotateFactor;
-        this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F / rotateFactor;
+
+        if(entity.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty())
+        {
+            this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F / rotateFactor;
+            this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F / rotateFactor;
+        }
+        else
+        {
+            this.rightArm.xRot = 0;
+            this.leftArm.xRot = 0;
+        }
+        this.rightArm.xRot -= (float) Math.toRadians(this.armAngle);
+        this.leftArm.xRot -= (float) Math.toRadians(this.armAngle);
+
         this.rightArm.yRot = 0.0F;
         this.rightArm.zRot = 0.0F;
         this.leftArm.yRot = 0.0F;
         this.leftArm.zRot = 0.0F;
         this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount / rotateFactor;
         this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount / rotateFactor;
-
-        if(!entity.isSitting())
-        {
-            this.rightArm.xRot -= (float) Math.toRadians(this.armAngle);
-            this.leftArm.xRot -= (float) Math.toRadians(this.armAngle);
-        }
 
         Quaternionf quaternionYaw = new Quaternionf().rotationY(org.joml.Math.toRadians(headYaw));
         Quaternionf quaternionPitch = new Quaternionf().rotationX(org.joml.Math.toRadians(headPitch));

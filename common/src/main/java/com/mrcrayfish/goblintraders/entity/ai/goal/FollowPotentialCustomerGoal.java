@@ -3,7 +3,6 @@ package com.mrcrayfish.goblintraders.entity.ai.goal;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -17,7 +16,7 @@ public class FollowPotentialCustomerGoal extends Goal
     private Player potentialCustomer;
     private AbstractGoblinEntity entity;
     private int coolDown = 0;
-    private int timeout = 600;
+    private int timeout = 300;
 
     public FollowPotentialCustomerGoal(AbstractGoblinEntity entity)
     {
@@ -67,15 +66,14 @@ public class FollowPotentialCustomerGoal extends Goal
     {
         this.entity.getNavigation().stop();
         this.potentialCustomer = null;
-        this.timeout = 600;
+        this.timeout = 300;
         this.coolDown = 300;
     }
 
-    @Nullable
     private void findCustomer()
     {
-        List<Player> players = this.entity.level().getEntitiesOfClass(Player.class, this.entity.getBoundingBox().inflate(10), playerEntity -> !playerEntity.isCreative() && !playerEntity.isSpectator());
-        if(players.size() > 0)
+        List<Player> players = this.entity.level().getEntitiesOfClass(Player.class, this.entity.getBoundingBox().inflate(10), playerEntity -> !playerEntity.isSpectator());
+        if(!players.isEmpty())
         {
             this.potentialCustomer = players.stream().min(Comparator.comparing(this.entity::distanceTo)).get();
         }
