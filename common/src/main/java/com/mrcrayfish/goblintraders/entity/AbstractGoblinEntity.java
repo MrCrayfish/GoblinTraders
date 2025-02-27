@@ -464,7 +464,6 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         {
             MerchantOffers.CODEC.encodeStart(NbtOps.INSTANCE, offers).result()
                 .ifPresent(tag -> {
-                    System.out.println(tag.getAsString());
                     compound.put("Offers", tag);
                 });
         }
