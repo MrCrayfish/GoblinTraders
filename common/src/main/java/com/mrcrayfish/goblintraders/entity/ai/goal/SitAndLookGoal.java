@@ -40,7 +40,7 @@ public class SitAndLookGoal extends Goal
     @Override
     public boolean canContinueToUse()
     {
-        return !this.goblin.isStunned() && this.timeout > 0;
+        return !this.goblin.isStunned() && !this.goblin.isPanicking() && this.goblin.isSitting() && this.timeout > 0;
     }
 
     @Override
