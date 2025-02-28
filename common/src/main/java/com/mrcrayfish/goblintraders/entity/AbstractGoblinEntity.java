@@ -90,8 +90,8 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         this.goalSelector.addGoal(6, new FindFavouriteFoodGoal(this));
         this.goalSelector.addGoal(7, new GoblinTemptGoal(this, 0.4D, Ingredient.of(this.getFavouriteFood()), false));
         this.goalSelector.addGoal(8, new FollowPotentialCustomerGoal(this));
-        this.goalSelector.addGoal(9, new WaterAvoidingRandomStrollGoal(this, 0.4D));
-        this.goalSelector.addGoal(10, new SitAndLookGoal(this));
+        this.goalSelector.addGoal(9, new SitAndLookGoal(this));
+        this.goalSelector.addGoal(10, new WaterAvoidingRandomStrollGoal(this, 0.4D));
         this.goalSelector.addGoal(11, new MoveTowardsRestrictionGoal(this, 0.4D));
         this.goalSelector.addGoal(12, new InteractGoal(this, Player.class, 4.0F, 1.0F));
         this.goalSelector.addGoal(13, new LookAtPlayerGoal(this, Mob.class, 8.0F));
