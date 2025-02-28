@@ -386,15 +386,18 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     public boolean hurt(DamageSource source, float amount)
     {
         boolean attacked = super.hurt(source, amount);
-        if(attacked && source.getEntity() instanceof Player)
+        if(attacked)
         {
-            this.getNavigation().stop();
             this.setCurious(false);
             this.setSitting(false);
-            this.entityData.set(STUNNED, true);
-            this.entityData.set(STUN_ROTATION, this.getStunRotation(source.getEntity()));
-            this.goalSelector.getRunningGoals().forEach(WrappedGoal::stop); //TODO test
-            this.stunDelay = 20;
+            if(source.getEntity() instanceof Player)
+            {
+                this.getNavigation().stop();
+                this.entityData.set(STUNNED, true);
+                this.entityData.set(STUN_ROTATION, this.getStunRotation(source.getEntity()));
+                this.goalSelector.getAvailableGoals().forEach(WrappedGoal::stop);
+                this.stunDelay = 20;
+            }
         }
         return attacked;
     }
