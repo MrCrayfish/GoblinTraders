@@ -89,7 +89,7 @@ public class SitAndLookGoal extends Goal
     {
         if(this.focusAt == null)
         {
-            if(this.goblin.getRandom().nextFloat() >= 0.02F)
+            if(this.goblin.getRandom().nextFloat() >= 0.05F)
                 return;
             Level level = this.goblin.level();
             this.focusAt = level.getNearestEntity(level.getEntitiesOfClass(LivingEntity.class, this.goblin.getBoundingBox().inflate(LOOK_RANGE, 3.0, LOOK_RANGE), v -> true), this.conditions, this.goblin, this.goblin.getX(), this.goblin.getEyeY(), this.goblin.getZ());
