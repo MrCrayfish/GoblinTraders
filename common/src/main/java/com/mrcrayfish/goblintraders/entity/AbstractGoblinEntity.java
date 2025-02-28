@@ -599,4 +599,10 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         this.setTradingPlayer(null);
         return super.changeDimension(transition);
     }
+
+    @Override
+    protected Vec3 getLeashOffset()
+    {
+        return new Vec3(0, this.getEyeHeight() - 0.25, 0);
+    }
 }
