@@ -13,10 +13,12 @@ import java.util.List;
  */
 public class FollowPotentialCustomerGoal extends Goal
 {
+    private static final int FOLLOW_TIME = 200;
+
     private Player potentialCustomer;
     private AbstractGoblinEntity entity;
     private int coolDown = 0;
-    private int timeout = 300;
+    private int timeout = FOLLOW_TIME;
 
     public FollowPotentialCustomerGoal(AbstractGoblinEntity entity)
     {
@@ -47,7 +49,7 @@ public class FollowPotentialCustomerGoal extends Goal
     @Override
     public void tick()
     {
-        this.entity.getLookControl().setLookAt(this.potentialCustomer, 10.0F, (float) this.entity.getHeadRotSpeed());
+        this.entity.getLookControl().setLookAt(this.potentialCustomer, 20.0F, (float) this.entity.getHeadRotSpeed());
         if(this.entity.distanceTo(this.potentialCustomer) >= 2.0D)
         {
             this.entity.getNavigation().moveTo(this.potentialCustomer, 0.4F);
@@ -66,8 +68,8 @@ public class FollowPotentialCustomerGoal extends Goal
     {
         this.entity.getNavigation().stop();
         this.potentialCustomer = null;
-        this.timeout = 300;
-        this.coolDown = 300;
+        this.timeout = FOLLOW_TIME;
+        this.coolDown = FOLLOW_TIME;
     }
 
     private void findCustomer()
