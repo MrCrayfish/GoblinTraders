@@ -2,6 +2,7 @@ package com.mrcrayfish.goblintraders.spawner;
 
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.NaturalSpawner;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.saveddata.SavedData;
 
@@ -89,7 +91,8 @@ public class GoblinTraderSpawner extends SavedData
         if(pos == null)
             return false;
 
-        if(this.level.getBiome(pos).is(Biomes.THE_VOID))
+        Holder<Biome> biome = this.level.getBiome(pos);
+        if(biome.is(Biomes.THE_VOID) || biome.is(Biomes.DEEP_DARK))
             return false;
 
         if(pos.getY() < this.data.getMinSpawnYLevel() || pos.getY() >= this.data.getMaxSpawnYLevel())
