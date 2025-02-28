@@ -12,8 +12,8 @@ import java.util.EnumSet;
 
 public class SitAndLookGoal extends Goal
 {
-    private static final int MIN_REST_TIME = 150;
-    private static final int MAX_REST_TIME = 400;
+    private static final int MIN_REST_TIME = 60;
+    private static final int MAX_REST_TIME = 200;
     private static final double LOOK_RANGE = 8;
 
     private final AbstractGoblinEntity goblin;
