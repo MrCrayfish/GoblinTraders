@@ -476,7 +476,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
 
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Monster.createMobAttributes().add(Attributes.MAX_HEALTH, 20F).add(Attributes.MOVEMENT_SPEED, 0.7D);
+        return Monster.createMobAttributes().add(Attributes.MAX_HEALTH, 20F).add(Attributes.MOVEMENT_SPEED, 0.6D);
     }
 
     public boolean isStunned()
