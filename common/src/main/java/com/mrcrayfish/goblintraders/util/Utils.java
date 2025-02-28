@@ -5,6 +5,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 
+import javax.annotation.Nullable;
+import java.util.UUID;
+
 /**
  * Author: MrCrayfish
  */
@@ -32,5 +35,19 @@ public class Utils
     public static MutableComponent translation(String category, String path, Object ... params)
     {
         return Component.translatable(String.format("%s.%s.%s", category, Constants.MOD_ID, path), params);
+    }
+
+    @Nullable
+    public static UUID parseUuid(String value)
+    {
+        try
+        {
+            return UUID.fromString(value);
+        }
+        catch (Exception e)
+        {
+            Constants.LOG.error("Failed to parse UUID", e);
+            return null;
+        }
     }
 }

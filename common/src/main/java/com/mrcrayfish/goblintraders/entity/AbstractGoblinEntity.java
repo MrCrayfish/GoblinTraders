@@ -3,10 +3,14 @@ package com.mrcrayfish.goblintraders.entity;
 import com.mrcrayfish.goblintraders.Config;
 import com.mrcrayfish.goblintraders.core.ModSounds;
 import com.mrcrayfish.goblintraders.entity.ai.goal.*;
+import com.mrcrayfish.goblintraders.entity.ai.goal.TradeWithPlayerGoal;
 import com.mrcrayfish.goblintraders.trades.GoblinOffers;
+import com.mrcrayfish.goblintraders.util.Utils;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -24,14 +28,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.InteractGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MoveTowardsRestrictionGoal;
-import net.minecraft.world.entity.ai.goal.TemptGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.WrappedGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Npc;
 import net.minecraft.world.entity.npc.VillagerTrades;
@@ -46,11 +43,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -438,6 +431,19 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         {
             this.restockDelay = compound.getInt("RestockDelay");
         }
+        if(compound.contains("TradedCustomers", Tag.TAG_LIST))
+        {
+            this.tradedCustomers.clear();
+            ListTag list = compound.getList("TradedCustomers", Tag.TAG_STRING);
+            list.forEach(tag -> {
+                if(tag instanceof StringTag s) {
+                    UUID id = Utils.parseUuid(s.getAsString());
+                    if(id != null) {
+                        this.tradedCustomers.add(id);
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -451,6 +457,15 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         }
         compound.putInt("DespawnDelay", this.despawnDelay);
         compound.putInt("RestockDelay", this.restockDelay);
+
+        if(!this.tradedCustomers.isEmpty())
+        {
+            ListTag list = new ListTag();
+            this.tradedCustomers.forEach(id -> {
+                list.add(StringTag.valueOf(id.toString()));
+            });
+            compound.put("TradedCustomers", list);
+        }
     }
 
     private void handleDespawn()
