@@ -7,11 +7,10 @@ import com.mrcrayfish.goblintraders.entity.ai.goal.*;
 import com.mrcrayfish.goblintraders.inventory.GoblinMerchantMenu;
 import com.mrcrayfish.goblintraders.trades.GoblinOffers;
 import com.mrcrayfish.goblintraders.trades.type.BaseTrade;
+import com.mrcrayfish.goblintraders.util.Utils;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -461,6 +460,19 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         {
             this.restockDelay = compound.getInt("RestockDelay");
         }
+        if(compound.contains("TradedCustomers", Tag.TAG_LIST))
+        {
+            this.tradedCustomers.clear();
+            ListTag list = compound.getList("TradedCustomers", Tag.TAG_STRING);
+            list.forEach(tag -> {
+                if(tag instanceof StringTag s) {
+                    UUID id = Utils.parseUuid(s.getAsString());
+                    if(id != null) {
+                        this.tradedCustomers.add(id);
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -477,6 +489,15 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         }
         compound.putInt("DespawnDelay", this.despawnDelay);
         compound.putInt("RestockDelay", this.restockDelay);
+
+        if(!this.tradedCustomers.isEmpty())
+        {
+            ListTag list = new ListTag();
+            this.tradedCustomers.forEach(id -> {
+                list.add(StringTag.valueOf(id.toString()));
+            });
+            compound.put("TradedCustomers", list);
+        }
     }
 
     private void handleDespawn()
