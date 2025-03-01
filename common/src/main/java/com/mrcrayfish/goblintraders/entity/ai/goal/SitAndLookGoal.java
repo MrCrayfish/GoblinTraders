@@ -34,7 +34,7 @@ public class SitAndLookGoal extends Goal
         if(this.goblin.isSitting())
             return false;
 
-        return this.goblin.getRandom().nextInt(120) == 0;
+        return this.goblin.getRandom().nextInt(200) == 0;
     }
 
     @Override
