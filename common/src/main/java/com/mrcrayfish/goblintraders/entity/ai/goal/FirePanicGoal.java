@@ -3,13 +3,14 @@ package com.mrcrayfish.goblintraders.entity.ai.goal;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
 import java.util.EnumSet;
 
 /**
@@ -17,41 +18,42 @@ import java.util.EnumSet;
  */
 public class FirePanicGoal extends Goal
 {
+    private static final int HORIZONTAL_SEARCH_RANGE = 5;
+    private static final int VERTICAL_SEARCH_RANGE = 2;
+
     private final AbstractGoblinEntity goblin;
-    private final double speed;
+    private final double speedModifier;
     private double randPosX;
     private double randPosY;
     private double randPosZ;
 
-    public FirePanicGoal(AbstractGoblinEntity goblin, double speedIn)
+    public FirePanicGoal(AbstractGoblinEntity goblin, double speedModifier)
     {
         this.goblin = goblin;
-        this.speed = speedIn;
+        this.speedModifier = speedModifier;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
     public boolean canUse()
     {
-        if(this.goblin.isOnFire() && !this.goblin.isStunned())
-        {
-            BlockPos blockpos = this.getClosestWaterPos(this.goblin.level(), this.goblin, 5, 4);
-            if(blockpos != null)
-            {
-                this.randPosX = (double) blockpos.getX();
-                this.randPosY = (double) blockpos.getY();
-                this.randPosZ = (double) blockpos.getZ();
-                return true;
-            }
+        if(!this.goblin.isOnFire() || this.goblin.isStunned())
+            return false;
+
+        BlockPos blockpos = this.findClosestWaterPos();
+        if(blockpos == null)
             return this.findRandomPosition();
-        }
-        return false;
+
+        this.randPosX = blockpos.getX();
+        this.randPosY = blockpos.getY();
+        this.randPosZ = blockpos.getZ();
+        return true;
     }
 
     @Override
     public void start()
     {
-        this.goblin.getNavigation().moveTo(this.randPosX, this.randPosY, this.randPosZ, this.speed);
+        this.goblin.getNavigation().moveTo(this.randPosX, this.randPosY, this.randPosZ, this.speedModifier);
     }
 
     @Override
@@ -64,47 +66,20 @@ public class FirePanicGoal extends Goal
     {
         Vec3 randomPos = DefaultRandomPos.getPos(this.goblin, 5, 4);
         if(randomPos == null)
-        {
             return false;
-        }
-        else
-        {
-            this.randPosX = randomPos.x;
-            this.randPosY = randomPos.y;
-            this.randPosZ = randomPos.z;
-            return true;
-        }
+        this.randPosX = randomPos.x;
+        this.randPosY = randomPos.y;
+        this.randPosZ = randomPos.z;
+        return true;
     }
 
     @Nullable
-    private BlockPos getClosestWaterPos(BlockGetter blockGetter, Entity entityIn, int horizontalRange, int verticalRange)
+    private BlockPos findClosestWaterPos()
     {
-        BlockPos entityPos = entityIn.blockPosition();
-        int entityX = entityPos.getX();
-        int entityY = entityPos.getY();
-        int entityZ = entityPos.getZ();
-        float range = (float) (horizontalRange * horizontalRange * verticalRange * 2);
-        BlockPos randomPos = null;
-        BlockPos.MutableBlockPos currentPos = new BlockPos.MutableBlockPos();
-        for(int x = entityX - horizontalRange; x <= entityX + horizontalRange; ++x)
-        {
-            for(int y = entityY - verticalRange; y <= entityY + verticalRange; ++y)
-            {
-                for(int z = entityZ - horizontalRange; z <= entityZ + horizontalRange; ++z)
-                {
-                    currentPos.set(x, y, z);
-                    if(blockGetter.getFluidState(currentPos).is(FluidTags.WATER))
-                    {
-                        float f1 = (float) ((x - entityX) * (x - entityX) + (y - entityY) * (y - entityY) + (z - entityZ) * (z - entityZ));
-                        if(f1 < range)
-                        {
-                            range = f1;
-                            randomPos = new BlockPos(currentPos);
-                        }
-                    }
-                }
-            }
-        }
-        return randomPos;
+        Level level = this.goblin.level();
+        BlockPos entityPos = this.goblin.blockPosition();
+        return BlockPos.findClosestMatch(entityPos, HORIZONTAL_SEARCH_RANGE, VERTICAL_SEARCH_RANGE, pos -> {
+            return level.getFluidState(pos).is(FluidTags.WATER);
+        }).orElse(null);
     }
 }
