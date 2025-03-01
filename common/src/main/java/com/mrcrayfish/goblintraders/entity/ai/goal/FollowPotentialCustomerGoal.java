@@ -60,7 +60,7 @@ public class FollowPotentialCustomerGoal extends Goal
     @Override
     public boolean canContinueToUse()
     {
-        return this.potentialCustomer != null && this.potentialCustomer.isAlive() && this.entity.getTradingPlayer() == null && !this.entity.isPreviousCustomer(this.potentialCustomer) && this.entity.distanceTo(this.potentialCustomer) <= 10.0D && this.timeout > 0;
+        return this.potentialCustomer != null && this.potentialCustomer.isAlive() && this.goblin.getTradingPlayer() == null && !this.goblin.isPreviousCustomer(this.potentialCustomer) && this.goblin.distanceTo(this.potentialCustomer) <= 10.0D && this.timeout > 0 && !this.goblin.isLeashed();
     }
 
     @Override
