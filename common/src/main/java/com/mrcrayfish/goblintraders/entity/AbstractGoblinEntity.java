@@ -299,8 +299,13 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         ItemStack heldItem = player.getItemInHand(hand);
         if(heldItem.getItem() == Items.NAME_TAG)
         {
-            heldItem.interactLivingEntity(player, this, hand);
-            return InteractionResult.SUCCESS;
+            InteractionResult result = heldItem.interactLivingEntity(player, this, hand);
+            if(result.consumesAction())
+            {
+                // Remove the wandering restriction once named
+                this.clearRestriction();
+            }
+            return result;
         }
         else if(this.getFavouriteFood().is(heldItem.getItem()))
         {
@@ -581,6 +586,14 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     protected Vec3 getLeashOffset()
     {
         return new Vec3(0, this.getEyeHeight() - 0.25, 0);
+    }
+
+    @Override
+    public void setLeashedTo(Entity entity, boolean broadcast)
+    {
+        // When goblin becomes leashed, remove restriction
+        super.setLeashedTo(entity, broadcast);
+        this.clearRestriction();
     }
 
     @Override
