@@ -19,6 +19,12 @@ public class GoblinTemptGoal extends TemptGoal
     }
 
     @Override
+    public boolean canUse()
+    {
+        return super.canUse() && !this.goblin.isLeashed();
+    }
+
+    @Override
     public boolean canContinueToUse()
     {
         return super.canContinueToUse() && this.goblin.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty();
