@@ -24,6 +24,8 @@ import java.util.Map;
  */
 public class VeinGoblinTrader extends AbstractGoblinEntity
 {
+    private static final ResourceLocation TEXTURE = Utils.resource("textures/entity/vein_goblin_trader.png");
+
     public VeinGoblinTrader(Level level)
     {
         super(ModEntities.VEIN_GOBLIN_TRADER.get(), level);
@@ -32,7 +34,7 @@ public class VeinGoblinTrader extends AbstractGoblinEntity
     @Override
     public ResourceLocation getTexture()
     {
-        return Utils.resource( "textures/entity/vein_goblin_trader.png");
+        return TEXTURE;
     }
 
     @Override
