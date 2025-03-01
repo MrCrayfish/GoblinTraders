@@ -15,42 +15,40 @@ public class FollowPotentialCustomerGoal extends Goal
 {
     private static final int FOLLOW_TIME = 200;
 
+    private final AbstractGoblinEntity goblin;
     private Player potentialCustomer;
-    private AbstractGoblinEntity entity;
     private int coolDown = 0;
     private int timeout = FOLLOW_TIME;
 
-    public FollowPotentialCustomerGoal(AbstractGoblinEntity entity)
+    public FollowPotentialCustomerGoal(AbstractGoblinEntity goblin)
     {
-        this.entity = entity;
+        this.goblin = goblin;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     @Override
     public boolean canUse()
     {
-        if(this.entity.getTradingPlayer() != null)
-        {
+        if(this.goblin.getTradingPlayer() != null)
             return false;
-        }
+        if(this.goblin.isStunned())
+            return false;
+        if(this.goblin.isLeashed())
+            return false;
         if(this.coolDown > 0)
         {
             this.coolDown--;
             return false;
         }
-        if(this.entity.isStunned())
-        {
-            return false;
-        }
         this.findCustomer();
-        return this.potentialCustomer != null && this.potentialCustomer.isAlive() && !this.entity.isPreviousCustomer(this.potentialCustomer);
+        return this.potentialCustomer != null && this.potentialCustomer.isAlive() && !this.goblin.isPreviousCustomer(this.potentialCustomer);
     }
 
     @Override
     public void tick()
     {
-        this.entity.getLookControl().setLookAt(this.potentialCustomer, 20.0F, (float) this.entity.getHeadRotSpeed());
-        if(this.entity.distanceTo(this.potentialCustomer) >= 2.0D)
+        this.goblin.getLookControl().setLookAt(this.potentialCustomer, 20.0F, (float) this.goblin.getHeadRotSpeed());
+        if(this.goblin.distanceTo(this.potentialCustomer) >= 2.0D)
         {
             this.goblin.getNavigation().moveTo(this.potentialCustomer, 1.0F);
         }
@@ -66,7 +64,7 @@ public class FollowPotentialCustomerGoal extends Goal
     @Override
     public void stop()
     {
-        this.entity.getNavigation().stop();
+        this.goblin.getNavigation().stop();
         this.potentialCustomer = null;
         this.timeout = FOLLOW_TIME;
         this.coolDown = FOLLOW_TIME;
@@ -74,10 +72,10 @@ public class FollowPotentialCustomerGoal extends Goal
 
     private void findCustomer()
     {
-        List<Player> players = this.entity.level().getEntitiesOfClass(Player.class, this.entity.getBoundingBox().inflate(10), playerEntity -> !playerEntity.isSpectator());
+        List<Player> players = this.goblin.level().getEntitiesOfClass(Player.class, this.goblin.getBoundingBox().inflate(10), playerEntity -> !playerEntity.isSpectator());
         if(!players.isEmpty())
         {
-            this.potentialCustomer = players.stream().min(Comparator.comparing(this.entity::distanceTo)).get();
+            this.potentialCustomer = players.stream().min(Comparator.comparing(this.goblin::distanceTo)).get();
         }
     }
 }
