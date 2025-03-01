@@ -53,7 +53,7 @@ public class FollowPotentialCustomerGoal extends Goal
         this.entity.getLookControl().setLookAt(this.potentialCustomer, 20.0F, (float) this.entity.getHeadRotSpeed());
         if(this.entity.distanceTo(this.potentialCustomer) >= 2.0D)
         {
-            this.entity.getNavigation().moveTo(this.potentialCustomer, 0.4F);
+            this.goblin.getNavigation().moveTo(this.potentialCustomer, 1.0F);
         }
         this.timeout--;
     }
