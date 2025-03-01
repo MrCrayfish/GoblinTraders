@@ -65,7 +65,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     private MerchantOffers offers;
 
     private int stunDelay;
-    private int despawnDelay = 24000;
+    private int despawnDelay = -1;
     private int fallCounter;
     private int restockDelay;
     private float headTilt;
@@ -143,6 +143,11 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         this.headTiltO = this.headTilt;
         this.armAngleO = this.armAngle;
 
+        if(this.despawnDelay > 0)
+        {
+            this.despawnDelay--;
+        }
+
         super.baseTick();
         this.updateSwingTime(); //TODO test
         if(this.stunDelay > 0)
@@ -154,11 +159,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT.get(), SoundSource.NEUTRAL, 1.0F, 0.9F + this.getRandom().nextFloat() * 0.2F);
             }
         }
-        if(!this.level().isClientSide() && !Config.ENTITIES.preventDespawnIfNamed.get() && !this.isPersistenceRequired())
-        {
-            this.handleDespawn();
-        }
-        else if(this.entityData.get(STUNNED))
+        if(this.entityData.get(STUNNED))
         {
             if(this.fallCounter < 10)
             {
@@ -293,12 +294,6 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     }
 
     @Override
-    public boolean removeWhenFarAway(double distanceToClosestPlayer)
-    {
-        return false;
-    }
-
-    @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand)
     {
         ItemStack heldItem = player.getItemInHand(hand);
@@ -401,19 +396,9 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         return entity != null ? entity.getYRot() : 0F;
     }
 
-    public int getStunDelay()
-    {
-        return this.stunDelay;
-    }
-
     public void setDespawnDelay(int despawnDelay)
     {
         this.despawnDelay = despawnDelay;
-    }
-
-    public int getDespawnDelay()
-    {
-        return this.despawnDelay;
     }
 
     @Override
@@ -466,14 +451,6 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
                 list.add(StringTag.valueOf(id.toString()));
             });
             compound.put("TradedCustomers", list);
-        }
-    }
-
-    private void handleDespawn()
-    {
-        if(!this.hasCustomer() && --this.despawnDelay <= 0)
-        {
-            this.remove(RemovalReason.KILLED);
         }
     }
 
@@ -604,5 +581,17 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     protected Vec3 getLeashOffset()
     {
         return new Vec3(0, this.getEyeHeight() - 0.25, 0);
+    }
+
+    @Override
+    public boolean requiresCustomPersistence()
+    {
+        if(Config.ENTITIES.preventDespawnIfNamed.get() && this.hasCustomName())
+            return true;
+        if(this.hasCustomer() || this.despawnDelay != 0)
+            return true;
+        if(this.isLeashed())
+            return true;
+        return super.requiresCustomPersistence();
     }
 }
