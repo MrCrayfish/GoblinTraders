@@ -149,7 +149,7 @@ public final class Config
                 public final Trade epic = new Trade(0, 2, 1.0);
 
                 @ConfigProperty(name = "legendary")
-                public final Trade legendary = new Trade(1, 1, 0.1);
+                public final Trade legendary = new Trade(1, 1, 0.75);
 
                 public IRaritySettings getSettings(TradeRarity rarity)
                 {
