@@ -6,16 +6,8 @@
     "item.goblintraders.goblin_trader_spawn_egg": "Ovo Gerador de Comerciante Goblin",
     "item.goblintraders.vein_goblin_trader_spawn_egg": "Ovo Gerador de Comerciante Goblin de Lava",
     "stat.goblintraders.trade_with_goblin": "Trocado com Goblins",
-    "mob_spawner.type.zombie": "Zumbi",
-    "mob_spawner.type.skeleton": "Esqueleto",
-    "mob_spawner.type.creeper": "Creeper",
-    "item.minecraft.potion.effect.haste": "Poção de Pressa",
-    "item.minecraft.potion.effect.absorption": "Poção de Absorção",
-    "item.minecraft.potion.effect.dolphins_grace": "Poção de Graça Marinha",
-    "item.minecraft.splash_potion.effect.haste": "Poção Arremessável de Pressa",
-    "item.minecraft.splash_potion.effect.absorption": "Poção Arremessável de Absorção",
-    "item.minecraft.splash_potion.effect.dolphins_grace": "Poção Arremessável de Graça Marinha",
-    "item.minecraft.lingering_potion.effect.haste": "Poção Prolongada de Pressa",
-    "item.minecraft.lingering_potion.effect.absorption": "Poção Prolongada de Absorção",
-    "item.minecraft.lingering_potion.effect.dolphins_grace": "Poção Prolongada de Graça Marinha"
+    "custom.goblintraders.tuned": "Goblin Tuned",
+    "custom.goblintraders.lore": "A special item reengineered by the goblin with enhanced attributes",
+    "custom.goblintraders.moon_boots": "Moon Boots",
+    "custom.goblintraders.mystery_map": "Mystery Map"
 }

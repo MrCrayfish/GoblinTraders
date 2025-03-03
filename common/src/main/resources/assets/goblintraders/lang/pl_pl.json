@@ -6,16 +6,8 @@
     "item.goblintraders.goblin_trader_spawn_egg": "Jajko Przyzywające Goblina Handlarza",
     "item.goblintraders.vein_goblin_trader_spawn_egg": "Jajko Przyzywające Goblina Handlarza",
     "stat.goblintraders.trade_with_goblin": "Dokonano Handlu z Goblinami",
-    "mob_spawner.type.zombie": "Zombie",
-    "mob_spawner.type.skeleton": "Szkielet",
-    "mob_spawner.type.creeper": "Creeper",
-    "item.minecraft.potion.effect.haste": "Mikstura Pośpiechu",
-    "item.minecraft.potion.effect.absorption": "Mikstura Absorpcji",
-    "item.minecraft.potion.effect.dolphins_grace": "Mikstura Łaski Delfina",
-    "item.minecraft.splash_potion.effect.haste": "Miotana Mikstura Pośpiechu",
-    "item.minecraft.splash_potion.effect.absorption": "Miotana Mikstura Absorpcji",
-    "item.minecraft.splash_potion.effect.dolphins_grace": "Miotana Mikstura Łaski Delfina",
-    "item.minecraft.lingering_potion.effect.haste": "Trwała Miotana Mikstura Pośpiechu",
-    "item.minecraft.lingering_potion.effect.absorption": "Trwała Miotana Mikstura Absorpcji",
-    "item.minecraft.lingering_potion.effect.dolphins_grace": "Trwała Miotana Mikstura Łaski Delfina"
+    "custom.goblintraders.tuned": "Goblin Tuned",
+    "custom.goblintraders.lore": "A special item reengineered by the goblin with enhanced attributes",
+    "custom.goblintraders.moon_boots": "Moon Boots",
+    "custom.goblintraders.mystery_map": "Mystery Map"
 }

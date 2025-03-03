@@ -6,16 +6,8 @@
     "item.goblintraders.goblin_trader_spawn_egg": "ᵷᵷƎ uʍɐdS ɹǝpɐɹ⟘ uᴉꞁqo⅁",
     "item.goblintraders.vein_goblin_trader_spawn_egg": "ᵷᵷƎ uʍɐdS ɹǝpɐɹ⟘ uᴉꞁqo⅁ uᴉǝɅ",
     "stat.goblintraders.trade_with_goblin": "suᴉꞁqo⅁ ɥʇᴉʍ pǝpɐɹ⟘",
-    "mob_spawner.type.zombie": "ǝᴉqɯoZ",
-    "mob_spawner.type.skeleton": "uoʇǝꞁǝʞS",
-    "mob_spawner.type.creeper": "ɹǝdǝǝɹƆ",
-    "item.minecraft.potion.effect.haste": "ǝʇsɐH ɟo uoᴉʇoԀ",
-    "item.minecraft.potion.effect.absorption": "uoᴉʇdɹosqⱯ ɟo uoᴉʇoԀ",
-    "item.minecraft.potion.effect.dolphins_grace": "ǝɔɐɹ⅁ suᴉɥdꞁoᗡ ɟo uoᴉʇoԀ",
-    "item.minecraft.splash_potion.effect.haste": "ǝʇsɐH ɟo uoᴉʇoԀ ɥsɐꞁdS",
-    "item.minecraft.splash_potion.effect.absorption": "uoᴉʇdɹosqⱯ ɟo uoᴉʇoԀ ɥsɐꞁdS",
-    "item.minecraft.splash_potion.effect.dolphins_grace": "ǝɔɐɹ⅁ suᴉɥdꞁoᗡ ɟo uoᴉʇoԀ ɥsɐꞁdS",
-    "item.minecraft.lingering_potion.effect.haste": "ǝʇsɐH ɟo uoᴉʇoԀ ᵷuᴉɹǝᵷuᴉꞀ",
-    "item.minecraft.lingering_potion.effect.absorption": "uoᴉʇdɹosqⱯ ɟo uoᴉʇoԀ ᵷuᴉɹǝᵷuᴉꞀ",
-    "item.minecraft.lingering_potion.effect.dolphins_grace": "ǝɔɐɹ⅁ suᴉɥdꞁoᗡ ɟo uoᴉʇoԀ ᵷuᴉɹǝᵷuᴉꞀ"
+    "custom.goblintraders.tuned": "Goblin Tuned",
+    "custom.goblintraders.lore": "A special item reengineered by the goblin with enhanced attributes",
+    "custom.goblintraders.moon_boots": "Moon Boots",
+    "custom.goblintraders.mystery_map": "Mystery Map"
 }

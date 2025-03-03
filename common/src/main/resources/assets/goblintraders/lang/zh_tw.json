@@ -4,5 +4,10 @@
     "subtitle.goblintraders.goblin_trader.annoyed_grunt": "惱怒的咕嚕聲",
     "subtitle.goblintraders.goblin_trader.idle_grunt": "空閒的咕嚕聲",
     "item.goblintraders.goblin_trader_spawn_egg": "哥布林商人 生怪蛋",
-    "item.goblintraders.vein_goblin_trader_spawn_egg": "熔岩哥布林商人 生怪蛋"
+    "item.goblintraders.vein_goblin_trader_spawn_egg": "熔岩哥布林商人 生怪蛋",
+    "stat.goblintraders.trade_with_goblin": "Traded with Goblins",
+    "custom.goblintraders.tuned": "Goblin Tuned",
+    "custom.goblintraders.lore": "A special item reengineered by the goblin with enhanced attributes",
+    "custom.goblintraders.moon_boots": "Moon Boots",
+    "custom.goblintraders.mystery_map": "Mystery Map"
 }

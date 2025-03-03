@@ -4,5 +4,10 @@
     "subtitle.goblintraders.goblin_trader.annoyed_grunt": "genervtes Koboldgrunzen",
     "subtitle.goblintraders.goblin_trader.idle_grunt": "Koboldgrunzen",
     "item.goblintraders.goblin_trader_spawn_egg": "Koboldh\u00e4ndler-Spawn-Ei",
-    "item.goblintraders.vein_goblin_trader_spawn_egg": "Venenkoboldh\u00e4ndler-Spawn-Ei"
+    "item.goblintraders.vein_goblin_trader_spawn_egg": "Venenkoboldh\u00e4ndler-Spawn-Ei",
+    "stat.goblintraders.trade_with_goblin": "Traded with Goblins",
+    "custom.goblintraders.tuned": "Goblin Tuned",
+    "custom.goblintraders.lore": "A special item reengineered by the goblin with enhanced attributes",
+    "custom.goblintraders.moon_boots": "Moon Boots",
+    "custom.goblintraders.mystery_map": "Mystery Map"
 }

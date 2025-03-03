@@ -6,15 +6,8 @@
     "item.goblintraders.goblin_trader_spawn_egg": "Goblin Trader Spawn Egg",
     "item.goblintraders.vein_goblin_trader_spawn_egg": "Vein Goblin Trader Spawn Egg",
     "stat.goblintraders.trade_with_goblin": "Traded with Goblins",
-    "custom.goblintraders.goblin_pickaxe": "Goblin Pickaxe",
-    "custom.goblintraders.goblin_shovel": "Goblin Shovel",
-    "custom.goblintraders.goblin_axe": "Goblin Axe",
-    "custom.goblintraders.goblin_hoe": "Goblin Hoe",
-    "custom.goblintraders.goblin_sword": "Goblin Sword",
-    "custom.goblintraders.goblin_bow": "Goblin Bow",
-    "custom.goblintraders.goblin_helmet": "Goblin Helmet",
-    "custom.goblintraders.goblin_chestplate": "Goblin Chestplate",
-    "custom.goblintraders.goblin_leggings": "Goblin Leggings",
-    "custom.goblintraders.goblin_boots": "Goblin Boots",
-    "custom.goblintraders.durable": "Durable"
+    "custom.goblintraders.tuned": "Goblin Tuned",
+    "custom.goblintraders.lore": "A special item reengineered by the goblin with enhanced attributes",
+    "custom.goblintraders.moon_boots": "Moon Boots",
+    "custom.goblintraders.mystery_map": "Mystery Map"
 }
