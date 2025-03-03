@@ -16,5 +16,5 @@ public interface BaseTrade
 
     ResourceLocation getId();
 
-    MerchantOffer createVanillaOffer(AbstractGoblinEntity abstractGoblinEntity, RandomSource random);
+    MerchantOffer createVanillaOffer(AbstractGoblinEntity goblin, RandomSource random);
 }

@@ -1,5 +1,6 @@
 package com.mrcrayfish.goblintraders.trades.type;
 
+import com.google.common.base.Preconditions;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -20,7 +21,7 @@ import java.util.Optional;
  */
 public class BasicTrade implements BaseTrade
 {
-    public static final ResourceLocation ID = Utils.resource( "basic");
+    public static final ResourceLocation ID = Utils.resource("basic");
     public static final MapCodec<BasicTrade> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
         ItemStack.CODEC.fieldOf("offer_item")
             .forGetter(trade -> trade.offerStack),
@@ -86,6 +87,8 @@ public class BasicTrade implements BaseTrade
 
         public BasicTrade build()
         {
+            Preconditions.checkNotNull(this.offerStack, "No offer was set");
+            Preconditions.checkNotNull(this.paymentStack, "No payment was set");
             return new BasicTrade(this.offerStack, this.paymentStack, Optional.ofNullable(this.secondaryPaymentStack), this.priceMultiplier, this.maxTrades, this.experience);
         }
 

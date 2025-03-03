@@ -9,6 +9,7 @@ import com.mrcrayfish.goblintraders.Constants;
 import com.mrcrayfish.goblintraders.entity.TraderCreatureEntity;
 import com.mrcrayfish.goblintraders.trades.type.BasicTrade;
 import com.mrcrayfish.goblintraders.trades.type.BaseTrade;
+import com.mrcrayfish.goblintraders.trades.type.TreasureMapTrade;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
@@ -51,6 +52,7 @@ public class TradeManager implements PreparableReloadListener
     {
         // Register default trades types
         this.registerTradeCodec(BasicTrade.ID, BasicTrade.CODEC);
+        this.registerTradeCodec(TreasureMapTrade.ID, TreasureMapTrade.CODEC);
     }
 
     public void registerTrader(EntityType<? extends TraderCreatureEntity> type)
