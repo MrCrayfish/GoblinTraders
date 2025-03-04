@@ -37,13 +37,13 @@ public class GoblinTraderModel extends HierarchicalModel<AbstractGoblinEntity> i
     public GoblinTraderModel(ModelPart part)
     {
         this.root = part;
-        this.head = part.getChild("head");
-        this.hood = part.getChild("hood");
         this.body = part.getChild("body");
-        this.rightArm = part.getChild("right_arm");
-        this.leftArm = part.getChild("left_arm");
-        this.rightLeg = part.getChild("right_leg");
-        this.leftLeg = part.getChild("left_leg");
+        this.head = part.getChild("head");
+        this.hood = this.head.getChild("hood");
+        this.rightArm = this.body.getChild("right_arm");
+        this.leftArm = this.body.getChild("left_arm");
+        this.rightLeg = this.body.getChild("right_leg");
+        this.leftLeg = this.body.getChild("left_leg");
         this.nose = this.head.getChild("nose");
         this.rightEar = this.head.getChild("right_ear");
         this.leftEar = this.head.getChild("left_ear");
@@ -54,17 +54,20 @@ public class GoblinTraderModel extends HierarchicalModel<AbstractGoblinEntity> i
     {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        PartDefinition head = root.addOrReplaceChild("head", CubeListBuilder.create().addBox(-4.0F, -6.0F, -3.0F, 8.0F, 6.0F, 6.0F), PartPose.offset(0.0F, 16.0F, 0.0F));
-        head.addOrReplaceChild("right_ear", CubeListBuilder.create().texOffs(0, 8).addBox(0.0F, -2.0F, 0.0F, 0.0F, 4.0F, 4.0F), PartPose.offsetAndRotation(-4.0F, -3.0F, 1.0F, 0.0F, -0.785F, 0.0F));
-        head.addOrReplaceChild("left_ear", CubeListBuilder.create().texOffs(8, 8).addBox(0.0F, -2.0F, 0.0F, 0.0F, 4.0F, 4.0F), PartPose.offsetAndRotation(4.0F, -3.0F, 1.0F, 0.0F, 0.785F, 0.0F));
-        head.addOrReplaceChild("nose", CubeListBuilder.create().texOffs(22, 0).addBox(-1.0F, 0.0F, -2.0F, 2.0F, 4.0F, 2.0F), PartPose.offset(0.0F, -3.0F, -3.0F));
-        PartDefinition body = root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(12, 12).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 4.0F, 4.0F), PartPose.offset(0.0F, 16.0F, 0.0F));
-        body.addOrReplaceChild("bag", CubeListBuilder.create().texOffs(0, 20).addBox(-2.5F, -2.0F, 2.0F, 5.0F, 7.0F, 3.0F), PartPose.ZERO);
-        root.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(30, 0).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 5.0F, 2.0F), PartPose.offset(-3.0F, 17.0F, 0.0F));
-        root.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(38, 0).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 5.0F, 2.0F), PartPose.offset(3.0F, 17.0F, 0.0F));
-        root.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(26, 9).addBox(-1.0F, 0.0F, -1.5F, 2.0F, 4.0F, 3.0F), PartPose.offset(-1.0F, 20.0F, 0.0F));
-        root.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(36, 9).addBox(-1.0F, 0.0F, -1.5F, 2.0F, 4.0F, 3.0F), PartPose.offset(1.0F, 20.0F, 0.0F));
-        root.addOrReplaceChild("hood", CubeListBuilder.create().texOffs(0, 32).addBox(-4.0F, -6.0F, -3.0F, 8.0F, 8.0F, 6.0F, new CubeDeformation(0.5F)), PartPose.offset(0.0F, 16.0F, 0.0F));
+
+        PartDefinition body = root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(12, 12).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 16.0F, 0.0F));
+        body.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(30, 0).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 5.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.0F, 1.0F, 0.0F));
+        body.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(38, 0).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 5.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(3.0F, 1.0F, 0.0F));
+        body.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(26, 9).addBox(-1.0F, 0.0F, -1.5F, 2.0F, 4.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(-1.0F, 4.0F, 0.0F));
+        body.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(36, 9).addBox(-1.0F, 0.0F, -1.5F, 2.0F, 4.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(1.0F, 4.0F, 0.0F));
+        body.addOrReplaceChild("bag", CubeListBuilder.create().texOffs(0, 20).addBox(-2.5F, -3.0F, 0.0F, 5.0F, 7.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 1.0F, 2.0F));
+
+        PartDefinition head = root.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -6.0F, -3.0F, 8.0F, 6.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 16.0F, 0.0F));
+        head.addOrReplaceChild("nose", CubeListBuilder.create().texOffs(22, 0).addBox(-1.0F, 0.0F, -2.0F, 2.0F, 4.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -3.0F, -3.0F));
+        head.addOrReplaceChild("right_ear", CubeListBuilder.create().texOffs(0, 8).addBox(0.0F, -2.0F, 0.0F, 0.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-4.0F, -3.0F, 1.0F, 0.0F, -0.7854F, 0.0F));
+        head.addOrReplaceChild("left_ear", CubeListBuilder.create().texOffs(8, 8).addBox(0.0F, -2.0F, 0.0F, 0.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(4.0F, -3.0F, 1.0F, 0.0F, 0.7854F, 0.0F));
+        head.addOrReplaceChild("hood", CubeListBuilder.create().texOffs(0, 32).addBox(-4.0F, -14.0F, -9.0F, 8.0F, 8.0F, 6.0F, new CubeDeformation(0.5F)), PartPose.offset(0.0F, 8.0F, 6.0F));
+
         return LayerDefinition.create(mesh, 46, 46);
     }
 
@@ -115,7 +118,6 @@ public class GoblinTraderModel extends HierarchicalModel<AbstractGoblinEntity> i
         this.head.xRot = euler.x;
         this.head.yRot = euler.y;
         this.head.zRot = euler.z;
-        this.hood.copyFrom(this.head);
 
         if(this.attackTime > 0.0F)
         {
@@ -163,11 +165,13 @@ public class GoblinTraderModel extends HierarchicalModel<AbstractGoblinEntity> i
         switch(arm)
         {
             case LEFT -> {
+                this.body.translateAndRotate(poseStack);
                 this.leftArm.translateAndRotate(poseStack);
                 poseStack.translate(-0.235, -0.15, 0.25);
                 poseStack.scale(0.75F, 0.75F, 0.75F);
             }
             case RIGHT -> {
+                this.body.translateAndRotate(poseStack);
                 this.rightArm.translateAndRotate(poseStack);
                 poseStack.translate(0.235, -0.15, 0.25);
                 poseStack.scale(0.75F, 0.75F, 0.75F);
