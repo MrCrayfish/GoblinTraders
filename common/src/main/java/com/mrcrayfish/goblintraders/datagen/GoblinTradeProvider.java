@@ -302,7 +302,7 @@ public class GoblinTradeProvider extends TradeProvider
          * ************************************************************************************** */
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.EPIC, BasicTrade.Builder.create()
-                .setOfferStack(tuned(durable(moreHealth(new ItemStack(Items.CHAINMAIL_HELMET), EquipmentSlotGroup.HEAD))))
+                .setOfferStack(tuned(durable(moreArmour(new ItemStack(Items.CHAINMAIL_HELMET), EquipmentSlotGroup.HEAD))))
                 .setPaymentStack(new TradeCost(Items.IRON_INGOT, 1, 3))
                 .setSecondaryPaymentStack(new TradeCost(Items.EMERALD, 6, 14))
                 .setMaxTrades(1)
@@ -311,7 +311,7 @@ public class GoblinTradeProvider extends TradeProvider
         );
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.EPIC, BasicTrade.Builder.create()
-                .setOfferStack(tuned(durable(moreHealth(new ItemStack(Items.CHAINMAIL_CHESTPLATE), EquipmentSlotGroup.CHEST))))
+                .setOfferStack(tuned(durable(moreArmour(new ItemStack(Items.CHAINMAIL_CHESTPLATE), EquipmentSlotGroup.CHEST))))
                 .setPaymentStack(new TradeCost(Items.IRON_INGOT, 1, 3))
                 .setSecondaryPaymentStack(new TradeCost(Items.EMERALD, 6, 14))
                 .setMaxTrades(1)
@@ -320,7 +320,7 @@ public class GoblinTradeProvider extends TradeProvider
         );
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.EPIC, BasicTrade.Builder.create()
-                .setOfferStack(tuned(durable(moreHealth(new ItemStack(Items.CHAINMAIL_LEGGINGS), EquipmentSlotGroup.LEGS))))
+                .setOfferStack(tuned(durable(moreArmour(new ItemStack(Items.CHAINMAIL_LEGGINGS), EquipmentSlotGroup.LEGS))))
                 .setPaymentStack(new TradeCost(Items.IRON_INGOT, 1, 3))
                 .setSecondaryPaymentStack(new TradeCost(Items.EMERALD, 6, 14))
                 .setMaxTrades(1)
@@ -329,7 +329,7 @@ public class GoblinTradeProvider extends TradeProvider
         );
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.EPIC, BasicTrade.Builder.create()
-                .setOfferStack(tuned(durable(moreHealth(new ItemStack(Items.CHAINMAIL_BOOTS), EquipmentSlotGroup.FEET))))
+                .setOfferStack(tuned(durable(moreArmour(new ItemStack(Items.CHAINMAIL_BOOTS), EquipmentSlotGroup.FEET))))
                 .setPaymentStack(new TradeCost(Items.IRON_INGOT, 1, 3))
                 .setSecondaryPaymentStack(new TradeCost(Items.EMERALD, 6, 14))
                 .setMaxTrades(1)
@@ -506,7 +506,7 @@ public class GoblinTradeProvider extends TradeProvider
 
         this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create()
             .setOfferStack(new ItemStack(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE))
-            .setPaymentStack(new TradeCost(Items.DIAMOND, 12, 16))
+            .setPaymentStack(new TradeCost(Items.DIAMOND, 3, 9))
             .setMaxTrades(1)
             .setExperience(100)
             .build());
@@ -550,6 +550,42 @@ public class GoblinTradeProvider extends TradeProvider
                 );
             }
         });
+
+        /* ************************************************************************************** *
+         *                                      LEGENDARY                                         *
+         * ************************************************************************************** */
+
+        this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
+                .setOfferStack(tuned(durable(oxygenBoost(moreArmour(new ItemStack(Items.NETHERITE_HELMET), EquipmentSlotGroup.HEAD)))))
+                .setPaymentStack(new TradeCost(Items.NETHER_STAR, 2))
+                .setSecondaryPaymentStack(new TradeCost(Items.DRAGON_HEAD, 1))
+                .setMaxTrades(1)
+                .setExperience(300)
+                .build());
+
+        this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
+                .setOfferStack(tuned(durable(moreArmour(new ItemStack(Items.NETHERITE_CHESTPLATE), EquipmentSlotGroup.CHEST))))
+                .setPaymentStack(new TradeCost(Items.NETHER_STAR, 2))
+                .setSecondaryPaymentStack(new TradeCost(Items.DRAGON_HEAD, 1))
+                .setMaxTrades(1)
+                .setExperience(300)
+                .build());
+
+        this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
+                .setOfferStack(tuned(durable(moreArmour(new ItemStack(Items.NETHERITE_LEGGINGS), EquipmentSlotGroup.LEGS))))
+                .setPaymentStack(new TradeCost(Items.NETHER_STAR, 2))
+                .setSecondaryPaymentStack(new TradeCost(Items.DRAGON_HEAD, 1))
+                .setMaxTrades(1)
+                .setExperience(300)
+                .build());
+
+        this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
+                .setOfferStack(tuned(durable(movementSpeed(moreArmour(bigStep(new ItemStack(Items.NETHERITE_BOOTS)), EquipmentSlotGroup.FEET)))))
+                .setPaymentStack(new TradeCost(Items.NETHER_STAR, 2))
+                .setSecondaryPaymentStack(new TradeCost(Items.DRAGON_HEAD, 1))
+                .setMaxTrades(1)
+                .setExperience(300)
+                .build());
     }
 
     private static ItemStack glint(ItemStack stack)
@@ -560,7 +596,7 @@ public class GoblinTradeProvider extends TradeProvider
 
     private static ItemStack gravity(ItemStack stack)
     {
-        ItemAttributeModifiers modifiers = stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
+        ItemAttributeModifiers modifiers = getModifiers(stack);
         modifiers = modifiers.withModifierAdded(Attributes.GRAVITY, new AttributeModifier(
                 Utils.resource("goblins_gravity"), -Attributes.GRAVITY.value().getDefaultValue() * 0.835, AttributeModifier.Operation.ADD_VALUE
         ), EquipmentSlotGroup.FEET);
@@ -588,10 +624,20 @@ public class GoblinTradeProvider extends TradeProvider
         stack.set(DataComponents.MAX_DAMAGE, stack.getMaxDamage() * 10);
         return stack;
     }
+    
+    private static ItemAttributeModifiers getModifiers(ItemStack stack)
+    {
+        ItemAttributeModifiers modifiers = stack.get(DataComponents.ATTRIBUTE_MODIFIERS);
+        if(modifiers != null && !modifiers.modifiers().isEmpty())
+        {
+            return modifiers;
+        }
+        return stack.getItem().getDefaultAttributeModifiers();
+    }
 
     private static ItemStack moreDamage(ItemStack stack)
     {
-        ItemAttributeModifiers modifiers = stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
+        ItemAttributeModifiers modifiers = getModifiers(stack);
         modifiers = modifiers.withModifierAdded(Attributes.ATTACK_DAMAGE, new AttributeModifier(
                 Utils.resource("goblins_damage"), 3, AttributeModifier.Operation.ADD_VALUE
         ), EquipmentSlotGroup.MAINHAND);
@@ -604,7 +650,7 @@ public class GoblinTradeProvider extends TradeProvider
 
     private static ItemStack breakSpeed(ItemStack stack)
     {
-        ItemAttributeModifiers modifiers = stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
+        ItemAttributeModifiers modifiers = getModifiers(stack);
         modifiers = modifiers.withModifierAdded(Attributes.BLOCK_BREAK_SPEED, new AttributeModifier(
                 Utils.resource("goblins_break_speed"), 1, AttributeModifier.Operation.ADD_VALUE
         ), EquipmentSlotGroup.MAINHAND);
@@ -614,7 +660,7 @@ public class GoblinTradeProvider extends TradeProvider
 
     private static ItemStack increaseReach(ItemStack stack)
     {
-        ItemAttributeModifiers modifiers = stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
+        ItemAttributeModifiers modifiers = getModifiers(stack);
         modifiers = modifiers.withModifierAdded(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(
                 Utils.resource("goblins_block_range"), 2, AttributeModifier.Operation.ADD_VALUE
         ), EquipmentSlotGroup.MAINHAND);
@@ -622,12 +668,45 @@ public class GoblinTradeProvider extends TradeProvider
         return stack;
     }
 
-    private static ItemStack moreHealth(ItemStack stack, EquipmentSlotGroup group)
+    private static ItemStack movementSpeed(ItemStack stack)
     {
-        ItemAttributeModifiers modifiers = stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
-        modifiers = modifiers.withModifierAdded(Attributes.MAX_HEALTH, new AttributeModifier(
-                Utils.resource("goblins_health"), 5, AttributeModifier.Operation.ADD_VALUE
+        ItemAttributeModifiers modifiers = getModifiers(stack);
+        modifiers = modifiers.withModifierAdded(Attributes.MOVEMENT_SPEED, new AttributeModifier(
+                Utils.resource("goblins_movement"), 0.02, AttributeModifier.Operation.ADD_VALUE
+        ), EquipmentSlotGroup.FEET);
+        stack.set(DataComponents.ATTRIBUTE_MODIFIERS, modifiers);
+        return stack;
+    }
+
+    private static ItemStack moreArmour(ItemStack stack, EquipmentSlotGroup group)
+    {
+        ItemAttributeModifiers modifiers = getModifiers(stack);
+        modifiers = modifiers.withModifierAdded(Attributes.ARMOR, new AttributeModifier(
+                Utils.resource("goblins_armour"), 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_BASE
         ), group);
+        stack.set(DataComponents.ATTRIBUTE_MODIFIERS, modifiers);
+        return stack;
+    }
+
+    private static ItemStack oxygenBoost(ItemStack stack)
+    {
+        ItemAttributeModifiers modifiers = getModifiers(stack);
+        modifiers = modifiers.withModifierAdded(Attributes.OXYGEN_BONUS, new AttributeModifier(
+                Utils.resource("goblins_oxygen_boost"), 5, AttributeModifier.Operation.ADD_VALUE
+        ), EquipmentSlotGroup.HEAD);
+        stack.set(DataComponents.ATTRIBUTE_MODIFIERS, modifiers);
+        return stack;
+    }
+
+    private static ItemStack bigStep(ItemStack stack)
+    {
+        ItemAttributeModifiers modifiers = getModifiers(stack);
+        modifiers = modifiers.withModifierAdded(Attributes.STEP_HEIGHT, new AttributeModifier(
+                Utils.resource("goblins_big_step"), 0.5, AttributeModifier.Operation.ADD_VALUE
+        ), EquipmentSlotGroup.FEET);
+        modifiers = modifiers.withModifierAdded(Attributes.SAFE_FALL_DISTANCE, new AttributeModifier(
+                Utils.resource("goblins_fall_distance"), 1, AttributeModifier.Operation.ADD_MULTIPLIED_BASE
+        ), EquipmentSlotGroup.FEET);
         stack.set(DataComponents.ATTRIBUTE_MODIFIERS, modifiers);
         return stack;
     }
