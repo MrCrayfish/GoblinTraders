@@ -36,6 +36,7 @@ public class GoblinTraderSpawner extends SavedData
     private static final int SAFE_POSITION_ATTEMPTS = 50;
     private static final int MIN_SPAWN_DISTANCE = 5;
     private static final int GROUND_SEARCH_DISTANCE = 5;
+    private static final int SAVE_INTERVAL = 200;
 
     private final MinecraftServer server;
     private final ServerLevel level;
@@ -60,6 +61,10 @@ public class GoblinTraderSpawner extends SavedData
             return;
 
         this.runDelay--;
+
+        if(this.runDelay % SAVE_INTERVAL == 0)
+            this.setDirty();
+
         if(this.runDelay > 0)
             return;
 
@@ -71,6 +76,7 @@ public class GoblinTraderSpawner extends SavedData
         if((this.spawnChance / 100.0) < randomChance)
         {
             this.spawnChance = Math.min(this.spawnChance + this.data.getSpawnChance(), 100);
+            this.setDirty();
             return;
         }
 
@@ -78,6 +84,7 @@ public class GoblinTraderSpawner extends SavedData
         {
             this.runDelay = this.data.getSpawnDelay();
             this.spawnChance = this.data.getSpawnChance();
+            this.setDirty();
         }
     }
 
@@ -105,6 +112,7 @@ public class GoblinTraderSpawner extends SavedData
         this.runDelay = this.data.getSpawnDelay();
         goblin.setDespawnDelay(this.data.getDespawnDelay());
         goblin.restrictTo(pos, 16);
+        this.setDirty();
         return true;
     }
 
