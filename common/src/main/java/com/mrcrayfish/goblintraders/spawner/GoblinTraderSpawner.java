@@ -213,7 +213,7 @@ public class GoblinTraderSpawner extends SavedData
             ServerLevel level = server.getLevel(data.levelKey());
             if(level != null)
             {
-                String storageKey = BuiltInRegistries.ENTITY_TYPE.getKey(type).toString().replaceAll(":", "_") + "_spawner";
+                String storageKey = BuiltInRegistries.ENTITY_TYPE.getKey(type).toString().replaceAll("[^a-z]", "_") + "_spawner";
                 return Optional.of(level.getDataStorage().computeIfAbsent(dataFactory(level, type, data), storageKey));
             }
         }
