@@ -65,7 +65,6 @@ def includeModloader(String name) {
 
 rootProject.name = 'GoblinTraders'
 include("common")
-includeModloader("forge")
 includeModloader("fabric")
 includeModloader("neoforge")
 

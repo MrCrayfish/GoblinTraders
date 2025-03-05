@@ -33,15 +33,12 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Npc;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.portal.DimensionTransition;
+import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -88,7 +85,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         this.goalSelector.addGoal(4, new AttackRevengeTargetGoal(this));
         this.goalSelector.addGoal(5, new EatFavouriteFoodGoal(this));
         this.goalSelector.addGoal(6, new FindFavouriteFoodGoal(this));
-        this.goalSelector.addGoal(7, new GoblinTemptGoal(this, 1.0, Ingredient.of(this.getFavouriteFood()), false));
+        this.goalSelector.addGoal(7, new GoblinTemptGoal(this, 1.0, stack -> stack.is(this.getFavouriteFood().getItem()), false));
         this.goalSelector.addGoal(8, new FollowPotentialCustomerGoal(this));
         this.goalSelector.addGoal(9, new SitAndLookGoal(this));
         this.goalSelector.addGoal(10, new MoveTowardsRestrictionGoal(this, 1.0));
@@ -126,7 +123,8 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         return this.fallCounter;
     }
 
-    @Override
+    // TODO find out how to fix
+    /*@Override
     public ItemStack eat(Level level, ItemStack stack, FoodProperties properties)
     {
         if(stack.getItem() == this.getFavouriteFood().getItem())
@@ -134,7 +132,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
             this.setHealth(this.getHealth() + properties.nutrition());
         }
         return super.eat(level, stack, properties);
-    }
+    }*/
 
     @Override
     public void baseTick()
@@ -342,40 +340,23 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
             {
                 this.setItemSlot(EquipmentSlot.MAINHAND, heldItem.copyWithCount(1));
                 heldItem.shrink(1);
+                return InteractionResult.SUCCESS;
             }
-            return InteractionResult.sidedSuccess(this.isClientSide());
         }
         else if(this.isAlive() && !this.hasCustomer() && !this.isBaby() && (this.fireImmune() || !this.isOnFire()) && !this.isStunned()) //TODO check for egg
         {
             if(this.getOffers().isEmpty())
             {
-                return InteractionResult.sidedSuccess(this.isClientSide());
+                return InteractionResult.PASS;
             }
             else if(!this.isClientSide() && (this.getLastHurtByMob() == null || this.getLastHurtByMob() != player))
             {
                 this.setTradingPlayer(player);
                 this.openTradingScreen(player, Objects.requireNonNull(this.getDisplayName()), 1);
             }
-            return InteractionResult.sidedSuccess(this.isClientSide());
+            return InteractionResult.SUCCESS;
         }
         return super.mobInteract(player, hand);
-    }
-
-    @Override
-    protected void triggerItemUseEffects(ItemStack stack, int count)
-    {
-        if(!stack.isEmpty() && this.isUsingItem())
-        {
-            if(stack.getUseAnimation() == UseAnim.DRINK)
-            {
-                this.playSound(this.getDrinkingSound(stack), 0.5F, this.level().getRandom().nextFloat() * 0.1F + 0.9F);
-            }
-            if(stack.getUseAnimation() == UseAnim.EAT)
-            {
-                this.spawnFoodParticles(stack, count);
-                this.playSound(this.getEatingSound(stack), 0.5F + 0.5F * (float) this.getRandom().nextInt(2), (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);
-            }
-        }
     }
 
     /**
@@ -383,20 +364,13 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
      */
     protected void spawnFoodParticles(ItemStack stack, int count)
     {
-        for(int i = 0; i < count; ++i)
+        for(int i = 0; i < count; i++)
         {
             Vec3 frontPosition = Vec3.directionFromRotation(0F, this.yBodyRot).scale(0.25);
             frontPosition = frontPosition.add(0, 0.35, 0);
             frontPosition = frontPosition.add(this.position());
             Vec3 motion = new Vec3(this.getRandom().nextDouble() * 0.2 - 0.1, 0.1, this.getRandom().nextDouble() * 0.2 - 0.1);
-            if(this.level() instanceof ServerLevel serverLevel)
-            {
-                serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), frontPosition.x, frontPosition.y, frontPosition.z, 1, motion.x, motion.y + 0.05D, motion.z, 0.0D);
-            }
-            else
-            {
-                this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), frontPosition.x, frontPosition.y, frontPosition.z, motion.x, motion.y + 0.05D, motion.z);
-            }
+            this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), frontPosition.x, frontPosition.y, frontPosition.z, motion.x, motion.y + 0.05D, motion.z);
         }
     }
 
@@ -406,9 +380,9 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     }
 
     @Override
-    public boolean hurt(DamageSource source, float amount)
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount)
     {
-        boolean attacked = super.hurt(source, amount);
+        boolean attacked = super.hurtServer(level, source, amount);
         if(attacked)
         {
             this.setCurious(false);
@@ -509,7 +483,10 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
 
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Monster.createMobAttributes().add(Attributes.MAX_HEALTH, 20F).add(Attributes.MOVEMENT_SPEED, 0.25);
+        return Monster.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 20)
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
+                .add(Attributes.TEMPT_RANGE, 10);
     }
 
     public boolean isStunned()
@@ -607,11 +584,10 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     }
 
     @Override
-    @Nullable
-    public Entity changeDimension(DimensionTransition transition)
+    public @Nullable Entity teleport(TeleportTransition transition)
     {
         this.setTradingPlayer(null);
-        return super.changeDimension(transition);
+        return super.teleport(transition);
     }
 
     @Override
@@ -638,5 +614,17 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         if(this.isLeashed())
             return true;
         return super.requiresCustomPersistence();
+    }
+
+    @Override
+    public boolean stillValid(Player player)
+    {
+        return this.getTradingPlayer() == player && this.isAlive() && player.canInteractWithEntity(this, 4.0F);
+    }
+
+    @Override
+    public void spawnItemParticles(ItemStack stack, int count)
+    {
+        this.spawnFoodParticles(stack, count);
     }
 }

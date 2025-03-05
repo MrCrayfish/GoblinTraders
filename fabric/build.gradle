@@ -5,21 +5,19 @@ plugins {
     id 'fabric-loom'
 }
 
-
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     modImplementation "com.mrcrayfish:framework-fabric:${minecraft_version}-${framework_version}"
-    modRuntimeOnly "com.mrcrayfish:catalogue-fabric:${minecraft_version}-${catalogue_version}"
+    //modRuntimeOnly "com.mrcrayfish:catalogue-fabric:${minecraft_version}-${catalogue_version}"
 }
 
 sourceSets.main.resources.srcDir 'src/generated/resources'
 
 fabricApi {
     configureDataGeneration {
-        client = true
         outputDirectory.set(file("src/generated"))
     }
 }
@@ -31,6 +29,20 @@ loom {
     }
     mixin {
         defaultRefmapName.set("${mod_id}.refmap.json")
+    }
+    runs {
+        client {
+            name("Fabric: Client")
+            ideConfigGenerated(true)
+        }
+        server {
+            name("Fabric: Server")
+            ideConfigGenerated(true)
+        }
+        datagen {
+            name("Fabric: Data")
+            ideConfigGenerated(true)
+        }
     }
 }
 

@@ -66,9 +66,8 @@ dependencies {
 
 ['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements'].each { variant ->
     configurations."$variant".outgoing {
-        capability("$group:${project.name}:$version")
         capability("$group:${base.archivesName.get()}:$version")
-        capability("$group:${mod_id}-${project.name}:$version")
+        capability("$group:$mod_id-${project.name}-${minecraft_version}:$version")
         capability("$group:$mod_id:$version")
     }
     publishing.publications.configureEach {
@@ -105,7 +104,6 @@ processResources {
         "group"                        : project.group,
         "version"                      : project.version,
         "minecraft_version"            : minecraft_version,
-        "forge_version"                : forge_version,
         "fabric_version"               : fabric_version,
         "fabric_loader_version"        : fabric_loader_version,
         "neoforge_version"             : neoforge_version,

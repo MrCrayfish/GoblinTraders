@@ -17,7 +17,7 @@ import net.minecraft.world.level.ItemLike;
 public record TradeCost(Holder<Item> item, BasePrice count, DataComponentPredicate components)
 {
     public static final Codec<TradeCost> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-        ItemStack.ITEM_NON_AIR_CODEC.fieldOf("id").forGetter(TradeCost::item),
+        Item.CODEC.fieldOf("id").forGetter(TradeCost::item),
         BasePrice.CODEC.fieldOf("count").orElse(new ConstantPrice(1)).forGetter(TradeCost::count),
         DataComponentPredicate.CODEC.optionalFieldOf("components", DataComponentPredicate.EMPTY).forGetter(TradeCost::components)
     ).apply(builder, TradeCost::new));

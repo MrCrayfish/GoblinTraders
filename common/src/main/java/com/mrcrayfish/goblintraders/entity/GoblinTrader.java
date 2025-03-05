@@ -9,6 +9,7 @@ import com.mrcrayfish.goblintraders.trades.TradeRarity;
 import com.mrcrayfish.goblintraders.trades.type.BaseTrade;
 import com.mrcrayfish.goblintraders.util.Utils;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -25,9 +26,9 @@ public class GoblinTrader extends AbstractGoblinEntity
 {
     private static final ResourceLocation TEXTURE = Utils.resource("textures/entity/goblin_trader.png");
 
-    public GoblinTrader(Level level)
+    public GoblinTrader(EntityType<GoblinTrader> type, Level level)
     {
-        super(ModEntities.GOBLIN_TRADER.get(), level);
+        super(type, level);
     }
 
     @Override

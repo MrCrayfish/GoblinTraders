@@ -1,10 +1,11 @@
 package com.mrcrayfish.goblintraders.client.renderer.entity.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mrcrayfish.goblintraders.client.renderer.entity.state.GoblinRenderState;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import net.minecraft.client.model.ArmedModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -17,7 +18,7 @@ import org.joml.Vector3f;
 /**
  * Author: MrCrayfish
  */
-public class GoblinTraderModel extends HierarchicalModel<AbstractGoblinEntity> implements ArmedModel, HeadedModel
+public class GoblinTraderModel extends EntityModel<GoblinRenderState> implements ArmedModel, HeadedModel
 {
     public final ModelPart root;
     public final ModelPart head;
@@ -31,11 +32,10 @@ public class GoblinTraderModel extends HierarchicalModel<AbstractGoblinEntity> i
     public final ModelPart rightEar;
     public final ModelPart leftEar;
     public final ModelPart bag;
-    public float headTilt;
-    public float armAngle;
 
     public GoblinTraderModel(ModelPart part)
     {
+        super(part);
         this.root = part;
         this.body = part.getChild("body");
         this.head = part.getChild("head");
@@ -72,46 +72,27 @@ public class GoblinTraderModel extends HierarchicalModel<AbstractGoblinEntity> i
     }
 
     @Override
-    public ModelPart root()
+    public void setupAnim(GoblinRenderState state)
     {
-        return this.root;
-    }
+        super.setupAnim(state);
 
-    @Override
-    public void setupAnim(AbstractGoblinEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
-    {
-        float rotateFactor;
-        rotateFactor = (float) entity.getDeltaMovement().lengthSqr();
-        rotateFactor = rotateFactor / 0.2F;
-        rotateFactor = rotateFactor * rotateFactor * rotateFactor;
-        if(rotateFactor < 1.0F)
+        float walkPos = state.walkAnimationPos;
+        float walkSpeed = state.walkAnimationSpeed;
+
+        if(!state.holdingItem)
         {
-            rotateFactor = 1.0F;
+            this.rightArm.xRot = Mth.cos(walkPos * 0.6662F + (float) Math.PI) * 2.0F * walkSpeed * 0.5F;
+            this.leftArm.xRot = Mth.cos(walkPos * 0.6662F) * 2.0F * walkSpeed * 0.5F;
         }
+        this.rightLeg.xRot = Mth.cos(walkPos * 0.6662F) * 1.4F * walkSpeed;
+        this.leftLeg.xRot = Mth.cos(walkPos * 0.6662F + (float) Math.PI) * 1.4F * walkSpeed;
 
-        if(entity.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty())
-        {
-            this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F / rotateFactor;
-            this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F / rotateFactor;
-        }
-        else
-        {
-            this.rightArm.xRot = 0;
-            this.leftArm.xRot = 0;
-        }
-        this.rightArm.xRot -= (float) Math.toRadians(this.armAngle);
-        this.leftArm.xRot -= (float) Math.toRadians(this.armAngle);
+        this.rightArm.xRot -= (float) Math.toRadians(state.armAngle);
+        this.leftArm.xRot -= (float) Math.toRadians(state.armAngle);
 
-        this.rightArm.yRot = 0.0F;
-        this.rightArm.zRot = 0.0F;
-        this.leftArm.yRot = 0.0F;
-        this.leftArm.zRot = 0.0F;
-        this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount / rotateFactor;
-        this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount / rotateFactor;
-
-        Quaternionf quaternionYaw = new Quaternionf().rotationY(org.joml.Math.toRadians(headYaw));
-        Quaternionf quaternionPitch = new Quaternionf().rotationX(org.joml.Math.toRadians(headPitch));
-        Quaternionf quaternionRoll = new Quaternionf().rotationZ(org.joml.Math.toRadians(this.headTilt));
+        Quaternionf quaternionYaw = new Quaternionf().rotationY(org.joml.Math.toRadians(state.yRot));
+        Quaternionf quaternionPitch = new Quaternionf().rotationX(org.joml.Math.toRadians(state.xRot));
+        Quaternionf quaternionRoll = new Quaternionf().rotationZ(org.joml.Math.toRadians(state.headTilt));
         Quaternionf finalRotation = new Quaternionf(quaternionPitch).mul(quaternionYaw).mul(quaternionRoll);
         Vector3f euler = new Vector3f();
         finalRotation.getEulerAnglesZXY(euler);
@@ -119,35 +100,35 @@ public class GoblinTraderModel extends HierarchicalModel<AbstractGoblinEntity> i
         this.head.yRot = euler.y;
         this.head.zRot = euler.z;
 
-        if(this.attackTime > 0.0F)
+        if(state.attackTime > 0.0F)
         {
             ModelPart arm = this.rightArm;
-            float progress = this.attackTime;
+            float progress = state.attackTime;
             this.body.yRot = Mth.sin(Mth.sqrt(progress) * ((float) Math.PI * 2F)) * 0.2F;
             this.rightArm.yRot += this.body.yRot;
             this.leftArm.yRot += this.body.yRot;
             this.leftArm.xRot += this.body.yRot;
-            progress = 1.0F - this.attackTime;
+            progress = 1.0F - state.attackTime;
             progress = progress * progress;
             progress = progress * progress;
             progress = 1.0F - progress;
             float f2 = Mth.sin(progress * (float) Math.PI);
-            float f3 = Mth.sin(this.attackTime * (float) Math.PI) * -(this.head.xRot - 0.7F) * 0.75F;
+            float f3 = Mth.sin(state.attackTime * (float) Math.PI) * -(this.head.xRot - 0.7F) * 0.75F;
             arm.xRot = (float) ((double) arm.xRot - ((double) f2 * 1.2D + (double) f3));
             arm.yRot += this.body.yRot * 2.0F;
-            arm.zRot += Mth.sin(this.attackTime * (float) Math.PI) * -0.4F;
+            arm.zRot += Mth.sin(state.attackTime * (float) Math.PI) * -0.4F;
         }
 
-        if(entity.isSitting() || entity.isUsingItem())
+        if(state.sitting || state.usingItem)
         {
             this.rightLeg.xRot = (float) Math.toRadians(-90F);
             this.rightLeg.yRot = (float) Math.toRadians(30F);
             this.leftLeg.xRot = (float) Math.toRadians(-90F);
             this.leftLeg.yRot = (float) Math.toRadians(-30F);
 
-            if(entity.isUsingItem())
+            if(state.usingItem)
             {
-                double rotateX = Math.toRadians(-90F + 5F * Math.sin(ageInTicks));
+                double rotateX = Math.toRadians(-90F + 5F * Math.sin(state.ageInTicks));
                 this.rightArm.xRot = (float) rotateX;
                 this.leftArm.xRot = (float) rotateX;
             }

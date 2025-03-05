@@ -1,5 +1,6 @@
 package com.mrcrayfish.goblintraders.client;
 
+import com.mrcrayfish.framework.api.datagen.FrameworkModelProvider;
 import com.mrcrayfish.goblintraders.Constants;
 import com.mrcrayfish.goblintraders.client.renderer.entity.GoblinModelLayers;
 import com.mrcrayfish.goblintraders.client.renderer.entity.GoblinTraderRenderer;
@@ -7,13 +8,20 @@ import com.mrcrayfish.goblintraders.client.renderer.entity.model.GoblinTraderMod
 import com.mrcrayfish.goblintraders.core.ModEntities;
 import com.mrcrayfish.goblintraders.core.ModItems;
 import com.mrcrayfish.goblintraders.core.ModMenuTypes;
+import com.mrcrayfish.goblintraders.datagen.GoblinItemModelProvider;
+import com.mrcrayfish.goblintraders.datagen.GoblinLootTableProvider;
+import com.mrcrayfish.goblintraders.datagen.GoblinTradeProvider;
 import net.minecraft.client.gui.screens.inventory.MerchantScreen;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 
 /**
@@ -22,6 +30,12 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 @EventBusSubscriber(modid = Constants.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public class ClientHandler
 {
+    @SubscribeEvent
+    private static void onClientSetup(FMLClientSetupEvent event)
+    {
+        event.enqueueWork(ClientBootstrap::init);
+    }
+
     @SubscribeEvent
     private static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event)
     {
@@ -50,5 +64,16 @@ public class ClientHandler
     private static void registerMenuScreens(RegisterMenuScreensEvent event)
     {
         event.register(ModMenuTypes.GOBLIN_MERCHANT.get(), MerchantScreen::new);
+    }
+
+    @SubscribeEvent
+    @SuppressWarnings({"unchecked", "UnstableApiUsage"})
+    public static void onGatherData(GatherDataEvent.Client event)
+    {
+        DataGenerator generator = event.getGenerator();
+        PackOutput output = generator.getPackOutput();
+        event.createProvider(GoblinLootTableProvider::new);
+        event.createProvider(GoblinTradeProvider::new);
+        event.addProvider(new FrameworkModelProvider(output, GoblinItemModelProvider::new));
     }
 }

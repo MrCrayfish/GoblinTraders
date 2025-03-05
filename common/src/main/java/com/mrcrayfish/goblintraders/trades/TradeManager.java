@@ -10,6 +10,7 @@ import com.mrcrayfish.goblintraders.entity.TraderCreatureEntity;
 import com.mrcrayfish.goblintraders.trades.type.BasicTrade;
 import com.mrcrayfish.goblintraders.trades.type.BaseTrade;
 import com.mrcrayfish.goblintraders.trades.type.TreasureMapTrade;
+import com.mrcrayfish.goblintraders.util.Utils;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
@@ -30,6 +31,7 @@ import java.util.concurrent.Executor;
  */
 public class TradeManager implements PreparableReloadListener
 {
+    public static final ResourceLocation ID = Utils.resource("trade_manager");
     public static final String RESOURCE_DIR = "goblin_trades";
     private static final int FILE_TYPE_LENGTH_VALUE = ".json".length();
     private static final Gson GSON = new GsonBuilder().create();
@@ -81,7 +83,7 @@ public class TradeManager implements PreparableReloadListener
     }
 
     @Override
-    public CompletableFuture<Void> reload(PreparationBarrier stage, ResourceManager manager, ProfilerFiller preparationsProfiler, ProfilerFiller reloadProfiler, Executor backgroundExecutor, Executor gameExecutor)
+    public CompletableFuture<Void> reload(PreparationBarrier barrier, ResourceManager manager, Executor executor, Executor executor1)
     {
         List<CompletableFuture<Pair<EntityType<?>, EntityTrades>>> list = this.traders.stream().map(type -> {
             return CompletableFuture.supplyAsync(() -> {
@@ -107,16 +109,16 @@ public class TradeManager implements PreparableReloadListener
                 EntityTrades.Builder builder = EntityTrades.builder();
                 Arrays.stream(TradeRarity.values()).forEach(rarity -> this.deserializeTrades(manager, builder, rarity, tradeResources.get(rarity)));
                 return Pair.<EntityType<?>, EntityTrades>of(type, builder.build());
-            }, backgroundExecutor);
+            }, executor);
         }).toList();
 
         return CompletableFuture.allOf(list.toArray(CompletableFuture[]::new))
-            .thenCompose(stage::wait)
+            .thenCompose(barrier::wait)
             .thenAcceptAsync(obj -> {
                 this.entityToTrades = list.stream()
                     .map(CompletableFuture::join)
                     .collect(ImmutableMap.toImmutableMap(Pair::left, Pair::right));
-            }, gameExecutor);
+            }, executor1);
     }
 
     private void deserializeTrades(ResourceManager manager, EntityTrades.Builder builder, TradeRarity rarity, LinkedHashSet<ResourceLocation> resources)

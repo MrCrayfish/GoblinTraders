@@ -1,6 +1,7 @@
 package com.mrcrayfish.goblintraders.entity.ai.goal;
 
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -91,7 +92,7 @@ public class SitAndLookGoal extends Goal
         {
             if(this.goblin.getRandom().nextFloat() >= 0.05F)
                 return;
-            Level level = this.goblin.level();
+            ServerLevel level = getServerLevel(this.goblin);
             this.focusAt = level.getNearestEntity(level.getEntitiesOfClass(LivingEntity.class, this.goblin.getBoundingBox().inflate(LOOK_RANGE, 3.0, LOOK_RANGE), v -> true), this.conditions, this.goblin, this.goblin.getX(), this.goblin.getEyeY(), this.goblin.getZ());
         }
         if(this.focusAt != null && (!this.focusAt.isAlive() || this.focusAt.distanceToSqr(this.goblin) > LOOK_RANGE * LOOK_RANGE))

@@ -21,7 +21,7 @@
             "com.mrcrayfish.goblintraders.client.ClientHandler"
         ],
         "fabric-datagen": [
-            "com.mrcrayfish.goblintraders.GoblinTraders"
+            "com.mrcrayfish.goblintraders.GoblinDataGeneration"
         ]
     },
     "mixins": [

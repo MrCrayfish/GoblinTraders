@@ -13,8 +13,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.datafix.DataFixTypes;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -99,7 +99,7 @@ public class GoblinTraderSpawner extends SavedData
         if(pos.getY() < this.data.getMinSpawnYLevel() || pos.getY() >= this.data.getMaxSpawnYLevel())
             return false;
 
-        AbstractGoblinEntity goblin = this.type.spawn(this.level, pos, MobSpawnType.EVENT);
+        AbstractGoblinEntity goblin = this.type.spawn(this.level, pos, EntitySpawnReason.EVENT);
         if(goblin == null)
             return false;
 
@@ -213,7 +213,7 @@ public class GoblinTraderSpawner extends SavedData
             ServerLevel level = server.getLevel(data.levelKey());
             if(level != null)
             {
-                String storageKey = BuiltInRegistries.ENTITY_TYPE.getKey(type) + "_spawner";
+                String storageKey = BuiltInRegistries.ENTITY_TYPE.getKey(type).toString().replaceAll(":", "_") + "_spawner";
                 return Optional.of(level.getDataStorage().computeIfAbsent(dataFactory(level, type, data), storageKey));
             }
         }

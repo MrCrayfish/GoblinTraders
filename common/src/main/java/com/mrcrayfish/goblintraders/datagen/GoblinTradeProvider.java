@@ -356,12 +356,12 @@ public class GoblinTradeProvider extends TradeProvider
                 .build()
         );
 
-        BuiltInRegistries.POTION.holders().forEach(potion -> {
-            if(!potion.value().getEffects().isEmpty() && potion.value().getEffects().stream().allMatch(instance -> {
+        BuiltInRegistries.POTION.stream().forEach(potion -> {
+            if(!potion.getEffects().isEmpty() && potion.getEffects().stream().allMatch(instance -> {
                 return instance.getEffect().value().getCategory() == MobEffectCategory.BENEFICIAL && instance.getDuration() <= 3600;
             })) {
                 this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.EPIC, BasicTrade.Builder.create()
-                    .setOfferStack(PotionContents.createItemStack(Items.POTION, potion))
+                    .setOfferStack(PotionContents.createItemStack(Items.POTION, BuiltInRegistries.POTION.wrapAsHolder(potion)))
                     .setPaymentStack(new TradeCost(Items.EMERALD, 2))
                     .setSecondaryPaymentStack(new TradeCost(Items.GLASS_BOTTLE, 1))
                     .setMaxTrades(4)
@@ -536,12 +536,12 @@ public class GoblinTradeProvider extends TradeProvider
          *                                      EPIC                                              *
          * ************************************************************************************** */
 
-        BuiltInRegistries.POTION.holders().forEach(potion -> {
-            if(!potion.value().getEffects().isEmpty() && potion.value().getEffects().stream().allMatch(instance -> {
+        BuiltInRegistries.POTION.stream().forEach(potion -> {
+            if(!potion.getEffects().isEmpty() && potion.getEffects().stream().allMatch(instance -> {
                 return instance.getEffect().value().getCategory() == MobEffectCategory.HARMFUL && instance.getDuration() <= 3600;
             })) {
                 this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.EPIC, BasicTrade.Builder.create()
-                        .setOfferStack(PotionContents.createItemStack(Items.POTION, potion))
+                        .setOfferStack(PotionContents.createItemStack(Items.POTION, BuiltInRegistries.POTION.wrapAsHolder(potion)))
                         .setPaymentStack(new TradeCost(Items.EMERALD, 2))
                         .setSecondaryPaymentStack(new TradeCost(Items.GLASS_BOTTLE, 1))
                         .setMaxTrades(4)
@@ -632,7 +632,7 @@ public class GoblinTradeProvider extends TradeProvider
         {
             return modifiers;
         }
-        return stack.getItem().getDefaultAttributeModifiers();
+        return ItemAttributeModifiers.EMPTY;
     }
 
     private static ItemStack moreDamage(ItemStack stack)
