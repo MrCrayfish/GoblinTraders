@@ -389,14 +389,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
             frontPosition = frontPosition.add(0, 0.35, 0);
             frontPosition = frontPosition.add(this.position());
             Vec3 motion = new Vec3(this.getRandom().nextDouble() * 0.2 - 0.1, 0.1, this.getRandom().nextDouble() * 0.2 - 0.1);
-            if(this.level() instanceof ServerLevel serverLevel)
-            {
-                serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), frontPosition.x, frontPosition.y, frontPosition.z, 1, motion.x, motion.y + 0.05D, motion.z, 0.0D);
-            }
-            else
-            {
-                this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), frontPosition.x, frontPosition.y, frontPosition.z, motion.x, motion.y + 0.05D, motion.z);
-            }
+            this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), frontPosition.x, frontPosition.y, frontPosition.z, motion.x, motion.y + 0.05D, motion.z);
         }
     }
 
