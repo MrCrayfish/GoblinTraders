@@ -1,18 +1,17 @@
 package com.mrcrayfish.goblintraders.spawner;
 
+import com.mrcrayfish.goblintraders.Config;
+import com.mrcrayfish.goblintraders.core.ModEntities;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -21,10 +20,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.SavedDataType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -33,22 +33,44 @@ import java.util.function.Supplier;
  */
 public class GoblinTraderSpawner extends SavedData
 {
-    private static final Map<EntityType<?>, SpawnData> SPAWN_DATA = new HashMap<>();
+    private static final SpawnProperties GOBLIN_TRADER_PROPERTIES = new SpawnProperties(ModEntities.GOBLIN_TRADER::get, () -> Config.ENTITIES.goblinTrader);
+    private static final SpawnProperties VEIN_GOBLIN_TRADER_PROPERTIES = new SpawnProperties(ModEntities.VEIN_GOBLIN_TRADER::get, () -> Config.ENTITIES.veinGoblinTrader);
+
+    @SuppressWarnings("DataFlowIssue") // NeoForge and Fabric patch DataFixTypes to allow null
+    private static final SavedDataType<GoblinTraderSpawner> TYPE_GOBLIN_TRADER = new SavedDataType<>("goblintraders_goblin_trader_spawner", (context) -> {
+        return createSpawner(context.levelOrThrow(), GOBLIN_TRADER_PROPERTIES);
+    }, context -> {
+        return CompoundTag.CODEC.xmap((tag) -> {
+            return createSpawner(context.levelOrThrow(), GOBLIN_TRADER_PROPERTIES).load(tag);
+        }, spawner -> {
+            return Objects.requireNonNullElseGet(spawner.save(spawner.level.registryAccess()), CompoundTag::new);
+        });
+    }, null);
+
+    @SuppressWarnings("DataFlowIssue") // NeoForge and Fabric patch DataFixTypes to allow null
+    private static final SavedDataType<GoblinTraderSpawner> TYPE_VEIN_GOBLIN_TRADER = new SavedDataType<>("goblintraders_vein_goblin_trader_spawner", (context) -> {
+        return createSpawner(context.levelOrThrow(), VEIN_GOBLIN_TRADER_PROPERTIES);
+    }, context -> {
+        return CompoundTag.CODEC.xmap((tag) -> {
+            return createSpawner(context.levelOrThrow(), VEIN_GOBLIN_TRADER_PROPERTIES).load(tag);
+        }, spawner -> {
+            return Objects.requireNonNullElseGet(spawner.save(spawner.level.registryAccess()), CompoundTag::new);
+        });
+    }, null);
+
     private static final int SAFE_POSITION_ATTEMPTS = 50;
     private static final int MIN_SPAWN_DISTANCE = 5;
     private static final int GROUND_SEARCH_DISTANCE = 5;
     private static final int SAVE_INTERVAL = 200;
 
-    private final MinecraftServer server;
     private final ServerLevel level;
     private final EntityType<? extends AbstractGoblinEntity> type;
     private final IGoblinData data;
     private int runDelay;
     private int spawnChance;
 
-    public GoblinTraderSpawner(ServerLevel level, EntityType<? extends AbstractGoblinEntity> type, IGoblinData data)
+    public <T extends AbstractGoblinEntity> GoblinTraderSpawner(ServerLevel level, EntityType<T> type, IGoblinData data)
     {
-        this.server = level.getServer();
         this.level = level;
         this.type = type;
         this.data = data;
@@ -194,56 +216,43 @@ public class GoblinTraderSpawner extends SavedData
 
     public GoblinTraderSpawner load(CompoundTag tag)
     {
-        if(tag.contains("RunDelay", Tag.TAG_INT))
-        {
-            this.runDelay = tag.getInt("RunDelay");
-        }
-        if(tag.contains("SpawnChance", Tag.TAG_INT))
-        {
-            this.spawnChance = tag.getInt("SpawnChance");
-        }
+        this.runDelay = tag.getInt("RunDelay").orElse(this.data.getSpawnDelay());
+        this.spawnChance = tag.getInt("SpawnChance").orElse(this.data.getSpawnChance());
         return this;
     }
 
-    @Override
-    public CompoundTag save(CompoundTag tag, HolderLookup.Provider provider)
+    public CompoundTag save(HolderLookup.Provider provider)
     {
+        CompoundTag tag = new CompoundTag();
         tag.putInt("RunDelay", this.runDelay);
         tag.putInt("SpawnChance", this.spawnChance);
         return tag;
     }
 
-    public static Optional<GoblinTraderSpawner> get(MinecraftServer server, EntityType<? extends AbstractGoblinEntity> type)
+    public static Optional<GoblinTraderSpawner> getGoblinTraderSpawner(MinecraftServer server)
     {
-        SpawnData data = SPAWN_DATA.get(type);
-        if(data != null)
+        return getTraderSpawner(server, Level.OVERWORLD, TYPE_GOBLIN_TRADER);
+    }
+
+    public static Optional<GoblinTraderSpawner> getVeinGoblinTraderSpawner(MinecraftServer server)
+    {
+        return getTraderSpawner(server, Level.NETHER, TYPE_VEIN_GOBLIN_TRADER);
+    }
+
+    private static Optional<GoblinTraderSpawner> getTraderSpawner(MinecraftServer server, ResourceKey<Level> key, SavedDataType<GoblinTraderSpawner> type)
+    {
+        ServerLevel level = server.getLevel(key);
+        if(level != null)
         {
-            ServerLevel level = server.getLevel(data.levelKey());
-            if(level != null)
-            {
-                String storageKey = BuiltInRegistries.ENTITY_TYPE.getKey(type).toString().replaceAll("[^a-z]", "_") + "_spawner";
-                return Optional.of(level.getDataStorage().computeIfAbsent(dataFactory(level, type, data), storageKey));
-            }
+            return Optional.of(level.getDataStorage().computeIfAbsent(type));
         }
         return Optional.empty();
     }
 
-    private static SavedData.Factory<GoblinTraderSpawner> dataFactory(ServerLevel level, EntityType<? extends AbstractGoblinEntity> type, SpawnData data)
+    private static GoblinTraderSpawner createSpawner(ServerLevel level, SpawnProperties properties)
     {
-        return new SavedData.Factory<>(() -> GoblinTraderSpawner.createSpawner(level, type, data), (tag, provider) -> {
-            return GoblinTraderSpawner.createSpawner(level, type, data).load(tag);
-        }, DataFixTypes.SAVED_DATA_FORCED_CHUNKS);
+        return new GoblinTraderSpawner(level, properties.type.get(), properties.goblinData.get());
     }
 
-    private static GoblinTraderSpawner createSpawner(ServerLevel level, EntityType<? extends AbstractGoblinEntity> type, SpawnData data)
-    {
-        return new GoblinTraderSpawner(level, type, data.goblinData.get());
-    }
-
-    public static void register(EntityType<? extends AbstractGoblinEntity> type, ResourceKey<Level> levelKey, Supplier<IGoblinData> goblinData)
-    {
-        SPAWN_DATA.putIfAbsent(type, new SpawnData(levelKey, goblinData));
-    }
-
-    private record SpawnData(ResourceKey<Level> levelKey, Supplier<IGoblinData> goblinData) {}
+    public record SpawnProperties(Supplier<EntityType<? extends AbstractGoblinEntity>> type, Supplier<IGoblinData> goblinData) {}
 }

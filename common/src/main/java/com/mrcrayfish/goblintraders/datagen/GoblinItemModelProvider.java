@@ -2,7 +2,7 @@ package com.mrcrayfish.goblintraders.datagen;
 
 import com.mrcrayfish.framework.api.datagen.FrameworkGenerator;
 import com.mrcrayfish.goblintraders.core.ModItems;
-import net.minecraft.client.data.models.blockstates.BlockStateGenerator;
+import net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerator;
 import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelInstance;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
@@ -17,7 +17,7 @@ import java.util.Map;
 @SuppressWarnings("UnstableApiUsage")
 public class GoblinItemModelProvider extends FrameworkGenerator
 {
-    public GoblinItemModelProvider(Map<Block, BlockStateGenerator> generators, Map<Item, ClientItem> items, Map<ResourceLocation, ModelInstance> models)
+    public GoblinItemModelProvider(Map<Block, BlockModelDefinitionGenerator> generators, Map<Item, ClientItem> items, Map<ResourceLocation, ModelInstance> models)
     {
         super(generators, items, models);
     }

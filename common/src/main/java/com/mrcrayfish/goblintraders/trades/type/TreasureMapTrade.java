@@ -38,7 +38,7 @@ public class TreasureMapTrade implements BaseTrade
     public static final MapCodec<TreasureMapTrade> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
         STRUCTURE_CODEC.fieldOf("structure").forGetter(trade -> trade.structure),
         BuiltInRegistries.MAP_DECORATION_TYPE.holderByNameCodec().fieldOf("decoration").forGetter(trade -> trade.mapDecoration),
-        ComponentSerialization.FLAT_CODEC.fieldOf("name").forGetter(trade -> trade.name),
+        ComponentSerialization.CODEC.fieldOf("name").forGetter(trade -> trade.name),
         TradeCost.CODEC.fieldOf("payment_item").forGetter(trade -> trade.primaryPayment),
         TradeCost.CODEC.lenientOptionalFieldOf("secondary_payment_item").forGetter(trade -> trade.secondaryPayment),
         Codec.FLOAT.optionalFieldOf("price_multiplier", 0F).forGetter(trade -> trade.priceMultiplier),

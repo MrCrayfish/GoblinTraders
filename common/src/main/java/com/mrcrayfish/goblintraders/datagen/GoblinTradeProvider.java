@@ -8,25 +8,24 @@ import com.mrcrayfish.goblintraders.trades.type.TreasureMapTrade;
 import com.mrcrayfish.goblintraders.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponentPredicate;
+import net.minecraft.core.component.DataComponentExactPredicate;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.ItemLore;
-import net.minecraft.world.item.component.MapDecorations;
-import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
@@ -731,9 +730,9 @@ public class GoblinTradeProvider extends TradeProvider
         }));
     }
 
-    private static DataComponentPredicate createComponentPredicate(Consumer<DataComponentPredicate.Builder> consumer)
+    private static DataComponentExactPredicate createComponentPredicate(Consumer<DataComponentExactPredicate.Builder> consumer)
     {
-        DataComponentPredicate.Builder builder = DataComponentPredicate.builder();
+        DataComponentExactPredicate.Builder builder = DataComponentExactPredicate.builder();
         consumer.accept(builder);
         return builder.build();
     }

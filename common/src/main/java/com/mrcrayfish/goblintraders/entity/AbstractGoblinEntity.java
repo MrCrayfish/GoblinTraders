@@ -413,25 +413,25 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     public void readAdditionalSaveData(CompoundTag compound)
     {
         super.readAdditionalSaveData(compound);
-        if(compound.contains("Offers", 10))
+        if(compound.contains("Offers"))
         {
-            this.offers = new GoblinOffers(compound.getCompound("Offers"));
+            this.offers = new GoblinOffers(compound.getCompoundOrEmpty("Offers"));
         }
-        if(compound.contains("DespawnDelay", Tag.TAG_INT))
+        if(compound.contains("DespawnDelay"))
         {
-            this.despawnDelay = compound.getInt("DespawnDelay");
+            this.despawnDelay = compound.getIntOr("DespawnDelay", 0);
         }
-        if(compound.contains("RestockDelay", Tag.TAG_INT))
+        if(compound.contains("RestockDelay"))
         {
-            this.restockDelay = compound.getInt("RestockDelay");
+            this.restockDelay = compound.getIntOr("RestockDelay", 0);
         }
-        if(compound.contains("TradedCustomers", Tag.TAG_LIST))
+        if(compound.contains("TradedCustomers"))
         {
             this.tradedCustomers.clear();
-            ListTag list = compound.getList("TradedCustomers", Tag.TAG_STRING);
+            ListTag list = compound.getListOrEmpty("TradedCustomers");
             list.forEach(tag -> {
-                if(tag instanceof StringTag s) {
-                    UUID id = Utils.parseUuid(s.getAsString());
+                if(tag instanceof StringTag(String value)) {
+                    UUID id = Utils.parseUuid(value);
                     if(id != null) {
                         this.tradedCustomers.add(id);
                     }
