@@ -25,14 +25,7 @@ public class GoblinItemModelProvider extends FrameworkGenerator
     @Override
     public void generate()
     {
-        this.createSpawnEgg(ModItems.GOBLIN_TRADER_SPAWN_EGG.get(), 0x4DA744, 0x316F5D);
-        this.createSpawnEgg(ModItems.VEIN_GOBLIN_TRADER_SPAWN_EGG.get(), 0xF3982E, 0xF45B1F);
-    }
-
-    private void createSpawnEgg(Item item, int primaryColour, int secondaryColour)
-    {
-        ResourceLocation spawnEggLocation = ModelLocationUtils.decorateItemModelLocation("template_spawn_egg");
-        ItemModel.Unbaked unbaked = ItemModelUtils.tintedModel(spawnEggLocation, ItemModelUtils.constantTint(primaryColour), ItemModelUtils.constantTint(secondaryColour));
-        this.items.put(item, this.createClientItem(unbaked));
+        this.flatItemModel(ModItems.GOBLIN_TRADER_SPAWN_EGG.get());
+        this.flatItemModel(ModItems.VEIN_GOBLIN_TRADER_SPAWN_EGG.get());
     }
 }

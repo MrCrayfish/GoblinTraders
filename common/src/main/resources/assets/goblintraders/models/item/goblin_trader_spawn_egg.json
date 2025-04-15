@@ -1,6 +1,0 @@
-{
-    "parent": "minecraft:item/generated",
-    "textures": {
-        "layer0": "goblintraders:item/goblin_trader_spawn_egg"
-    }
-}
