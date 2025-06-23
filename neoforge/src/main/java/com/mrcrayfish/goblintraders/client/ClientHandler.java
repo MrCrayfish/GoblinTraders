@@ -27,7 +27,7 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 /**
  * Author: MrCrayfish
  */
-@EventBusSubscriber(modid = Constants.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Constants.MOD_ID, value = Dist.CLIENT)
 public class ClientHandler
 {
     @SubscribeEvent

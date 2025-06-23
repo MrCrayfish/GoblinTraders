@@ -8,6 +8,7 @@ import com.mrcrayfish.goblintraders.inventory.GoblinMerchantMenu;
 import com.mrcrayfish.goblintraders.trades.GoblinOffers;
 import com.mrcrayfish.goblintraders.trades.type.BaseTrade;
 import com.mrcrayfish.goblintraders.util.Utils;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.*;
@@ -39,6 +40,8 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.portal.TeleportTransition;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -330,7 +333,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
             if(result.consumesAction())
             {
                 // Remove the wandering restriction once named
-                this.clearRestriction();
+                this.clearHome();
             }
             return result;
         }
@@ -410,59 +413,28 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound)
+    public void readAdditionalSaveData(ValueInput input)
     {
-        super.readAdditionalSaveData(compound);
-        if(compound.contains("Offers"))
-        {
-            this.offers = new GoblinOffers(compound.getCompoundOrEmpty("Offers"));
-        }
-        if(compound.contains("DespawnDelay"))
-        {
-            this.despawnDelay = compound.getIntOr("DespawnDelay", 0);
-        }
-        if(compound.contains("RestockDelay"))
-        {
-            this.restockDelay = compound.getIntOr("RestockDelay", 0);
-        }
-        if(compound.contains("TradedCustomers"))
-        {
+        super.readAdditionalSaveData(input);
+        input.read("Offers", GoblinOffers.CODEC).ifPresent(offers -> this.offers = new GoblinOffers(offers));
+        input.getInt("DespawnDelay").ifPresent(delay -> this.despawnDelay = delay);
+        input.getInt("RestockDelay").ifPresent(delay -> this.restockDelay = delay);
+        input.list("TradedCustomers", UUIDUtil.CODEC).ifPresent(uuids -> {
             this.tradedCustomers.clear();
-            ListTag list = compound.getListOrEmpty("TradedCustomers");
-            list.forEach(tag -> {
-                if(tag instanceof StringTag(String value)) {
-                    UUID id = Utils.parseUuid(value);
-                    if(id != null) {
-                        this.tradedCustomers.add(id);
-                    }
-                }
-            });
-        }
+            uuids.forEach(this.tradedCustomers::add);
+        });
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compound)
+    public void addAdditionalSaveData(ValueOutput output)
     {
-        super.addAdditionalSaveData(compound);
+        super.addAdditionalSaveData(output);
         MerchantOffers offers = this.getOffers();
-        if(!offers.isEmpty())
-        {
-            MerchantOffers.CODEC.encodeStart(NbtOps.INSTANCE, offers).result()
-                .ifPresent(tag -> {
-                    compound.put("Offers", tag);
-                });
-        }
-        compound.putInt("DespawnDelay", this.despawnDelay);
-        compound.putInt("RestockDelay", this.restockDelay);
-
-        if(!this.tradedCustomers.isEmpty())
-        {
-            ListTag list = new ListTag();
-            this.tradedCustomers.forEach(id -> {
-                list.add(StringTag.valueOf(id.toString()));
-            });
-            compound.put("TradedCustomers", list);
-        }
+        output.store("Offers", GoblinOffers.CODEC, offers);
+        output.putInt("DespawnDelay", this.despawnDelay);
+        output.putInt("RestockDelay", this.restockDelay);
+        ValueOutput.TypedOutputList<UUID> uuids = output.list("TradedCustomers", UUIDUtil.CODEC);
+        this.tradedCustomers.forEach(uuids::add);
     }
 
     @Nullable
@@ -591,7 +563,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     }
 
     @Override
-    protected Vec3 getLeashOffset()
+    public Vec3 getLeashOffset()
     {
         return new Vec3(0, this.getEyeHeight() - 0.25, 0);
     }
@@ -601,7 +573,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     {
         // When goblin becomes leashed, remove restriction
         super.setLeashedTo(entity, broadcast);
-        this.clearRestriction();
+        this.clearHome();
     }
 
     @Override

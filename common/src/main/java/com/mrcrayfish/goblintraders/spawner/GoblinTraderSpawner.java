@@ -134,7 +134,7 @@ public class GoblinTraderSpawner extends SavedData
 
         this.runDelay = this.data.getSpawnDelay();
         goblin.setDespawnDelay(this.data.getDespawnDelay());
-        goblin.restrictTo(pos, 16);
+        goblin.setHomeTo(pos, 16);
         this.setDirty();
         return true;
     }
