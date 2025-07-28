@@ -153,7 +153,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         if(this.stunDelay > 0)
         {
             this.stunDelay--;
-            if(this.stunDelay == 0)
+            if(this.stunDelay == 0 && this.isAlive())
             {
                 this.entityData.set(STUNNED, false);
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.ENTITY_GOBLIN_TRADER_ANNOYED_GRUNT.get(), SoundSource.NEUTRAL, 1.0F, 0.9F + this.getRandom().nextFloat() * 0.2F);
