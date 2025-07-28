@@ -388,6 +388,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         boolean attacked = super.hurtServer(level, source, amount);
         if(attacked)
         {
+            this.stopUsingItem();
             this.setCurious(false);
             this.setSitting(false);
             if(source.getEntity() instanceof Player)
