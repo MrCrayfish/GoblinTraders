@@ -40,7 +40,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -576,7 +575,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
 
     @Override
     @Nullable
-    public Entity changeDimension(DimensionTransition transition)
+    public Entity changeDimension(ServerLevel transition)
     {
         this.setTradingPlayer(null);
         return super.changeDimension(transition);
