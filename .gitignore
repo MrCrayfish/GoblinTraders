@@ -22,4 +22,4 @@ build
 eclipse
 run
 /neoforge
-*/src/main/generated
+*/src/generated
