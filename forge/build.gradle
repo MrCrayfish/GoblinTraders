@@ -46,10 +46,10 @@ sourceSets.main.resources.srcDir 'src/generated/resources'
 dependencies {
     // Core deps
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
-    implementation "com.mrcrayfish:framework-forge:${minecraft_version}-${framework_version}"
+    modImplementation("com.mrcrayfish:framework-forge:${minecraft_version}-${framework_version}")
 
     // Runtime only
-    runtimeOnly "com.mrcrayfish:catalogue-forge:${minecraft_version}-1.7.1"
+    modRuntimeOnly("com.mrcrayfish:catalogue-forge:${minecraft_version}-1.7.1")
 }
 
 jar {
