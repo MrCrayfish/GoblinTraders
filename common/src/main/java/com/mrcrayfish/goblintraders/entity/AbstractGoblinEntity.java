@@ -82,17 +82,17 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     protected void registerGoals()
     {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new FirePanicGoal(this, 1.3));
+        this.goalSelector.addGoal(1, new FirePanicGoal(this, 0.5F));
         this.goalSelector.addGoal(2, new TradeWithPlayerGoal(this));
         this.goalSelector.addGoal(3, new LookAtCustomerGoal(this));
         this.goalSelector.addGoal(4, new AttackRevengeTargetGoal(this));
         this.goalSelector.addGoal(5, new EatFavouriteFoodGoal(this));
         this.goalSelector.addGoal(6, new FindFavouriteFoodGoal(this));
-        this.goalSelector.addGoal(7, new GoblinTemptGoal(this, 1.0, Ingredient.of(this.getFavouriteFood()), false));
+        this.goalSelector.addGoal(7, new GoblinTemptGoal(this, 0.4D, Ingredient.of(this.getFavouriteFood()), false));
         this.goalSelector.addGoal(8, new FollowPotentialCustomerGoal(this));
         this.goalSelector.addGoal(9, new SitAndLookGoal(this));
-        this.goalSelector.addGoal(10, new MoveTowardsRestrictionGoal(this, 1.0));
-        this.goalSelector.addGoal(11, new WaterAvoidingRandomStrollGoal(this, 1.0));
+        this.goalSelector.addGoal(10, new WaterAvoidingRandomStrollGoal(this, 0.4D));
+        this.goalSelector.addGoal(11, new MoveTowardsRestrictionGoal(this, 0.4D));
         this.goalSelector.addGoal(12, new InteractGoal(this, Player.class, 4.0F, 1.0F));
         this.goalSelector.addGoal(13, new LookAtPlayerGoal(this, Mob.class, 8.0F));
     }
@@ -477,7 +477,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
 
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Monster.createMobAttributes().add(Attributes.MAX_HEALTH, 20F).add(Attributes.MOVEMENT_SPEED, 0.25);
+        return Monster.createMobAttributes().add(Attributes.MAX_HEALTH, 20F).add(Attributes.MOVEMENT_SPEED, 0.6D);
     }
 
     public boolean isStunned()
