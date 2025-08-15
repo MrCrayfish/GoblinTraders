@@ -3,6 +3,14 @@ plugins {
     id 'fabric-loom'
 }
 
+fabricApi {
+    configureDataGeneration {
+        client = true
+    }
+}
+
+sourceSets.main.resources.srcDir 'src/generated/resources'
+
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings loom.layered {
@@ -39,13 +47,6 @@ loom {
             setConfigName("Fabric Server")
             ideConfigGenerated(true)
             runDir("run")
-        }
-        datagen {
-            setConfigName("Fabric Data")
-            vmArg "-Dfabric-api.datagen"
-            vmArg "-Dfabric-api.datagen.output-dir=${file("src/generated")}"
-            vmArg "-Dfabric-api.datagen.modid=${mod_id}"
-            runDir "build/datagen"
         }
     }
 }
