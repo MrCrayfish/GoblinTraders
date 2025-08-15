@@ -45,7 +45,6 @@ sourceSets.main.resources.srcDir 'src/generated/resources'
 
 dependencies {
     // Core deps
-    compileOnly project(":common")
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
     implementation "com.mrcrayfish:framework-forge:${minecraft_version}-${framework_version}"
 

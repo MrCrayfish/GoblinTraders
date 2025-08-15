@@ -15,7 +15,6 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     modImplementation "com.mrcrayfish:framework-fabric:${minecraft_version}-${framework_version}"
     implementation "com.google.code.findbugs:jsr305:3.0.2"
-    implementation project(":common")
 
     // Runtime only
     modRuntimeOnly "com.mrcrayfish:catalogue-fabric:${minecraft_version}-1.7.1"
