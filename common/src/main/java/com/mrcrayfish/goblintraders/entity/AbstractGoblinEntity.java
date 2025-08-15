@@ -342,7 +342,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
             }
             if(stack.getUseAnimation() == UseAnim.EAT)
             {
-                this.spawnFoodParticles(stack, count);
+                this.spawnFoodParticles(stack.copyWithCount(1), count);
                 this.playSound(this.getEatingSound(stack), 0.5F + 0.5F * (float) this.getRandom().nextInt(2), (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);
             }
         }
