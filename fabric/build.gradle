@@ -12,8 +12,6 @@ fabricApi {
     }
 }
 
-sourceSets.main.resources.srcDir 'src/generated/resources'
-
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings loom.layered {
