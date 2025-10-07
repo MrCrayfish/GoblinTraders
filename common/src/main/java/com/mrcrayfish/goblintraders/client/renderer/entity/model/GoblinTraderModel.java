@@ -9,6 +9,7 @@ import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
@@ -18,7 +19,7 @@ import org.joml.Vector3f;
 /**
  * Author: MrCrayfish
  */
-public class GoblinTraderModel extends EntityModel<GoblinRenderState> implements ArmedModel, HeadedModel
+public class GoblinTraderModel extends EntityModel<GoblinRenderState> implements ArmedModel<GoblinRenderState>, HeadedModel
 {
     public final ModelPart root;
     public final ModelPart head;
@@ -141,7 +142,13 @@ public class GoblinTraderModel extends EntityModel<GoblinRenderState> implements
     }
 
     @Override
-    public void translateToHand(HumanoidArm arm, PoseStack poseStack)
+    public ModelPart getHead()
+    {
+        return this.head;
+    }
+
+    @Override
+    public void translateToHand(GoblinRenderState renderState, HumanoidArm arm, PoseStack poseStack)
     {
         switch(arm)
         {
@@ -158,11 +165,5 @@ public class GoblinTraderModel extends EntityModel<GoblinRenderState> implements
                 poseStack.scale(0.75F, 0.75F, 0.75F);
             }
         }
-    }
-
-    @Override
-    public ModelPart getHead()
-    {
-        return this.head;
     }
 }

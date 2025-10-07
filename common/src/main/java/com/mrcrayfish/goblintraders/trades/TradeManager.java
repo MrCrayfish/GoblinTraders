@@ -12,6 +12,7 @@ import com.mrcrayfish.goblintraders.trades.type.BaseTrade;
 import com.mrcrayfish.goblintraders.trades.type.TreasureMapTrade;
 import com.mrcrayfish.goblintraders.util.Utils;
 import it.unimi.dsi.fastutil.Pair;
+import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -83,12 +84,12 @@ public class TradeManager implements PreparableReloadListener
     }
 
     @Override
-    public CompletableFuture<Void> reload(PreparationBarrier barrier, ResourceManager manager, Executor executor, Executor executor1)
+    public CompletableFuture<Void> reload(SharedState sharedState, Executor executor, PreparationBarrier barrier, Executor executor1)
     {
         List<CompletableFuture<Pair<EntityType<?>, EntityTrades>>> list = this.traders.stream().map(type -> {
             return CompletableFuture.supplyAsync(() -> {
                 String folder = String.format("%s/%s", RESOURCE_DIR, EntityType.getKey(type).getPath());
-                List<ResourceLocation> resources = new ArrayList<>(manager.listResources(folder, (fileName) -> fileName.getPath().endsWith(".json")).keySet());
+                List<ResourceLocation> resources = new ArrayList<>(sharedState.resourceManager().listResources(folder, (fileName) -> fileName.getPath().endsWith(".json")).keySet());
                 resources.sort((r1, r2) -> {
                     if(r1.getNamespace().equals(r2.getNamespace())) return 0;
                     return r2.getNamespace().equals(Constants.MOD_ID) ? 1 : -1;
@@ -107,7 +108,7 @@ public class TradeManager implements PreparableReloadListener
                     });
                 });
                 EntityTrades.Builder builder = EntityTrades.builder();
-                Arrays.stream(TradeRarity.values()).forEach(rarity -> this.deserializeTrades(manager, builder, rarity, tradeResources.get(rarity)));
+                Arrays.stream(TradeRarity.values()).forEach(rarity -> this.deserializeTrades(sharedState.resourceManager(), builder, rarity, tradeResources.get(rarity)));
                 return Pair.<EntityType<?>, EntityTrades>of(type, builder.build());
             }, executor);
         }).toList();

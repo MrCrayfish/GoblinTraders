@@ -6,12 +6,14 @@ import com.mrcrayfish.goblintraders.client.renderer.entity.model.GoblinTraderMod
 import com.mrcrayfish.goblintraders.client.renderer.entity.state.GoblinRenderState;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.client.renderer.entity.state.ArmedEntityRenderState;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.phys.Vec3;
@@ -58,21 +60,21 @@ public class GoblinTraderRenderer extends MobRenderer<AbstractGoblinEntity, Gobl
     }
 
     @Override
-    public void render(GoblinRenderState state, PoseStack stack, MultiBufferSource source, int light)
+    public void submit(GoblinRenderState renderState, PoseStack stack, SubmitNodeCollector collector, CameraRenderState cameraState)
     {
         stack.pushPose();
-        if(state.usingItem || state.sitting)
+        if(renderState.usingItem || renderState.sitting)
         {
             stack.translate(0, -0.17, 0);
         }
-        if(state.stunned && state.alive)
+        if(renderState.stunned && renderState.alive)
         {
-            float progress = Math.min(10F, state.stunCounter) / 10F;
-            stack.mulPose(Axis.YP.rotationDegrees(-state.stunRot));
+            float progress = Math.min(10F, renderState.stunCounter) / 10F;
+            stack.mulPose(Axis.YP.rotationDegrees(-renderState.stunRot));
             stack.mulPose(Axis.XP.rotationDegrees(90F * progress));
-            stack.mulPose(Axis.YP.rotationDegrees(state.stunRot));
+            stack.mulPose(Axis.YP.rotationDegrees(renderState.stunRot));
         }
-        super.render(state, stack, source, light);
+        super.submit(renderState, stack, collector, cameraState);
         stack.popPose();
     }
 }
