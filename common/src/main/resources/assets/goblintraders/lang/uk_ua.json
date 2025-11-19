@@ -1,14 +1,14 @@
 {
     "entity.goblintraders.goblin_trader": "Гоблін-крамар",
     "entity.goblintraders.vein_goblin_trader": "Незерський гоблін-крамар",
-    "subtitle.goblintraders.goblin_trader.annoyed_grunt": "Роздратоване бурчання",
-    "subtitle.goblintraders.goblin_trader.idle_grunt": "Бездіяльне бурчання",
+    "subtitle.goblintraders.goblin_trader.annoyed_grunt": "Гоблін роздратовано бурчить",
+    "subtitle.goblintraders.goblin_trader.idle_grunt": "Гоблін бурчить",
     "item.goblintraders.goblin_trader_spawn_egg": "Яйце виклику гобліна-крамаря",
     "item.goblintraders.vein_goblin_trader_spawn_egg": "Яйце виклику незерського гобліна-крамаря",
     "stat.goblintraders.trade_with_goblin": "Торгів із гоблінами-крамарями",
     "custom.goblintraders.tuned": "Перековано гобліном",
-    "custom.goblintraders.lore": "Удосконалений предмет з кращими характеристиками",
+    "custom.goblintraders.lore": "Удосконалений предмет з кращими характеристиками.",
     "custom.goblintraders.moon_boots": "Місячні чоботи",
     "custom.goblintraders.mystery_map": "Таємнича мапа",
-    "modmenu.descriptionTranslation.goblintraders": "Додає гоблінів, які мають унікальні торги, щоб покращити ваші пригоди!",
+    "modmenu.descriptionTranslation.goblintraders": "Додає гоблінів, які мають унікальні торги, щоб покращити ваші пригоди!"
 }
