@@ -1,11 +1,14 @@
 package com.mrcrayfish.goblintraders.spawner;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mrcrayfish.goblintraders.Config;
 import com.mrcrayfish.goblintraders.core.ModEntities;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
+import com.mrcrayfish.goblintraders.entity.GoblinTrader;
+import com.mrcrayfish.goblintraders.entity.VeinGoblinTrader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
@@ -15,16 +18,15 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -33,54 +35,62 @@ import java.util.function.Supplier;
  */
 public class GoblinTraderSpawner extends SavedData
 {
-    private static final SpawnProperties GOBLIN_TRADER_PROPERTIES = new SpawnProperties(ModEntities.GOBLIN_TRADER::get, () -> Config.ENTITIES.goblinTrader);
-    private static final SpawnProperties VEIN_GOBLIN_TRADER_PROPERTIES = new SpawnProperties(ModEntities.VEIN_GOBLIN_TRADER::get, () -> Config.ENTITIES.veinGoblinTrader);
+    private static final SpawnProperties<GoblinTrader> GOBLIN_TRADER_PROPERTIES = new SpawnProperties<>(ModEntities.GOBLIN_TRADER::get, () -> Config.ENTITIES.goblinTrader);
+    private static final SpawnProperties<VeinGoblinTrader> VEIN_GOBLIN_TRADER_PROPERTIES = new SpawnProperties<>(ModEntities.VEIN_GOBLIN_TRADER::get, () -> Config.ENTITIES.veinGoblinTrader);
+
+    private static final Codec<GoblinTraderSpawner> GOBLIN_TRADER_SPAWNER_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        Codec.INT.fieldOf("RunDelay").forGetter(spawner -> spawner.runDelay),
+        Codec.INT.fieldOf("SpawnChance").forGetter(spawner -> spawner.spawnChance)
+    ).apply(instance, (runDelay, spawnChance) -> {
+        return new GoblinTraderSpawner(GOBLIN_TRADER_PROPERTIES, runDelay, spawnChance);
+    }));
+
+    private static final Codec<GoblinTraderSpawner> VEIN_GOBLIN_TRADER_SPAWNER_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.INT.fieldOf("RunDelay").forGetter(spawner -> spawner.runDelay),
+            Codec.INT.fieldOf("SpawnChance").forGetter(spawner -> spawner.spawnChance)
+    ).apply(instance, (runDelay, spawnChance) -> {
+        return new GoblinTraderSpawner(VEIN_GOBLIN_TRADER_PROPERTIES, runDelay, spawnChance);
+    }));
 
     @SuppressWarnings("DataFlowIssue") // NeoForge and Fabric patch DataFixTypes to allow null
-    private static final SavedDataType<GoblinTraderSpawner> TYPE_GOBLIN_TRADER = new SavedDataType<>("goblintraders_goblin_trader_spawner", (context) -> {
-        return createSpawner(context.levelOrThrow(), GOBLIN_TRADER_PROPERTIES);
-    }, context -> {
-        return CompoundTag.CODEC.xmap((tag) -> {
-            return createSpawner(context.levelOrThrow(), GOBLIN_TRADER_PROPERTIES).load(tag);
-        }, spawner -> {
-            return Objects.requireNonNullElseGet(spawner.save(spawner.level.registryAccess()), CompoundTag::new);
-        });
-    }, null);
+    private static final SavedDataType<@NotNull GoblinTraderSpawner> TYPE_GOBLIN_TRADER = new SavedDataType<>("goblintraders_goblin_trader_spawner", () -> {
+        return new GoblinTraderSpawner(GOBLIN_TRADER_PROPERTIES);
+    }, GOBLIN_TRADER_SPAWNER_CODEC, null);
 
     @SuppressWarnings("DataFlowIssue") // NeoForge and Fabric patch DataFixTypes to allow null
-    private static final SavedDataType<GoblinTraderSpawner> TYPE_VEIN_GOBLIN_TRADER = new SavedDataType<>("goblintraders_vein_goblin_trader_spawner", (context) -> {
-        return createSpawner(context.levelOrThrow(), VEIN_GOBLIN_TRADER_PROPERTIES);
-    }, context -> {
-        return CompoundTag.CODEC.xmap((tag) -> {
-            return createSpawner(context.levelOrThrow(), VEIN_GOBLIN_TRADER_PROPERTIES).load(tag);
-        }, spawner -> {
-            return Objects.requireNonNullElseGet(spawner.save(spawner.level.registryAccess()), CompoundTag::new);
-        });
-    }, null);
+    private static final SavedDataType<@NotNull GoblinTraderSpawner> TYPE_VEIN_GOBLIN_TRADER = new SavedDataType<>("goblintraders_vein_goblin_trader_spawner", () -> {
+        return new GoblinTraderSpawner(VEIN_GOBLIN_TRADER_PROPERTIES);
+    }, VEIN_GOBLIN_TRADER_SPAWNER_CODEC, null);
 
     private static final int SAFE_POSITION_ATTEMPTS = 50;
     private static final int MIN_SPAWN_DISTANCE = 5;
     private static final int GROUND_SEARCH_DISTANCE = 5;
     private static final int SAVE_INTERVAL = 200;
 
-    private final ServerLevel level;
-    private final EntityType<? extends AbstractGoblinEntity> type;
+    private final EntityType<? extends @NotNull AbstractGoblinEntity> type;
     private final IGoblinData data;
     private int runDelay;
     private int spawnChance;
 
-    public <T extends AbstractGoblinEntity> GoblinTraderSpawner(ServerLevel level, EntityType<T> type, IGoblinData data)
+    public <T extends AbstractGoblinEntity> GoblinTraderSpawner(SpawnProperties<T> properties)
     {
-        this.level = level;
-        this.type = type;
-        this.data = data;
-        this.runDelay = data.getSpawnDelay();
-        this.spawnChance = data.getSpawnChance();
+        this.type = properties.type.get();
+        this.data = properties.goblinData.get();
+        this.runDelay = this.data.getSpawnDelay();
+        this.spawnChance = this.data.getSpawnChance();
     }
 
-    public void serverTick()
+    public <T extends AbstractGoblinEntity> GoblinTraderSpawner(SpawnProperties<T> properties, int runDelay, int spawnChance)
     {
-        if(!this.level.getGameRules().getBoolean(GameRules.RULE_DO_TRADER_SPAWNING))
+        this.type = properties.type.get();
+        this.data = properties.goblinData.get();
+        this.runDelay = runDelay;
+        this.spawnChance = spawnChance;
+    }
+
+    public void serverTick(ServerLevel level)
+    {
+        if(!level.getGameRules().get(GameRules.SPAWN_WANDERING_TRADERS))
             return;
 
         this.runDelay--;
@@ -92,10 +102,10 @@ public class GoblinTraderSpawner extends SavedData
             return;
 
         this.runDelay = this.data.getSpawnInterval();
-        if(!this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING))
+        if(!level.getGameRules().get(GameRules.SPAWN_MOBS))
             return;
 
-        double randomChance = this.level.getRandom().nextDouble();
+        double randomChance = level.getRandom().nextDouble();
         if((this.spawnChance / 100.0) < randomChance)
         {
             this.spawnChance = Math.min(this.spawnChance + this.data.getSpawnChance(), 100);
@@ -103,7 +113,7 @@ public class GoblinTraderSpawner extends SavedData
             return;
         }
 
-        if(this.spawnGoblin())
+        if(this.spawnGoblin(level))
         {
             this.runDelay = this.data.getSpawnDelay();
             this.spawnChance = this.data.getSpawnChance();
@@ -111,24 +121,24 @@ public class GoblinTraderSpawner extends SavedData
         }
     }
 
-    private boolean spawnGoblin()
+    private boolean spawnGoblin(ServerLevel level)
     {
-        ServerPlayer player = this.level.getRandomPlayer();
+        ServerPlayer player = level.getRandomPlayer();
         if(player == null)
             return false;
 
-        BlockPos pos = this.createSpawnPosition(player.blockPosition(), 16);
+        BlockPos pos = this.createSpawnPosition(level, player.blockPosition(), 16);
         if(pos == null)
             return false;
 
-        Holder<Biome> biome = this.level.getBiome(pos);
+        Holder<Biome> biome = level.getBiome(pos);
         if(biome.is(Biomes.THE_VOID) || biome.is(Biomes.DEEP_DARK))
             return false;
 
         if(pos.getY() < this.data.getMinSpawnYLevel() || pos.getY() >= this.data.getMaxSpawnYLevel())
             return false;
 
-        AbstractGoblinEntity goblin = this.type.spawn(this.level, pos, EntitySpawnReason.EVENT);
+        AbstractGoblinEntity goblin = this.type.spawn(level, pos, EntitySpawnReason.EVENT);
         if(goblin == null)
             return false;
 
@@ -140,15 +150,15 @@ public class GoblinTraderSpawner extends SavedData
     }
 
     @Nullable
-    private BlockPos createSpawnPosition(BlockPos center, int range)
+    private BlockPos createSpawnPosition(ServerLevel level, BlockPos center, int range)
     {
         for(int i = 0; i < SAFE_POSITION_ATTEMPTS; i++)
         {
-            int posX = center.getX() + this.createRandomSpawnableDistance(range);
-            int posY = center.getY() + this.createRandomSpawnableDistance(range);
-            int posZ = center.getZ() + this.createRandomSpawnableDistance(range);
-            BlockPos pos = this.findGround(new BlockPos(posX, posY, posZ));
-            if(pos != null && !pos.closerThan(center, MIN_SPAWN_DISTANCE) && SpawnPlacements.isSpawnPositionOk(this.type, this.level, pos))
+            int posX = center.getX() + this.createRandomSpawnableDistance(level, range);
+            int posY = center.getY() + this.createRandomSpawnableDistance(level, range);
+            int posZ = center.getZ() + this.createRandomSpawnableDistance(level, range);
+            BlockPos pos = this.findGround(level, new BlockPos(posX, posY, posZ));
+            if(pos != null && !pos.closerThan(center, MIN_SPAWN_DISTANCE) && SpawnPlacements.isSpawnPositionOk(this.type, level, pos))
             {
                 return pos;
             }
@@ -163,24 +173,24 @@ public class GoblinTraderSpawner extends SavedData
      * @param maxSpawnDistance
      * @return a random distance between the valid range
      */
-    private int createRandomSpawnableDistance(int maxSpawnDistance)
+    private int createRandomSpawnableDistance(ServerLevel level, int maxSpawnDistance)
     {
-        RandomSource random = this.level.getRandom();
+        RandomSource random = level.getRandom();
         int direction = random.nextInt(2) == 0 ? 1 : -1;
         int spawnableRange = Math.max(maxSpawnDistance - MIN_SPAWN_DISTANCE, 0);
         return (MIN_SPAWN_DISTANCE + random.nextIntBetweenInclusive(0, spawnableRange)) * direction;
     }
 
     @Nullable
-    private BlockPos findGround(BlockPos pos)
+    private BlockPos findGround(ServerLevel level, BlockPos pos)
     {
-        boolean colliding = this.canCollide(pos);
+        boolean colliding = this.canCollide(level, pos);
 
         // Search downwards for ground
         BlockPos testPos = pos.below();
         for(int i = 0; i < GROUND_SEARCH_DISTANCE && Level.isInSpawnableBounds(testPos); i++)
         {
-            if(!this.canCollide(testPos))
+            if(!this.canCollide(level, testPos))
             {
                 colliding = false;
                 testPos = testPos.below();
@@ -192,11 +202,11 @@ public class GoblinTraderSpawner extends SavedData
         }
 
         // Search upwards for ground
-        colliding = this.canCollide(pos);
+        colliding = this.canCollide(level, pos);
         testPos = pos.above();
         for(int i = 0; i < GROUND_SEARCH_DISTANCE && Level.isInSpawnableBounds(testPos); i++)
         {
-            if(this.canCollide(testPos))
+            if(this.canCollide(level, testPos))
             {
                 colliding = true;
                 testPos = testPos.above();
@@ -209,9 +219,9 @@ public class GoblinTraderSpawner extends SavedData
         return null;
     }
 
-    private boolean canCollide(BlockPos pos)
+    private boolean canCollide(ServerLevel level, BlockPos pos)
     {
-        return !this.level.getBlockState(pos).getCollisionShape(this.level, pos).isEmpty();
+        return !level.getBlockState(pos).getCollisionShape(level, pos).isEmpty();
     }
 
     public GoblinTraderSpawner load(CompoundTag tag)
@@ -221,7 +231,7 @@ public class GoblinTraderSpawner extends SavedData
         return this;
     }
 
-    public CompoundTag save(HolderLookup.Provider provider)
+    public CompoundTag save()
     {
         CompoundTag tag = new CompoundTag();
         tag.putInt("RunDelay", this.runDelay);
@@ -249,10 +259,5 @@ public class GoblinTraderSpawner extends SavedData
         return Optional.empty();
     }
 
-    private static GoblinTraderSpawner createSpawner(ServerLevel level, SpawnProperties properties)
-    {
-        return new GoblinTraderSpawner(level, properties.type.get(), properties.goblinData.get());
-    }
-
-    public record SpawnProperties(Supplier<EntityType<? extends AbstractGoblinEntity>> type, Supplier<IGoblinData> goblinData) {}
+    public record SpawnProperties<T extends AbstractGoblinEntity>(Supplier<EntityType<T>> type, Supplier<IGoblinData> goblinData) {}
 }

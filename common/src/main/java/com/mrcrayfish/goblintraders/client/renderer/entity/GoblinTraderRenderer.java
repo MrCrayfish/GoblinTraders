@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.entity.state.ArmedEntityRenderState;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.phys.Vec3;
 
@@ -39,7 +39,7 @@ public class GoblinTraderRenderer extends MobRenderer<AbstractGoblinEntity, Gobl
     public void extractRenderState(AbstractGoblinEntity goblin, GoblinRenderState state, float partialTick)
     {
         super.extractRenderState(goblin, state, partialTick);
-        ArmedEntityRenderState.extractArmedEntityRenderState(goblin, state, this.itemModelResolver);
+        ArmedEntityRenderState.extractArmedEntityRenderState(goblin, state, this.itemModelResolver, partialTick);
         state.sitting = goblin.isSitting();
         state.usingItem = goblin.isUsingItem();
         state.attackTime = goblin.getAttackAnim(partialTick);
@@ -54,7 +54,7 @@ public class GoblinTraderRenderer extends MobRenderer<AbstractGoblinEntity, Gobl
     }
 
     @Override
-    public ResourceLocation getTextureLocation(GoblinRenderState state)
+    public Identifier getTextureLocation(GoblinRenderState state)
     {
         return state.texture;
     }

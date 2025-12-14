@@ -3,12 +3,16 @@ package com.mrcrayfish.goblintraders;
 import com.mrcrayfish.goblintraders.core.ModEntities;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 
 /**
  * Author: MrCrayfish
@@ -20,6 +24,7 @@ public class GoblinTraders
     {
         bus.addListener(this::onCommonSetup);
         bus.addListener(this::onEntityAttributeCreation);
+        bus.addListener(this::onRegisterSpawnPlacements);
         NeoForge.EVENT_BUS.addListener(this::addReloadListener);
     }
 
@@ -37,5 +42,11 @@ public class GoblinTraders
     public void addReloadListener(AddServerReloadListenersEvent event)
     {
         event.addListener(TradeManager.ID, TradeManager.instance());
+    }
+
+    public void onRegisterSpawnPlacements(RegisterSpawnPlacementsEvent event)
+    {
+        event.register(ModEntities.GOBLIN_TRADER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(ModEntities.VEIN_GOBLIN_TRADER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 }

@@ -13,7 +13,7 @@ import com.mrcrayfish.goblintraders.trades.type.TreasureMapTrade;
 import com.mrcrayfish.goblintraders.util.Utils;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.resources.FileToIdConverter;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
@@ -32,7 +32,7 @@ import java.util.concurrent.Executor;
  */
 public class TradeManager implements PreparableReloadListener
 {
-    public static final ResourceLocation ID = Utils.resource("trade_manager");
+    public static final Identifier ID = Utils.resource("trade_manager");
     public static final String RESOURCE_DIR = "goblin_trades";
     private static final int FILE_TYPE_LENGTH_VALUE = ".json".length();
     private static final Gson GSON = new GsonBuilder().create();
@@ -48,7 +48,7 @@ public class TradeManager implements PreparableReloadListener
     }
 
     private final List<EntityType<?>> traders = new ArrayList<>();
-    private final Map<ResourceLocation, MapCodec<? extends BaseTrade>> codecs = new HashMap<>();
+    private final Map<Identifier, MapCodec<? extends BaseTrade>> codecs = new HashMap<>();
     private Map<EntityType<?>, EntityTrades> entityToTrades = new HashMap<>();
 
     public TradeManager()
@@ -72,13 +72,13 @@ public class TradeManager implements PreparableReloadListener
         return this.entityToTrades.get(type);
     }
 
-    public void registerTradeCodec(ResourceLocation id, MapCodec<? extends BaseTrade> codec)
+    public void registerTradeCodec(Identifier id, MapCodec<? extends BaseTrade> codec)
     {
         this.codecs.putIfAbsent(id, codec);
     }
 
     @Nullable
-    public MapCodec<? extends BaseTrade> getTradeCodec(ResourceLocation id)
+    public MapCodec<? extends BaseTrade> getTradeCodec(Identifier id)
     {
         return this.codecs.get(id);
     }
@@ -89,12 +89,12 @@ public class TradeManager implements PreparableReloadListener
         List<CompletableFuture<Pair<EntityType<?>, EntityTrades>>> list = this.traders.stream().map(type -> {
             return CompletableFuture.supplyAsync(() -> {
                 String folder = String.format("%s/%s", RESOURCE_DIR, EntityType.getKey(type).getPath());
-                List<ResourceLocation> resources = new ArrayList<>(sharedState.resourceManager().listResources(folder, (fileName) -> fileName.getPath().endsWith(".json")).keySet());
+                List<Identifier> resources = new ArrayList<>(sharedState.resourceManager().listResources(folder, (fileName) -> fileName.getPath().endsWith(".json")).keySet());
                 resources.sort((r1, r2) -> {
                     if(r1.getNamespace().equals(r2.getNamespace())) return 0;
                     return r2.getNamespace().equals(Constants.MOD_ID) ? 1 : -1;
                 });
-                Map<TradeRarity, LinkedHashSet<ResourceLocation>> tradeResources = new EnumMap<>(TradeRarity.class);
+                Map<TradeRarity, LinkedHashSet<Identifier>> tradeResources = new EnumMap<>(TradeRarity.class);
                 Arrays.stream(TradeRarity.values()).forEach(rarity -> tradeResources.put(rarity, new LinkedHashSet<>()));
                 resources.forEach(resource -> {
                     String path = resource.getPath().substring(0, resource.getPath().length() - FILE_TYPE_LENGTH_VALUE);
@@ -122,9 +122,9 @@ public class TradeManager implements PreparableReloadListener
             }, executor1);
     }
 
-    private void deserializeTrades(ResourceManager manager, EntityTrades.Builder builder, TradeRarity rarity, LinkedHashSet<ResourceLocation> resources)
+    private void deserializeTrades(ResourceManager manager, EntityTrades.Builder builder, TradeRarity rarity, LinkedHashSet<Identifier> resources)
     {
-        for(ResourceLocation resourceLocation : resources)
+        for(Identifier resourceLocation : resources)
         {
             manager.getResource(resourceLocation).ifPresent(resource ->
             {

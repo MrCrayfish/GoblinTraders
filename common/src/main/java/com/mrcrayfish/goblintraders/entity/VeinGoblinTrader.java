@@ -9,10 +9,8 @@ import com.mrcrayfish.goblintraders.trades.TradeRarity;
 import com.mrcrayfish.goblintraders.trades.type.BaseTrade;
 import com.mrcrayfish.goblintraders.util.Utils;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.npc.VillagerTrades;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffers;
@@ -26,7 +24,7 @@ import java.util.Map;
  */
 public class VeinGoblinTrader extends AbstractGoblinEntity
 {
-    private static final ResourceLocation TEXTURE = Utils.resource("textures/entity/vein_goblin_trader.png");
+    private static final Identifier TEXTURE = Utils.resource("textures/entity/vein_goblin_trader.png");
 
     public VeinGoblinTrader(EntityType<VeinGoblinTrader> type, Level level)
     {
@@ -34,7 +32,7 @@ public class VeinGoblinTrader extends AbstractGoblinEntity
     }
 
     @Override
-    public ResourceLocation getTexture()
+    public Identifier getTexture()
     {
         return TEXTURE;
     }

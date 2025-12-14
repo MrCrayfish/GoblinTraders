@@ -16,7 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -119,7 +119,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         builder.define(CURIOUS, false);
     }
 
-    public abstract ResourceLocation getTexture();
+    public abstract Identifier getTexture();
 
     public int getFallCounter()
     {
@@ -592,7 +592,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     @Override
     public boolean stillValid(Player player)
     {
-        return this.getTradingPlayer() == player && this.isAlive() && player.canInteractWithEntity(this, 4.0F);
+        return this.getTradingPlayer() == player && this.isAlive() && player.isWithinEntityInteractionRange(this, 4.0F);
     }
 
     @Override

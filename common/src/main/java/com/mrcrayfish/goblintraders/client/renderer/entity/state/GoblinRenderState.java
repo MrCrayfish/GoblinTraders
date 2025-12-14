@@ -2,7 +2,7 @@ package com.mrcrayfish.goblintraders.client.renderer.entity.state;
 
 import net.minecraft.client.renderer.entity.state.ArmedEntityRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class GoblinRenderState extends ArmedEntityRenderState
 {
@@ -10,7 +10,7 @@ public class GoblinRenderState extends ArmedEntityRenderState
     public boolean usingItem;
     public float attackTime;
     public boolean holdingItem;
-    public ResourceLocation texture;
+    public Identifier texture;
     public float headTilt;
     public float armAngle;
     public boolean stunned;

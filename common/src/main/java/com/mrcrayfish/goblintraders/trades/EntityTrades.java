@@ -6,9 +6,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import com.mrcrayfish.goblintraders.trades.type.BaseTrade;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.entity.npc.VillagerTrades;
 
 import java.util.*;
 

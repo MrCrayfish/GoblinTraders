@@ -15,7 +15,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
@@ -32,9 +32,9 @@ import java.util.Optional;
 
 public class TreasureMapTrade implements BaseTrade
 {
-    public static final ResourceLocation ID = Utils.resource("treasure_map");
+    public static final Identifier ID = Utils.resource("treasure_map");
 
-    public static final Codec<TagKey<Structure>> STRUCTURE_CODEC = ResourceLocation.CODEC.xmap(id -> TagKey.create(Registries.STRUCTURE, id), TagKey::location);
+    public static final Codec<TagKey<Structure>> STRUCTURE_CODEC = Identifier.CODEC.xmap(id -> TagKey.create(Registries.STRUCTURE, id), TagKey::location);
     public static final MapCodec<TreasureMapTrade> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
         STRUCTURE_CODEC.fieldOf("structure").forGetter(trade -> trade.structure),
         BuiltInRegistries.MAP_DECORATION_TYPE.holderByNameCodec().fieldOf("decoration").forGetter(trade -> trade.mapDecoration),
@@ -68,7 +68,7 @@ public class TreasureMapTrade implements BaseTrade
     }
 
     @Override
-    public ResourceLocation getId()
+    public Identifier getId()
     {
         return ID;
     }

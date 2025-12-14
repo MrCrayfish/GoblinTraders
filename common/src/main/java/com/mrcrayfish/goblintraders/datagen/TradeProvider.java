@@ -11,7 +11,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 
 import java.nio.file.Path;
@@ -58,8 +58,8 @@ public abstract class TradeProvider implements DataProvider
                         BaseTrade.CODEC.encodeStart(JsonOps.INSTANCE, trade).result().ifPresent(tradeArray::add);
                     });
                     object.add("trades", tradeArray);
-                    ResourceLocation id = EntityType.getKey(type);
-                    Path path = this.pathProvider.json(ResourceLocation.fromNamespaceAndPath(id.getNamespace(), id.getPath() + "/" + e2.getKey().getKey()));
+                    Identifier id = EntityType.getKey(type);
+                    Path path = this.pathProvider.json(Identifier.fromNamespaceAndPath(id.getNamespace(), id.getPath() + "/" + e2.getKey().getKey()));
                     return DataProvider.saveStable(output, object, path);
                 }).toArray(CompletableFuture[]::new));
             }).toArray(CompletableFuture[]::new));

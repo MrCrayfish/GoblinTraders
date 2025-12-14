@@ -8,7 +8,7 @@ import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import com.mrcrayfish.goblintraders.trades.GoblinMerchantOffer;
 import com.mrcrayfish.goblintraders.trades.TradeCost;
 import com.mrcrayfish.goblintraders.util.Utils;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.ItemCost;
@@ -21,7 +21,7 @@ import java.util.Optional;
  */
 public class BasicTrade implements BaseTrade
 {
-    public static final ResourceLocation ID = Utils.resource("basic");
+    public static final Identifier ID = Utils.resource("basic");
     public static final MapCodec<BasicTrade> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
         ItemStack.CODEC.fieldOf("offer_item")
             .forGetter(trade -> trade.offerStack),
@@ -56,7 +56,7 @@ public class BasicTrade implements BaseTrade
     }
 
     @Override
-    public ResourceLocation getId()
+    public Identifier getId()
     {
         return ID;
     }
