@@ -49,9 +49,9 @@ public class FindFavouriteFoodGoal extends Goal
             return;
 
         this.goblin.getLookControl().setLookAt(this.itemEntity, 10.0F, (float) this.goblin.getHeadRotSpeed());
-        this.goblin.getNavigation().stop();
+
         Path path = this.goblin.getNavigation().createPath(this.itemEntity, 0);
-        if(path != null) this.goblin.getNavigation().moveTo(path, 0.4F);
+        if(path != null && path.canReach()) this.goblin.getNavigation().moveTo(path, 1.0);
         if(this.goblin.distanceTo(this.itemEntity) <= 1.0D && this.itemEntity.isAlive())
         {
             this.itemEntity.remove(Entity.RemovalReason.KILLED);
@@ -63,7 +63,8 @@ public class FindFavouriteFoodGoal extends Goal
     @Override
     public boolean canContinueToUse()
     {
-        return this.itemEntity.isAlive() && this.goblin.getNavigation().createPath(this.itemEntity, 0) != null && this.goblin.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty();
+        Path path = this.goblin.getNavigation().createPath(this.itemEntity, 0);
+        return this.itemEntity.isAlive() && path != null && path.canReach() && this.goblin.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty();
     }
 
     private void findFavouriteFood()
