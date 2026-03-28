@@ -12,5 +12,5 @@ import net.minecraft.world.inventory.MenuType;
 @RegistryContainer
 public class ModMenuTypes
 {
-    public static final RegistryEntry<MenuType<GoblinMerchantMenu>> GOBLIN_MERCHANT = RegistryEntry.menuType(Utils.resource("goblin_merchant"), GoblinMerchantMenu::new);
+    public static final RegistryEntry<MenuType<GoblinMerchantMenu>> GOBLIN_MERCHANT = RegistryEntry.menuType(Utils.id("goblin_merchant"), GoblinMerchantMenu::new);
 }

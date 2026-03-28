@@ -8,6 +8,6 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
  */
 public class GoblinModelLayers
 {
-    public static final ModelLayerLocation GOBLIN_TRADER = new ModelLayerLocation(Utils.resource("goblin_trader"), "main");
-    public static final ModelLayerLocation VEIN_GOBLIN_TRADER = new ModelLayerLocation(Utils.resource( "vein_goblin_trader"), "main");
+    public static final ModelLayerLocation GOBLIN_TRADER = new ModelLayerLocation(Utils.id("goblin_trader"), "main");
+    public static final ModelLayerLocation VEIN_GOBLIN_TRADER = new ModelLayerLocation(Utils.id( "vein_goblin_trader"), "main");
 }

@@ -3,7 +3,6 @@ package com.mrcrayfish.goblintraders;
 import com.mrcrayfish.framework.api.event.FrameworkTickEvents;
 import com.mrcrayfish.goblintraders.core.ModEntities;
 import com.mrcrayfish.goblintraders.spawner.GoblinTraderSpawner;
-import com.mrcrayfish.goblintraders.trades.TradeManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 
@@ -31,10 +30,6 @@ public class Bootstrap
                 }
             });
         });
-
-        TradeManager manager = TradeManager.instance();
-        manager.registerTrader(ModEntities.GOBLIN_TRADER.get());
-        manager.registerTrader(ModEntities.VEIN_GOBLIN_TRADER.get());
 
         //ModStats.init(); // TODO add back stats
     }

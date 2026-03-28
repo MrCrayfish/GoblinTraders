@@ -8,10 +8,9 @@ import com.mrcrayfish.goblintraders.client.renderer.entity.model.GoblinTraderMod
 import com.mrcrayfish.goblintraders.core.ModEntities;
 import com.mrcrayfish.goblintraders.core.ModItems;
 import com.mrcrayfish.goblintraders.core.ModMenuTypes;
-import com.mrcrayfish.goblintraders.datagen.GoblinItemModelProvider;
-import com.mrcrayfish.goblintraders.datagen.GoblinLootTableProvider;
-import com.mrcrayfish.goblintraders.datagen.GoblinTradeProvider;
+import com.mrcrayfish.goblintraders.datagen.*;
 import net.minecraft.client.gui.screens.inventory.MerchantScreen;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -21,8 +20,12 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Author: MrCrayfish
@@ -72,8 +75,11 @@ public class ClientHandler
     {
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
+        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
         event.createProvider(GoblinLootTableProvider::new);
-        event.createProvider(GoblinTradeProvider::new);
+        //event.createProvider(GoblinTradeProvider::new);
         event.addProvider(new FrameworkModelProvider(output, GoblinItemModelProvider::new));
+        event.createProvider(GoblinTradeTagsProvider::new);
+        event.addProvider(new DatapackBuiltinEntriesProvider(output, lookupProvider, RegistriesProvider.GOBLIN_TRADE_SETS, Set.of(Constants.MOD_ID)));
     }
 }

@@ -7,6 +7,7 @@ import com.mrcrayfish.goblintraders.core.ModEntities;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import com.mrcrayfish.goblintraders.entity.GoblinTrader;
 import com.mrcrayfish.goblintraders.entity.VeinGoblinTrader;
+import com.mrcrayfish.goblintraders.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
@@ -53,12 +54,12 @@ public class GoblinTraderSpawner extends SavedData
     }));
 
     @SuppressWarnings("DataFlowIssue") // NeoForge and Fabric patch DataFixTypes to allow null
-    private static final SavedDataType<@NotNull GoblinTraderSpawner> TYPE_GOBLIN_TRADER = new SavedDataType<>("goblintraders_goblin_trader_spawner", () -> {
+    private static final SavedDataType<@NotNull GoblinTraderSpawner> TYPE_GOBLIN_TRADER = new SavedDataType<>(Utils.id("goblin_trader_spawner"), () -> {
         return new GoblinTraderSpawner(GOBLIN_TRADER_PROPERTIES);
     }, GOBLIN_TRADER_SPAWNER_CODEC, null);
 
     @SuppressWarnings("DataFlowIssue") // NeoForge and Fabric patch DataFixTypes to allow null
-    private static final SavedDataType<@NotNull GoblinTraderSpawner> TYPE_VEIN_GOBLIN_TRADER = new SavedDataType<>("goblintraders_vein_goblin_trader_spawner", () -> {
+    private static final SavedDataType<@NotNull GoblinTraderSpawner> TYPE_VEIN_GOBLIN_TRADER = new SavedDataType<>(Utils.id("vein_goblin_trader_spawner"), () -> {
         return new GoblinTraderSpawner(VEIN_GOBLIN_TRADER_PROPERTIES);
     }, VEIN_GOBLIN_TRADER_SPAWNER_CODEC, null);
 

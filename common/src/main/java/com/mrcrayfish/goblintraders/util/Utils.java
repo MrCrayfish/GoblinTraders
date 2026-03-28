@@ -6,7 +6,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -20,7 +19,7 @@ public class Utils
      * @param name the name of the resource. can be a path
      * @return a resource location instance
      */
-    public static Identifier resource(String name)
+    public static Identifier id(String name)
     {
         return Identifier.fromNamespaceAndPath(Constants.MOD_ID, name);
     }

@@ -16,6 +16,6 @@ public class ModSounds
 
     private static RegistryEntry<SoundEvent> build(String name)
     {
-        return RegistryEntry.soundEvent(Utils.resource(name), id -> () -> SoundEvent.createVariableRangeEvent(id));
+        return RegistryEntry.soundEvent(Utils.id(name), id -> () -> SoundEvent.createVariableRangeEvent(id));
     }
 }

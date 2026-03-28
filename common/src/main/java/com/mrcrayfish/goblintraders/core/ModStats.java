@@ -12,5 +12,5 @@ import net.minecraft.stats.StatFormatter;
 @RegistryContainer
 public class ModStats
 {
-    public static final RegistryEntry<Identifier> TRADE_WITH_GOBLIN = RegistryEntry.customStat(Utils.resource( "trade_with_goblin"), StatFormatter.DEFAULT);
+    public static final RegistryEntry<Identifier> TRADE_WITH_GOBLIN = RegistryEntry.customStat(Utils.id( "trade_with_goblin"), StatFormatter.DEFAULT);
 }

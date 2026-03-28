@@ -9,5 +9,12 @@
     "custom.goblintraders.tuned": "Goblin Tuned",
     "custom.goblintraders.lore": "A special item reengineered by the goblin with enhanced attributes",
     "custom.goblintraders.moon_boots": "Moon Boots",
-    "custom.goblintraders.mystery_map": "Mystery Map"
+    "custom.goblintraders.mystery_map": "Mystery Map",
+    "custom.goblintraders.mystery_map.lore": "\"I wonder what structure this will lead to...\"",
+    "custom.goblintraders.durability_buff": "+ Increased Durability",
+    "custom.goblintraders.armor_buff": "+ More Armour",
+    "custom.goblintraders.knockback_reduction": "+ Knockback Reduction",
+    "custom.goblintraders.extended_range": "+ Extended Reach",
+    "custom.goblintraders.increased_break_speed": "+ Increased Break Speed",
+    "custom.goblintraders.more_damage": "+ Greater Damage"
 }

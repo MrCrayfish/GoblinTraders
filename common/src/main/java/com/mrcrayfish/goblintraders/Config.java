@@ -1,9 +1,10 @@
 package com.mrcrayfish.goblintraders;
 
-import com.mrcrayfish.framework.api.config.*;
+import com.mrcrayfish.framework.api.config.BoolProperty;
+import com.mrcrayfish.framework.api.config.ConfigProperty;
+import com.mrcrayfish.framework.api.config.FrameworkConfig;
+import com.mrcrayfish.framework.api.config.IntProperty;
 import com.mrcrayfish.goblintraders.spawner.IGoblinData;
-import com.mrcrayfish.goblintraders.trades.IRaritySettings;
-import com.mrcrayfish.goblintraders.trades.TradeRarity;
 
 /**
  * Author: MrCrayfish
@@ -59,9 +60,6 @@ public final class Config
 
             @ConfigProperty(name = "gruntNoiseInterval", comment = "Goblins will make a grunt noise while walking around. If you find it happening too often, you can increase the interval. Value is represented in ticks.")
             public final IntProperty gruntNoiseInterval;
-
-            @ConfigProperty(name = "trades")
-            public final Trades trades = new Trades();
 
             private Goblin(int spawnChance, int spawnInterval, int spawnDelay, int despawnDelay, int minLevel, int maxLevel)
             {
@@ -128,73 +126,6 @@ public final class Config
             public int getGruntNoiseInterval()
             {
                 return this.gruntNoiseInterval.get();
-            }
-
-            public static class Trades
-            {
-                @ConfigProperty(name = "common")
-                public final Trade common = new Trade(5, 8, 1.0);
-
-                @ConfigProperty(name = "uncommon")
-                public final Trade uncommon = new Trade(3, 5, 1.0);
-
-                @ConfigProperty(name = "rare")
-                public final Trade rare = new Trade(2, 3, 1.0);
-
-                @ConfigProperty(name = "epic")
-                public final Trade epic = new Trade(1, 2, 1.0);
-
-                @ConfigProperty(name = "legendary")
-                public final Trade legendary = new Trade(1, 1, 0.75);
-
-                public IRaritySettings getSettings(TradeRarity rarity)
-                {
-                    return switch(rarity)
-                    {
-                        case COMMON -> this.common;
-                        case UNCOMMON -> this.uncommon;
-                        case RARE -> this.rare;
-                        case EPIC -> this.epic;
-                        case LEGENDARY -> this.legendary;
-                    };
-                }
-
-                public static class Trade implements IRaritySettings
-                {
-                    @ConfigProperty(name = "minAmount", comment = "The minimum amount of trades that a golbin will have.")
-                    public final IntProperty minAmount;
-
-                    @ConfigProperty(name = "manAmount", comment = "The maximum amount of trades that a golbin can have.")
-                    public final IntProperty maxAmount;
-
-                    @ConfigProperty(name = "includeChance", comment = "The chance this trade rarity will be included in the goblin's trades")
-                    public final DoubleProperty includeChance;
-
-                    public Trade(int min, int max, double includeChance)
-                    {
-                        this.minAmount = IntProperty.create(min, 0, Integer.MAX_VALUE);
-                        this.maxAmount = IntProperty.create(max, 0, Integer.MAX_VALUE);
-                        this.includeChance = DoubleProperty.create(includeChance, 0.0, 1.0);
-                    }
-
-                    @Override
-                    public int getMinValue()
-                    {
-                        return this.minAmount.get();
-                    }
-
-                    @Override
-                    public int getMaxValue()
-                    {
-                        return this.maxAmount.get();
-                    }
-
-                    @Override
-                    public double includeChance()
-                    {
-                        return this.includeChance.get();
-                    }
-                }
             }
         }
     }

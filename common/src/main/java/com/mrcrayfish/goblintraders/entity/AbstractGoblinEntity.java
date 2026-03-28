@@ -1,27 +1,30 @@
 package com.mrcrayfish.goblintraders.entity;
 
 import com.mrcrayfish.goblintraders.Config;
+import com.mrcrayfish.goblintraders.Constants;
 import com.mrcrayfish.goblintraders.core.ModSounds;
 import com.mrcrayfish.goblintraders.entity.ai.goal.TradeWithPlayerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.*;
 import com.mrcrayfish.goblintraders.inventory.GoblinMerchantMenu;
 import com.mrcrayfish.goblintraders.trades.GoblinOffers;
-import com.mrcrayfish.goblintraders.trades.type.BaseTrade;
-import com.mrcrayfish.goblintraders.util.Utils;
+import com.mrcrayfish.goblintraders.util.ReflectedMethod;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.*;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.Unit;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
@@ -33,15 +36,21 @@ import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Npc;
+import net.minecraft.world.entity.npc.villager.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
+import net.minecraft.world.item.trading.TradeSet;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,6 +67,9 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     public static final EntityDataAccessor<Float> STUN_ROTATION = SynchedEntityData.defineId(AbstractGoblinEntity.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(AbstractGoblinEntity.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Boolean> CURIOUS = SynchedEntityData.defineId(AbstractGoblinEntity.class, EntityDataSerializers.BOOLEAN);
+
+    public static final ReflectedMethod<AbstractVillager, Void> ADD_OFFERS_FROM_ITEM_LISTINGS_METHOD = new ReflectedMethod<>(AbstractVillager.class, "addOffersFromItemListings", LootContext.class, MerchantOffers.class, HolderSet.class, int.class);
+    public static final ReflectedMethod<AbstractVillager, Void> ADD_OFFERS_FROM_ITEM_LISTINGS_WITHOUT_DUPLICATES_METHOD = new ReflectedMethod<>(AbstractVillager.class, "addOffersFromItemListingsWithoutDuplicates", LootContext.class, MerchantOffers.class, HolderSet.class, int.class);
 
     private @Nullable Player customer;
     private @Nullable MerchantOffers offers;
@@ -223,32 +235,33 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     @Override
     public MerchantOffers getOffers()
     {
-        if(this.offers == null)
+        if(this.level() instanceof ServerLevel level)
         {
-            this.offers = new GoblinOffers();
-            this.populateTradeData();
+            if(this.offers == null)
+            {
+                this.offers = new MerchantOffers();
+                this.populateTradeData(level);
+            }
+            return this.offers;
         }
-        return this.offers;
+        throw new IllegalStateException("Cannot load Villager offers on the client");
     }
 
-    protected abstract void populateTradeData();
+    protected abstract void populateTradeData(ServerLevel level);
 
-    protected void addTrades(MerchantOffers offers, @Nullable List<BaseTrade> trades, int max, boolean shuffle)
+    protected void addOffersFromTradeSet(ServerLevel level, MerchantOffers offers, ResourceKey<TradeSet> key)
     {
-        if(trades == null)
-            return;
-        List<Integer> randomIndexes = IntStream.range(0, trades.size()).boxed().collect(Collectors.toList());
-        if(shuffle) Collections.shuffle(randomIndexes);
-        randomIndexes = randomIndexes.subList(0, Math.min(trades.size(), max));
-        for(Integer index : randomIndexes)
-        {
-            BaseTrade trade = trades.get(index);
-            MerchantOffer offer = trade.createVanillaOffer(this, this.getRandom());
-            if(offer != null)
-            {
-                offers.add(offer);
+        this.registryAccess().lookupOrThrow(Registries.TRADE_SET).getOptional(key).ifPresentOrElse(tradeSet -> {
+            LootContext context = new LootContext.Builder(new LootParams.Builder(level).withParameter(LootContextParams.ORIGIN, this.position()).withParameter(LootContextParams.THIS_ENTITY, this).withParameter(LootContextParams.ADDITIONAL_COST_COMPONENT_ALLOWED, Unit.INSTANCE).create(LootContextParamSets.VILLAGER_TRADE)).create(tradeSet.randomSequence());
+            int numberOfOffers = tradeSet.calculateNumberOfTrades(context);
+            if(tradeSet.allowDuplicates()) {
+                ADD_OFFERS_FROM_ITEM_LISTINGS_METHOD.invoke(null, context, offers, tradeSet.getTrades(), numberOfOffers);
+            } else {
+                ADD_OFFERS_FROM_ITEM_LISTINGS_WITHOUT_DUPLICATES_METHOD.invoke(null, context, offers, tradeSet.getTrades(), numberOfOffers);
             }
-        }
+        }, () -> {
+            Constants.LOG.debug("Trade set doesn't exist: {}", key);
+        });
     }
 
     @Override
@@ -348,14 +361,17 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         }
         else if(this.isAlive() && !this.hasCustomer() && !this.isBaby() && (this.fireImmune() || !this.isOnFire()) && !this.isStunned()) //TODO check for egg
         {
-            if(this.getOffers().isEmpty())
+            if(!this.isClientSide())
             {
-                return InteractionResult.PASS;
-            }
-            else if(!this.isClientSide() && (this.getLastHurtByMob() == null || this.getLastHurtByMob() != player))
-            {
-                this.setTradingPlayer(player);
-                this.openTradingScreen(player, Objects.requireNonNull(this.getDisplayName()), 1);
+                if(this.getOffers().isEmpty())
+                {
+                    return InteractionResult.PASS;
+                }
+                if(this.getLastHurtByMob() == null || this.getLastHurtByMob() != player)
+                {
+                    this.setTradingPlayer(player);
+                    this.openTradingScreen(player, Objects.requireNonNull(this.getDisplayName()), 1);
+                }
             }
             return InteractionResult.SUCCESS;
         }
@@ -373,7 +389,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
             frontPosition = frontPosition.add(0, 0.35, 0);
             frontPosition = frontPosition.add(this.position());
             Vec3 motion = new Vec3(this.getRandom().nextDouble() * 0.2 - 0.1, 0.1, this.getRandom().nextDouble() * 0.2 - 0.1);
-            this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), frontPosition.x, frontPosition.y, frontPosition.z, motion.x, motion.y + 0.05D, motion.z);
+            this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack.getItem()), frontPosition.x, frontPosition.y, frontPosition.z, motion.x, motion.y + 0.05D, motion.z);
         }
     }
 

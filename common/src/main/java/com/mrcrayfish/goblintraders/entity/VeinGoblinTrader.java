@@ -1,30 +1,23 @@
 package com.mrcrayfish.goblintraders.entity;
 
 import com.mrcrayfish.goblintraders.Config;
-import com.mrcrayfish.goblintraders.core.ModEntities;
-import com.mrcrayfish.goblintraders.trades.EntityTrades;
-import com.mrcrayfish.goblintraders.trades.IRaritySettings;
-import com.mrcrayfish.goblintraders.trades.TradeManager;
-import com.mrcrayfish.goblintraders.trades.TradeRarity;
-import com.mrcrayfish.goblintraders.trades.type.BaseTrade;
+import com.mrcrayfish.goblintraders.trades.GoblinTradeSets;
 import com.mrcrayfish.goblintraders.util.Utils;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * Author: MrCrayfish
  */
 public class VeinGoblinTrader extends AbstractGoblinEntity
 {
-    private static final Identifier TEXTURE = Utils.resource("textures/entity/vein_goblin_trader.png");
+    private static final Identifier TEXTURE = Utils.id("textures/entity/vein_goblin_trader.png");
 
     public VeinGoblinTrader(EntityType<VeinGoblinTrader> type, Level level)
     {
@@ -38,27 +31,14 @@ public class VeinGoblinTrader extends AbstractGoblinEntity
     }
 
     @Override
-    protected void populateTradeData()
+    protected void populateTradeData(ServerLevel level)
     {
         MerchantOffers offers = this.getOffers();
-        EntityTrades entityTrades = TradeManager.instance().getTrades(ModEntities.VEIN_GOBLIN_TRADER.get());
-        if(entityTrades != null)
-        {
-            Map<TradeRarity, List<BaseTrade>> tradeMap = entityTrades.map();
-            for(TradeRarity rarity : TradeRarity.values())
-            {
-                IRaritySettings settings = Config.ENTITIES.veinGoblinTrader.trades.getSettings(rarity);
-                if(settings.includeChance() <= 0.0)
-                    continue;
-                if(settings.includeChance() < 1.0 && this.getRandom().nextDouble() > settings.includeChance())
-                    continue;
-                List<BaseTrade> trades = tradeMap.get(rarity);
-                int min = Math.min(settings.getMinValue(), settings.getMaxValue());
-                int max = Math.max(settings.getMinValue(), settings.getMaxValue());
-                int count = min + this.getRandom().nextInt(max - min + 1);
-                this.addTrades(offers, trades, count, rarity.shouldShuffle());
-            }
-        }
+        this.addOffersFromTradeSet(level, offers, GoblinTradeSets.VEIN_GOBLIN_TRADER_COMMON);
+        this.addOffersFromTradeSet(level, offers, GoblinTradeSets.VEIN_GOBLIN_TRADER_UNCOMMON);
+        this.addOffersFromTradeSet(level, offers, GoblinTradeSets.VEIN_GOBLIN_TRADER_RARE);
+        this.addOffersFromTradeSet(level, offers, GoblinTradeSets.VEIN_GOBLIN_TRADER_EPIC);
+        this.addOffersFromTradeSet(level, offers, GoblinTradeSets.VEIN_GOBLIN_TRADER_LEGENDARY);
     }
 
     @Override

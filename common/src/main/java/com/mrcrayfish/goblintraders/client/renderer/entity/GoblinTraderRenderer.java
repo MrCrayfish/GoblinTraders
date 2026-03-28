@@ -5,18 +5,14 @@ import com.mojang.math.Axis;
 import com.mrcrayfish.goblintraders.client.renderer.entity.model.GoblinTraderModel;
 import com.mrcrayfish.goblintraders.client.renderer.entity.state.GoblinRenderState;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.client.renderer.entity.state.ArmedEntityRenderState;
-import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.phys.Vec3;
 
 /**
  * Author: MrCrayfish
