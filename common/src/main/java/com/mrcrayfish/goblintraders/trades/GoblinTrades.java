@@ -408,7 +408,7 @@ public final class GoblinTrades
             new ItemStackTemplate(item),
             1, 150, 0F,
             Optional.empty(),
-            lootFunctionBuilder().goblinTunedArmor(slot).build(),
+            lootFunctionBuilder().goblinTunedArmor(slot, 1).build(),
             Optional.empty()
         );
     }
@@ -421,7 +421,7 @@ public final class GoblinTrades
             new ItemStackTemplate(item),
             1, 300, 0F,
             Optional.empty(),
-            lootFunctionBuilder().goblinTunedArmor(slot).build(),
+            lootFunctionBuilder().goblinTunedArmor(slot, 2).build(),
             Optional.empty()
         );
     }
@@ -537,12 +537,12 @@ public final class GoblinTrades
             return this;
         }
 
-        public LootFunctionBuilder goblinTunedArmor(EquipmentSlotGroup group)
+        public LootFunctionBuilder goblinTunedArmor(EquipmentSlotGroup group, int scale)
         {
             this.goblinTuned();
             this.functions.add(SetAttributesFunction.setAttributes()
-                .withModifier(SetAttributesFunction.modifier(Utils.id("goblins_armour"), Attributes.ARMOR, AttributeModifier.Operation.ADD_VALUE, ConstantValue.exactly(1)).forSlot(group))
-                .withModifier(SetAttributesFunction.modifier(Utils.id("goblins_knockback_resistance"), Attributes.KNOCKBACK_RESISTANCE, AttributeModifier.Operation.ADD_VALUE, ConstantValue.exactly(0.05F)).forSlot(group))
+                .withModifier(SetAttributesFunction.modifier(Utils.id("goblins_armour"), Attributes.ARMOR, AttributeModifier.Operation.ADD_VALUE, ConstantValue.exactly(1 * scale)).forSlot(group))
+                .withModifier(SetAttributesFunction.modifier(Utils.id("goblins_knockback_resistance"), Attributes.KNOCKBACK_RESISTANCE, AttributeModifier.Operation.ADD_VALUE, ConstantValue.exactly(0.05F * scale)).forSlot(group))
                 .build());
             this.functions.add(SetLoreFunction.setLore()
                 .setMode(ListOperation.Append.INSTANCE)
