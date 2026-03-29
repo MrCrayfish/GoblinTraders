@@ -1,13 +1,14 @@
 package com.mrcrayfish.goblintraders;
 
-import com.mrcrayfish.goblintraders.datagen.GoblinRegistryProvider;
-import com.mrcrayfish.goblintraders.datagen.GoblinLootTableProvider;
-import com.mrcrayfish.goblintraders.datagen.RegistriesProvider;
+import com.mrcrayfish.framework.api.datagen.FrameworkModelProvider;
+import com.mrcrayfish.goblintraders.datagen.*;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
-import net.minecraft.data.registries.RegistriesDatapackGenerator;
 import net.minecraft.data.registries.RegistryPatchGenerator;
+
+import java.util.concurrent.CompletableFuture;
 
 public class GoblinDataGeneration implements DataGeneratorEntrypoint
 {
@@ -16,10 +17,11 @@ public class GoblinDataGeneration implements DataGeneratorEntrypoint
     {
         FabricDataGenerator.Pack pack = generator.createPack();
         pack.addProvider(GoblinLootTableProvider::new);
-        pack.addProvider(GoblinRegistryProvider::new);
-        pack.addProvider((output, registriesFuture) -> {
-            var lookup = RegistryPatchGenerator.createLookup(registriesFuture, RegistriesProvider.GOBLIN_TRADE_SETS);
-            return new RegistriesDatapackGenerator(output, lookup.thenApply(RegistrySetBuilder.PatchedRegistries::patches));
-        });
+        pack.addProvider((FabricDataGenerator.Pack.Factory<FrameworkModelProvider>) output -> new FrameworkModelProvider(output, GoblinItemModelProvider::new));
+
+        var lookup = RegistryPatchGenerator.createLookup(generator.getRegistries(), RegistriesProvider.GOBLIN_REGISTRY_SET);
+        CompletableFuture<HolderLookup.Provider> provider = lookup.thenApply(RegistrySetBuilder.PatchedRegistries::patches);
+        pack.addProvider((FabricDataGenerator.Pack.Factory<GoblinRegistryProvider>) output -> new GoblinRegistryProvider(output, provider));
+        pack.addProvider((FabricDataGenerator.Pack.Factory<GoblinTradeTagsProvider>) output -> new GoblinTradeTagsProvider(output, provider));
     }
 }

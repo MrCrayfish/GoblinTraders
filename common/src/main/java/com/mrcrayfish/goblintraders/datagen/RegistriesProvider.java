@@ -7,7 +7,7 @@ import net.minecraft.core.registries.Registries;
 
 public class RegistriesProvider
 {
-    public static final RegistrySetBuilder GOBLIN_TRADE_SETS = new RegistrySetBuilder()
+    public static final RegistrySetBuilder GOBLIN_REGISTRY_SET = new RegistrySetBuilder()
         .add(Registries.TRADE_SET, GoblinTradeSets::bootstrap)
         .add(Registries.VILLAGER_TRADE, GoblinTrades::bootstrap);
 }

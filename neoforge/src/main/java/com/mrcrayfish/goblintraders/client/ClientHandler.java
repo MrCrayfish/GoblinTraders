@@ -77,9 +77,8 @@ public class ClientHandler
         PackOutput output = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
         event.createProvider(GoblinLootTableProvider::new);
-        //event.createProvider(GoblinTradeProvider::new);
         event.addProvider(new FrameworkModelProvider(output, GoblinItemModelProvider::new));
         event.createProvider(GoblinTradeTagsProvider::new);
-        event.addProvider(new DatapackBuiltinEntriesProvider(output, lookupProvider, RegistriesProvider.GOBLIN_TRADE_SETS, Set.of(Constants.MOD_ID)));
+        event.addProvider(new DatapackBuiltinEntriesProvider(output, lookupProvider, RegistriesProvider.GOBLIN_REGISTRY_SET, Set.of(Constants.MOD_ID)));
     }
 }
