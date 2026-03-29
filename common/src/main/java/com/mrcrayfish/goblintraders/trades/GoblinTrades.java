@@ -395,7 +395,7 @@ public final class GoblinTrades
             new ItemStackTemplate(item),
             1, 150, 0F,
             Optional.empty(),
-            lootFunctionBuilder().goblinTunedArmor(slot).build(),
+            lootFunctionBuilder().goblinTunedArmor(slot, 1).build(),
             Optional.empty()
         );
     }
@@ -443,9 +443,9 @@ public final class GoblinTrades
     {
         return new VillagerTrade(
             new TradeCost(Items.NETHER_STAR, 1),
-            Optional.of(new TradeCost(Items.DRAGON_HEAD, 1)),
+            Optional.of(new TradeCost(Items.DRAGON_HEAD, 3)),
             new ItemStackTemplate(item),
-            1, 300, 0F,
+            1, 1000, 0F,
             Optional.empty(),
             lootFunctionBuilder().goblinTunedSword(EquipmentSlotGroup.HAND).build(),
             Optional.empty()
@@ -570,10 +570,11 @@ public final class GoblinTrades
         public LootFunctionBuilder goblinTunedSword(EquipmentSlotGroup slot)
         {
             this.goblinTuned();
-            this.functions.add(SetComponentsFunction.setComponent(DataComponents.SWING_ANIMATION, new SwingAnimation(SwingAnimationType.STAB, 5)).build());
+            this.functions.add(SetComponentsFunction.setComponent(DataComponents.SWING_ANIMATION, new SwingAnimation(SwingAnimationType.STAB, 10)).build());
             this.functions.add(SetAttributesFunction.setAttributes()
-                .withModifier(SetAttributesFunction.modifier(Utils.id("goblins_attack_damage"), Attributes.ATTACK_DAMAGE, AttributeModifier.Operation.ADD_VALUE, ConstantValue.exactly(1)).forSlot(slot))
-                .withModifier(SetAttributesFunction.modifier(Utils.id("goblins_range"), Attributes.ENTITY_INTERACTION_RANGE, AttributeModifier.Operation.ADD_VALUE, ConstantValue.exactly(1)).forSlot(slot))
+                .withModifier(SetAttributesFunction.modifier(Utils.id("goblins_attack_damage"), Attributes.ATTACK_DAMAGE, AttributeModifier.Operation.ADD_VALUE, ConstantValue.exactly(2)).forSlot(slot))
+                .withModifier(SetAttributesFunction.modifier(Utils.id("goblins_range"), Attributes.ENTITY_INTERACTION_RANGE, AttributeModifier.Operation.ADD_VALUE, ConstantValue.exactly(1.5F)).forSlot(slot))
+                .withModifier(SetAttributesFunction.modifier(Utils.id("goblins_attack_speed"), Attributes.ATTACK_SPEED, AttributeModifier.Operation.ADD_VALUE, ConstantValue.exactly(10)).forSlot(slot))
                 .build());
             this.functions.add(SetLoreFunction.setLore()
                 .setMode(ListOperation.Append.INSTANCE)
