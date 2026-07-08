@@ -76,6 +76,7 @@ public final class GoblinTrades
     public static final ResourceKey<VillagerTrade> GOBLIN_TRADER_RARE_EMERALDS_FOR_MUSIC_DISC_PRECIPICE = createKey("goblin_trader/rare/emeralds_for_music_disc_precipice");
     public static final ResourceKey<VillagerTrade> GOBLIN_TRADER_RARE_EMERALDS_FOR_MUSIC_DISC_CREATOR = createKey("goblin_trader/rare/emeralds_for_music_disc_creator");
     public static final ResourceKey<VillagerTrade> GOBLIN_TRADER_RARE_EMERALDS_FOR_MUSIC_DISC_CREATOR_MUSIC_BOX = createKey("goblin_trader/rare/emeralds_for_music_disc_creator_music_box");
+    public static final ResourceKey<VillagerTrade> GOBLIN_TRADER_RARE_EMERALDS_FOR_MUSIC_DISC_BOUNCE = createKey("goblin_trader/rare/emeralds_for_music_disc_bounce");
     public static final ResourceKey<VillagerTrade> GOBLIN_TRADER_RARE_EMERALDS_FOR_WAYFINDER_ARMOR_TRIM_SMITHING_TEMPLATE = createKey("goblin_trader/rare/emeralds_for_wayfinder_armor_trim_smithing_template");
     public static final ResourceKey<VillagerTrade> GOBLIN_TRADER_RARE_EMERALDS_FOR_RAISER_ARMOR_TRIM_SMITHING_TEMPLATE = createKey("goblin_trader/rare/emeralds_for_raiser_armor_trim_smithing_template");
     public static final ResourceKey<VillagerTrade> GOBLIN_TRADER_RARE_EMERALDS_FOR_SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE = createKey("goblin_trader/rare/emeralds_for_shaper_armor_trim_smithing_template");
@@ -236,6 +237,7 @@ public final class GoblinTrades
         register(context, GOBLIN_TRADER_RARE_EMERALDS_FOR_MUSIC_DISC_PRECIPICE, create(Items.EMERALD, 16, Items.MUSIC_DISC_PRECIPICE, 1, 1, 100));
         register(context, GOBLIN_TRADER_RARE_EMERALDS_FOR_MUSIC_DISC_CREATOR, create(Items.EMERALD, 16, Items.MUSIC_DISC_CREATOR, 1, 1, 100));
         register(context, GOBLIN_TRADER_RARE_EMERALDS_FOR_MUSIC_DISC_CREATOR_MUSIC_BOX, create(Items.EMERALD, 16, Items.MUSIC_DISC_CREATOR_MUSIC_BOX, 1, 1, 100));
+        register(context, GOBLIN_TRADER_RARE_EMERALDS_FOR_MUSIC_DISC_BOUNCE, create(Items.EMERALD, 16, Items.MUSIC_DISC_BOUNCE, 1, 1, 100));
         register(context, GOBLIN_TRADER_RARE_EMERALDS_FOR_WAYFINDER_ARMOR_TRIM_SMITHING_TEMPLATE, create(Items.EMERALD, 16, 28, Items.WAYFINDER_ARMOR_TRIM_SMITHING_TEMPLATE, 1, 1, 100));
         register(context, GOBLIN_TRADER_RARE_EMERALDS_FOR_RAISER_ARMOR_TRIM_SMITHING_TEMPLATE, create(Items.EMERALD, 16, 28, Items.RAISER_ARMOR_TRIM_SMITHING_TEMPLATE, 1, 1, 100));
         register(context, GOBLIN_TRADER_RARE_EMERALDS_FOR_SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE, create(Items.EMERALD, 16, 28, Items.SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE, 1, 1, 100));
@@ -395,8 +397,7 @@ public final class GoblinTrades
             new ItemStackTemplate(item),
             1, 150, 0F,
             Optional.empty(),
-            lootFunctionBuilder().goblinTunedArmor(slot, 1).build(),
-            Optional.empty()
+            lootFunctionBuilder().goblinTunedArmor(slot, 1).build()
         );
     }
 
@@ -408,8 +409,7 @@ public final class GoblinTrades
             new ItemStackTemplate(item),
             1, 150, 0F,
             Optional.empty(),
-            lootFunctionBuilder().goblinTunedArmor(slot, 1).build(),
-            Optional.empty()
+            lootFunctionBuilder().goblinTunedArmor(slot, 1).build()
         );
     }
 
@@ -421,8 +421,7 @@ public final class GoblinTrades
             new ItemStackTemplate(item),
             1, 300, 0F,
             Optional.empty(),
-            lootFunctionBuilder().goblinTunedArmor(slot, 2).build(),
-            Optional.empty()
+            lootFunctionBuilder().goblinTunedArmor(slot, 2).build()
         );
     }
 
@@ -434,8 +433,7 @@ public final class GoblinTrades
             new ItemStackTemplate(item),
             1, 300, 0F,
             Optional.empty(),
-            lootFunctionBuilder().goblinTunedTool(EquipmentSlotGroup.HAND).build(),
-            Optional.empty()
+            lootFunctionBuilder().goblinTunedTool(EquipmentSlotGroup.HAND).build()
         );
     }
 
@@ -447,8 +445,7 @@ public final class GoblinTrades
             new ItemStackTemplate(item),
             1, 1000, 0F,
             Optional.empty(),
-            lootFunctionBuilder().goblinTunedSword(EquipmentSlotGroup.HAND).build(),
-            Optional.empty()
+            lootFunctionBuilder().goblinTunedSword(EquipmentSlotGroup.HAND).build()
         );
     }
 
@@ -465,8 +462,7 @@ public final class GoblinTrades
                 .glint()
                 .gravity(0.835F, EquipmentSlotGroup.FEET)
                 .rarity(Rarity.EPIC)
-                .build(),
-            Optional.empty()
+                .build()
         );
     }
 
@@ -486,8 +482,7 @@ public final class GoblinTrades
                 .lore(Component.translatable("custom.goblintraders.mystery_map.lore").withStyle(ChatFormatting.GRAY))
                 .glint()
                 .rarity(Rarity.EPIC)
-                .build(),
-            Optional.empty()
+                .build()
         );
     }
 
@@ -499,8 +494,7 @@ public final class GoblinTrades
                 new ItemStackTemplate(Items.ELYTRA),
                 1, 500, 0F,
                 Optional.empty(),
-                lootFunctionBuilder().goblinTuned().build(),
-                Optional.empty()
+                lootFunctionBuilder().goblinTuned().build()
         );
     }
 

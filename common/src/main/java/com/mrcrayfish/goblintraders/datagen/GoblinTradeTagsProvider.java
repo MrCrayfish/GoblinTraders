@@ -5,12 +5,13 @@ import com.mrcrayfish.goblintraders.trades.GoblinTrades;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.KeyTagProvider;
+import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.item.trading.VillagerTrade;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
-public class GoblinTradeTagsProvider extends KeyTagProvider<VillagerTrade>
+public class GoblinTradeTagsProvider extends TagsProvider<@NotNull VillagerTrade>
 {
     public GoblinTradeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider)
     {
