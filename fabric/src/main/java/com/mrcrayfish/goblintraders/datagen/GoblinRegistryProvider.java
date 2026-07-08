@@ -52,6 +52,6 @@ public class GoblinRegistryProvider extends FabricDynamicRegistryProvider
     @Override
     public String getName()
     {
-        return "Refurbished Furniture Registry Provider";
+        return "Goblin Trader Registry Provider";
     }
 }

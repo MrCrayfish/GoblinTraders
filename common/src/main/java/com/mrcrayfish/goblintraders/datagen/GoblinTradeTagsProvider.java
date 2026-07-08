@@ -5,23 +5,20 @@ import com.mrcrayfish.goblintraders.trades.GoblinTrades;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.TagAppender;
 import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.trading.VillagerTrade;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
-public class GoblinTradeTagsProvider extends TagsProvider<@NotNull VillagerTrade>
+public class GoblinTradeTagsProvider
 {
-    public GoblinTradeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider)
+    public static void addTags(Function<TagKey<VillagerTrade>, TagAppender<VillagerTrade>> func)
     {
-        super(output, Registries.VILLAGER_TRADE, lookupProvider);
-    }
-
-    @Override
-    protected void addTags(HolderLookup.Provider provider)
-    {
-        this.tag(GoblinTradeTags.GOBLIN_TRADER_COMMON)
+        func.apply(GoblinTradeTags.GOBLIN_TRADER_COMMON)
             .add(GoblinTrades.GOBLIN_TRADER_COMMON_APPLES_FOR_EMERALD)
             .add(GoblinTrades.GOBLIN_TRADER_COMMON_RAW_IRON_FOR_IRON_INGOTS)
             .add(GoblinTrades.GOBLIN_TRADER_COMMON_RAW_GOLD_FOR_GOLD_INGOTS)
@@ -29,8 +26,8 @@ public class GoblinTradeTagsProvider extends TagsProvider<@NotNull VillagerTrade
             .add(GoblinTrades.GOBLIN_TRADER_COMMON_ROTTEN_FLESH_FOR_COAL)
             .add(GoblinTrades.GOBLIN_TRADER_COMMON_GRAVEL_FOR_FLINT)
             .add(GoblinTrades.GOBLIN_TRADER_COMMON_COBBLESTONE_FOR_EMERALDS);
-        
-        this.tag(GoblinTradeTags.GOBLIN_TRADER_UNCOMMON)
+
+        func.apply(GoblinTradeTags.GOBLIN_TRADER_UNCOMMON)
             .add(GoblinTrades.GOBLIN_TRADER_UNCOMMON_EMERALD_FOR_GUNPOWDER)
             .add(GoblinTrades.GOBLIN_TRADER_UNCOMMON_TURTLE_EGG_FOR_EMERALDS)
             .add(GoblinTrades.GOBLIN_TRADER_UNCOMMON_PUFFERFISH_BUCKET_FOR_EMERALDS)
@@ -40,8 +37,8 @@ public class GoblinTradeTagsProvider extends TagsProvider<@NotNull VillagerTrade
             .add(GoblinTrades.GOBLIN_TRADER_UNCOMMON_CLAY_FOR_TERRACOTTA)
             .add(GoblinTrades.GOBLIN_TRADER_UNCOMMON_LEATHER_AND_PAPER_FOR_BOOKS)
             .add(GoblinTrades.GOBLIN_TRADER_UNCOMMON_AMETHYST_SHARDS_FOR_EMERALD);
-        
-        this.tag(GoblinTradeTags.GOBLIN_TRADER_RARE)
+
+        func.apply(GoblinTradeTags.GOBLIN_TRADER_RARE)
             .add(GoblinTrades.GOBLIN_TRADER_RARE_EMERALDS_FOR_EXPERIENCE_BOTTLE)
             .add(GoblinTrades.GOBLIN_TRADER_RARE_EMERALDS_FOR_NAME_TAG)
             .add(GoblinTrades.GOBLIN_TRADER_RARE_PACKED_ICE_FOR_BLUE_ICE)
@@ -94,7 +91,7 @@ public class GoblinTradeTagsProvider extends TagsProvider<@NotNull VillagerTrade
             .add(GoblinTrades.GOBLIN_TRADER_RARE_EMERALDS_AND_BRICK_FOR_SKULL_POTTERY_SHERD)
             .add(GoblinTrades.GOBLIN_TRADER_RARE_EMERALDS_AND_BRICK_FOR_SNORT_POTTERY_SHERD);
 
-        this.tag(GoblinTradeTags.GOBLIN_TRADER_EPIC)
+        func.apply(GoblinTradeTags.GOBLIN_TRADER_EPIC)
             .add(GoblinTrades.GOBLIN_TRADER_EPIC_EMERALDS_AND_IRON_INGOT_FOR_GOBLIN_TUNED_CHAINMAIL_HELMET)
             .add(GoblinTrades.GOBLIN_TRADER_EPIC_EMERALDS_AND_IRON_INGOT_FOR_GOBLIN_TUNED_CHAINMAIL_CHESTPLATE)
             .add(GoblinTrades.GOBLIN_TRADER_EPIC_EMERALDS_AND_IRON_INGOT_FOR_GOBLIN_TUNED_CHAINMAIL_LEGGINGS)
@@ -120,7 +117,7 @@ public class GoblinTradeTagsProvider extends TagsProvider<@NotNull VillagerTrade
             .add(GoblinTrades.GOBLIN_TRADER_EPIC_GLASS_BOTTLE_AND_EMERALDS_FOR_STRONG_STRENGTH)
             .add(GoblinTrades.GOBLIN_TRADER_EPIC_GLASS_BOTTLE_AND_EMERALDS_FOR_SLOW_FALLING);
 
-        this.tag(GoblinTradeTags.GOBLIN_TRADER_LEGENDARY)
+        func.apply(GoblinTradeTags.GOBLIN_TRADER_LEGENDARY)
             .add(GoblinTrades.GOBLIN_TRADER_LEGENDARY_EMERALDS_AND_APPLES_FOR_MOON_BOOTS)
             .add(GoblinTrades.GOBLIN_TRADER_LEGENDARY_EMERALDS_FOR_MYSTERY_MAP)
             .add(GoblinTrades.GOBLIN_TRADER_LEGENDARY_NETHER_STAR_AND_DRAGON_HEAD_FOR_GOBLIN_TUNED_PICKAXE)
@@ -130,20 +127,20 @@ public class GoblinTradeTagsProvider extends TagsProvider<@NotNull VillagerTrade
             .add(GoblinTrades.GOBLIN_TRADER_LEGENDARY_NETHER_STAR_AND_DRAGON_HEAD_FOR_GOBLIN_TUNED_SWORD)
             .add(GoblinTrades.GOBLIN_TRADER_LEGENDARY_EMERALDS_FOR_GOBLIN_TUNED_ELYTRA);
 
-        this.tag(GoblinTradeTags.VEIN_GOBLIN_TRADER_COMMON)
+        func.apply(GoblinTradeTags.VEIN_GOBLIN_TRADER_COMMON)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_COMMON_CARROTS_FOR_EMERALD)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_COMMON_GLOWSTONE_FOR_GLOWSTONE_DUST)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_COMMON_NETHERRACK_FOR_EMERALD)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_COMMON_EMERALD_FOR_NETHER_WART);
 
-        this.tag(GoblinTradeTags.VEIN_GOBLIN_TRADER_UNCOMMON)
+        func.apply(GoblinTradeTags.VEIN_GOBLIN_TRADER_UNCOMMON)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_UNCOMMON_NETHERITE_INGOT_FOR_TOTEM_OF_UNDYING)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_UNCOMMON_ACIENT_DEBRIS_FOR_NETHERITE_SCRAP)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_UNCOMMON_NETHER_WART_AND_NETHER_BRICK_FOR_RED_NETHER_BRICKS)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_UNCOMMON_GOLDEN_CARROT_FOR_EMERALDS)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_UNCOMMON_NETHER_QUARTZ_ORE_FOR_EXPERIENCE_BOTTLE);
 
-        this.tag(GoblinTradeTags.VEIN_GOBLIN_TRADER_RARE)
+        func.apply(GoblinTradeTags.VEIN_GOBLIN_TRADER_RARE)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_RARE_GOLDEN_CARROTS_FOR_WITHER_SKELETON_SKULL)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_RARE_DIAMONDS_FOR_NETHERITE_UPGRADE_SMITHING_TEMPLATE)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_RARE_EMERALDS_FOR_RIB_ARMOR_TRIM_SMITHING_TEMPLATE)
@@ -152,7 +149,7 @@ public class GoblinTradeTagsProvider extends TagsProvider<@NotNull VillagerTrade
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_RARE_EMERALDS_FOR_MUSIC_DISC_5)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_RARE_EMERALDS_FOR_MUSIC_DISC_TEARS);
 
-        this.tag(GoblinTradeTags.VEIN_GOBLIN_TRADER_EPIC)
+        func.apply(GoblinTradeTags.VEIN_GOBLIN_TRADER_EPIC)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_EPIC_EMERALDS_AND_GLASS_BOTTLE_FOR_SLOWNESS)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_EPIC_EMERALDS_AND_GLASS_BOTTLE_FOR_STRONG_SLOWNESS)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_EPIC_EMERALDS_AND_GLASS_BOTTLE_FOR_HARMING)
@@ -165,8 +162,8 @@ public class GoblinTradeTagsProvider extends TagsProvider<@NotNull VillagerTrade
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_EPIC_EMERALDS_AND_GLASS_BOTTLE_FOR_WEAVING)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_EPIC_EMERALDS_AND_GLASS_BOTTLE_FOR_OOZING)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_EPIC_EMERALDS_AND_GLASS_BOTTLE_FOR_INFESTED);
-        
-        this.tag(GoblinTradeTags.VEIN_GOBLIN_TRADER_LEGENDARY)
+
+        func.apply(GoblinTradeTags.VEIN_GOBLIN_TRADER_LEGENDARY)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_LEGENDARY_NETHER_STAR_AND_DRAGON_HEAD_FOR_GOBLIN_TUNED_HELMET)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_LEGENDARY_NETHER_STAR_AND_DRAGON_HEAD_FOR_GOBLIN_TUNED_CHESTPLATE)
             .add(GoblinTrades.VEIN_GOBLIN_TRADER_LEGENDARY_NETHER_STAR_AND_DRAGON_HEAD_FOR_GOBLIN_TUNED_LEGGINGS)

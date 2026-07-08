@@ -11,9 +11,12 @@ import com.mrcrayfish.goblintraders.core.ModMenuTypes;
 import com.mrcrayfish.goblintraders.datagen.*;
 import net.minecraft.client.gui.screens.inventory.MerchantScreen;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.trading.VillagerTrade;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -78,7 +81,12 @@ public class ClientHandler
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
         event.createProvider(GoblinLootTableProvider::new);
         event.addProvider(new FrameworkModelProvider(output, GoblinItemModelProvider::new));
-        event.createProvider(GoblinTradeTagsProvider::new);
+        event.addProvider(new TagsProvider<VillagerTrade>(output, Registries.VILLAGER_TRADE, lookupProvider) {
+            @Override
+            protected void addTags(HolderLookup.Provider provider) {
+                GoblinTradeTagsProvider.addTags(this::tag);
+            }
+        });
         event.addProvider(new DatapackBuiltinEntriesProvider(output, lookupProvider, RegistriesProvider.GOBLIN_REGISTRY_SET, Set.of(Constants.MOD_ID)));
     }
 }
