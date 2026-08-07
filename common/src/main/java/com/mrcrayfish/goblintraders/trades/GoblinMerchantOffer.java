@@ -13,7 +13,7 @@ public class GoblinMerchantOffer extends MerchantOffer
 {
     public GoblinMerchantOffer(MerchantOffer offer)
     {
-        super(offer.getItemCostA(), offer.getItemCostB(), offer.getResult(), offer.getUses(), offer.getMaxUses(), offer.getDemand(), offer.getPriceMultiplier(), offer.getXp());
+        super(offer.getItemCostA(), offer.getItemCostB(), offer.getResult(), offer.getUses(), offer.getMaxUses(), offer.getXp(), offer.getPriceMultiplier(), offer.getDemand());
     }
 
     public GoblinMerchantOffer(ItemCost paymentStack, Optional<ItemCost> secondaryPaymentStack, ItemStack offerStack, int maxUses, int experience, float priceMultiplier)
