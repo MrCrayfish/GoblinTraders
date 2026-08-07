@@ -10,5 +10,11 @@
     "custom.goblintraders.lore": "Удосконалений предмет з кращими характеристиками.",
     "custom.goblintraders.moon_boots": "Місячні чоботи",
     "custom.goblintraders.mystery_map": "Таємнича мапа",
-    "modmenu.descriptionTranslation.goblintraders": "Додає гоблінів, які мають унікальні торги, щоб покращити ваші пригоди!"
+    "custom.goblintraders.mystery_map.lore": "\"Цікаво, до якої структури це приведе...\"",
+    "custom.goblintraders.durability_buff": "+ Збільшена міцність",
+    "custom.goblintraders.armor_buff": "+ Більше броні",
+    "custom.goblintraders.knockback_reduction": "+ Опір відкиданню",
+    "custom.goblintraders.extended_range": "+ Збільшена досяжність",
+    "custom.goblintraders.increased_break_speed": "+ Збільшена швидкість копання",
+    "custom.goblintraders.more_damage": "+ Збільшена шкода",
 }
